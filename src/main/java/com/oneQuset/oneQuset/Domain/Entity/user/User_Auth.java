@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-public class User_Outh {
+public class User_Auth {
     @Id
     @GeneratedValue
     private String id;
