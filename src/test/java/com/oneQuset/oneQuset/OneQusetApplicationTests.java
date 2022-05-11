@@ -8,6 +8,6 @@ class OneQusetApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
 
+	}
 }
