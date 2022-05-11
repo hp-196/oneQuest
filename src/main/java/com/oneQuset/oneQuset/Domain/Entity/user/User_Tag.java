@@ -1,13 +1,17 @@
-package com.oneQuset.oneQuset.Domain.Entity.mission;
+package com.oneQuset.oneQuset.Domain.Entity.user;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Mission_Tag {
+@Getter @Setter
+public class User_Tag {
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
     private String tag;
 }
