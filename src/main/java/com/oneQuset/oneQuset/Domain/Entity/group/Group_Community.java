@@ -1,5 +1,6 @@
 package com.oneQuset.oneQuset.Domain.Entity.group;
 
+import com.oneQuset.oneQuset.Domain.Entity.enum_type.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Group_Community {
     @Id
     @GeneratedValue
     private Long number;
-    private String u_id;
+    private String id;    // user_id
     private Timestamp join_date;
 
     @Enumerated(EnumType.STRING)

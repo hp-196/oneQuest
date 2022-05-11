@@ -1,5 +1,6 @@
 package com.oneQuset.oneQuset.Domain.Entity.mission;
 
+import com.oneQuset.oneQuset.Domain.Entity.enum_type.Color;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,6 @@
 package com.oneQuset.oneQuset.Domain.Entity.user;
 
+import com.oneQuset.oneQuset.Domain.Entity.enum_type.user.User_Community_Type;
 import lombok.Getter;
 import lombok.Setter;
 

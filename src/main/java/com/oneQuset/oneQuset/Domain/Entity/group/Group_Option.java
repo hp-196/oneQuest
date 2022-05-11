@@ -1,10 +1,9 @@
 package com.oneQuset.oneQuset.Domain.Entity.group;
 
+import com.oneQuset.oneQuset.Domain.Entity.enum_type.Color;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Builder
 @Getter
@@ -15,6 +14,8 @@ import javax.persistence.Id;
 public class Group_Option {
     @Id
     @GeneratedValue
-    private Long gc_number;
+    private Long number; // group_community_number
 
+    @Enumerated(EnumType.STRING)
+    private Color color;
 }

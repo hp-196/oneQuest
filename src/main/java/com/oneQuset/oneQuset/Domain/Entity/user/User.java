@@ -1,5 +1,7 @@
 package com.oneQuset.oneQuset.Domain.Entity.user;
 
+import com.oneQuset.oneQuset.Domain.Entity.enum_type.Role;
+
 import lombok.Getter;
 import lombok.Setter;
 
