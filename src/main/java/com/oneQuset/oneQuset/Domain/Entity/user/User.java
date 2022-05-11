@@ -3,9 +3,7 @@ package com.oneQuset.oneQuset.Domain.Entity.user;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter @Setter
@@ -15,6 +13,8 @@ public class User {
     private String id;
     private String nickname;
     private String profile_image; // CLOB
-    private Enum Role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

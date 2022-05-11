@@ -3,9 +3,7 @@ package com.oneQuset.oneQuset.Domain.Entity.user;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +14,8 @@ public class User_Auth {
     private String id;
     private Long number;
     private String email;
-    private Enum provide;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provide;
     private LocalDateTime create_date;
 }

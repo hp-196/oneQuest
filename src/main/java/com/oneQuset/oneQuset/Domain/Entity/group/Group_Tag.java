@@ -2,9 +2,7 @@ package com.oneQuset.oneQuset.Domain.Entity.group;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Builder
 @Getter
@@ -17,5 +15,7 @@ public class Group_Tag {
     private Long g_number;
     private String tag;
     private String u_id;
-    private Enum color;
+
+    @Enumerated(EnumType.STRING)
+    private Color color;
 }
