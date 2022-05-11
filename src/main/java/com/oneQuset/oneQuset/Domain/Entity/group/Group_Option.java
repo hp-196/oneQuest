@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "group_option")
 public class Group_Option {
     /**
      * 그룹 옵션 데이터,

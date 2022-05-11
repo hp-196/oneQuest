@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Clob;
 import java.sql.Timestamp;
 
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "group")
 public class Group {
     /**
      * 그룹 데이터,

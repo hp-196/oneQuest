@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "mission_community")
 public class Mission_Community {
     /**
      * 미션 커뮤니티 데이터,

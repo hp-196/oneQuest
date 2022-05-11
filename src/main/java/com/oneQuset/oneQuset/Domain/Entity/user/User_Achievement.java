@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "user_achivement")
 public class User_Achievement {
     /**
      * 유저의 성취감 관련 데이터,

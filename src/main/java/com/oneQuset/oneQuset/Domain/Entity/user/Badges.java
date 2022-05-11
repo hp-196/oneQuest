@@ -1,6 +1,7 @@
 package com.oneQuset.oneQuset.Domain.Entity.user;
 
 import com.oneQuset.oneQuset.Domain.Entity.enum_type.user.Target;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="badge")
 public class Badges {
     /**
      * 뱃지 데이터,

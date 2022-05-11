@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "group_community")
 public class Group_Community {
     /**
      * 그룹 커뮤니티 데이터,

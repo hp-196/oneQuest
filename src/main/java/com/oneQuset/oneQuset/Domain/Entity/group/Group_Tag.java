@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "group_tag")
 public class Group_Tag {
     /**
      * 그룹 태그 데이터,

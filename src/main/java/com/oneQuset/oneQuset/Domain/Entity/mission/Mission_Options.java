@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "mission_options")
 public class Mission_Options {
     /**
      * 미션 옵션 데이터,

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "user_auth")
 public class User_Auth {
     /**
      * 유저의 인증 데이터,
