@@ -5,15 +5,22 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Group_Tag {
+    /**
+     * 그룹 태그 데이터,
+     * number : 그룹 번호
+     * tag : 그룹 태그
+     * id : 유저의 id
+     */
     @Id
     @GeneratedValue
     private Long number; // group_number
     private String tag;
-    private String u_id;
+    private String id;    // user_id
 }

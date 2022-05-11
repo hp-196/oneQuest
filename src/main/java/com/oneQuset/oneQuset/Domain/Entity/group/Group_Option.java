@@ -5,13 +5,18 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@Entity
+@NoArgsConstructor
 public class Group_Option {
+    /**
+     * 그룹 옵션 데이터,
+     * number : 그룹 번호
+     * color : 그룹 색상
+     */
     @Id
     @GeneratedValue
     private Long number; // group_community_number

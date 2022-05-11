@@ -6,13 +6,20 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Builder
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@Entity
+@NoArgsConstructor
 public class Group_Community {
+    /**
+     * 그룹 커뮤니티 데이터,
+     * number : 그룹 번호,
+     * id : 유저의 id,
+     * join_date : 가입 날짜,
+     * role : 유저의 역활
+     */
     @Id
     @GeneratedValue
     private Long number;
