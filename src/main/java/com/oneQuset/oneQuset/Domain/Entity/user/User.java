@@ -23,7 +23,9 @@ public class User {
      */
     @Id
     @GeneratedValue
-    private String id;
+    @OneToOne
+    @Column(name = "user_id")
+    private User_OAuth user_oauth;
     private String nickname;
     private String profile_image; // CLOB
 

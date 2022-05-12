@@ -24,7 +24,9 @@ public class User_OAuth {
      */
     @Id
     @GeneratedValue
-    private String id;
+    @OneToOne
+    @Column(name = "user_id")
+    private User user;
     private Long number;
     private String email;
 

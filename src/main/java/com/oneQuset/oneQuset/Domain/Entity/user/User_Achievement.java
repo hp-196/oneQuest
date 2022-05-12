@@ -25,6 +25,7 @@ public class User_Achievement {
      */
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private String id;
     private int login_streak;
     private int mission_streak;

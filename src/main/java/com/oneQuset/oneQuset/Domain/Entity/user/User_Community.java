@@ -23,6 +23,7 @@ public class User_Community {
     @Id
     @GeneratedValue
     private Long number;
+    @Column(name = "user_id")
     private String id;
 
     @Enumerated(EnumType.STRING)

@@ -2,10 +2,7 @@ package com.oneQuset.oneQuset.Domain.Entity.user;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -22,6 +19,7 @@ public class User_Tag {
      */
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private String id;
     private String tag;
 }
