@@ -26,7 +26,7 @@ public class Group_Option {
     @GeneratedValue
     private Long number;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_community_number")
     private Group_Community group_community;
 

@@ -29,7 +29,7 @@ public class User_Community {
     @GeneratedValue
     private Long number;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

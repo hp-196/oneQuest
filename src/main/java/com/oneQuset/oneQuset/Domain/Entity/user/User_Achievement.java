@@ -25,7 +25,7 @@ public class User_Achievement {
     @GeneratedValue
     private Long Number;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     private Long login_streak;

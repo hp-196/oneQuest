@@ -26,7 +26,7 @@ public class Mission_Option {
     @GeneratedValue
     private Long number;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_community_number")
     private Mission_Community mission_community;
 

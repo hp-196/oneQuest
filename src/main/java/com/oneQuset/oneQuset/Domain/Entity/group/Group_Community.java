@@ -30,14 +30,14 @@ public class Group_Community {
     @GeneratedValue
     private Long number;
 
-    @OneToOne(mappedBy = "group_community")
+    @OneToOne(mappedBy = "group_community", fetch = FetchType.LAZY)
     private Group_Option group_option;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_number")
     private Group group;
 

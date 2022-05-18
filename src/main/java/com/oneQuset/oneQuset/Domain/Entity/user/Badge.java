@@ -28,7 +28,7 @@ public class Badge {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "badge")
     private User_Achievement user_achievement;
     private String image;

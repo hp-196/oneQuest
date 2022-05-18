@@ -32,19 +32,19 @@ public class Mission_Community {
     @GeneratedValue
     private Long number;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_title")
     private Mission mission;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_number")
     private Group group;
 
-    @OneToOne(mappedBy = "mission_community")
+    @OneToOne(mappedBy = "mission_community",fetch = FetchType.LAZY)
     private Mission_Option mission_option;
 
     @Enumerated(EnumType.STRING)

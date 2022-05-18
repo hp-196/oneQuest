@@ -25,7 +25,7 @@ public class Mission_Tag {
     @GeneratedValue
     private Long number;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
 

@@ -27,7 +27,7 @@ public class User_Tag {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     private String tag;

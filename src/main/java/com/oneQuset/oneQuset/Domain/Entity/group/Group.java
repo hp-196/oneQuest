@@ -2,6 +2,7 @@ package com.oneQuset.oneQuset.domain.entity.group;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

@@ -25,7 +25,7 @@ public class Group_Tag {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_number")
     private Group group;
 
