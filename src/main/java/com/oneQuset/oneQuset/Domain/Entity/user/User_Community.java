@@ -1,32 +1,40 @@
-package com.oneQuset.oneQuset.Domain.Entity.user;
+package com.oneQuset.oneQuset.domain.entity.user;
 
-import com.oneQuset.oneQuset.Domain.Entity.enum_type.user.User_Community_Type;
+import com.oneQuset.oneQuset.domain.entity.enum_type.Type;
 import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Create Date : [ 2022 - 05 - 18 ]
+ * Last Update Date :
+ * User_Community as UC
+ * 유저의 커뮤니티 정보를 담은 테이블
+ */
 @Entity
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user_community")
 public class User_Community {
     /**
-     * 유저의 커뮤니티 데이터,
-     * number : 유저의 번호,
-     * id : 유저의 id,
-     * user_community_type : 대상 유저에 대한 타입,
-     * target_id : 대상 유저의 id
+     * number : 생성 번호
+     * user_id : 유저의 식별자
+     * type : 팔로우, 팔로워의 유형
+     * target_id : 대상 유저의 식별자
      */
     @Id
     @GeneratedValue
     private Long number;
-    @Column(name = "user_id")
-    private String id;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Enumerated(EnumType.STRING)
-    private User_Community_Type user_community_type;
+    private Type type;
     private String target_id;
+
 }

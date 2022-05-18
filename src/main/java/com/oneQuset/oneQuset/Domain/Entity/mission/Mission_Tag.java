@@ -1,27 +1,33 @@
-package com.oneQuset.oneQuset.Domain.Entity.mission;
+package com.oneQuset.oneQuset.domain.entity.mission;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+/**
+ * Create Date : [ 2022 - 05 - 18 ]
+ * Last Update Date : [ 2022 - 05 - 19 ]
+ * Mission_Tag as MT
+ * 미션의 태그 정보를 담은 테이블 ( 관심사 )
+ */
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "mission_tag")
 public class Mission_Tag {
     /**
-     * 미션의 태그 데이터,
-     * number : 미션의 번호,
-     * tag : 미션의 태그
+     * number : 미션 태그의  식별 번호
+     * mission_id : 미션의 식별자
+     * tag : 미션의 태그명
      */
     @Id
     @GeneratedValue
-    private Long number;    // mission_number
+    private Long number;
+
+    @ManyToOne
+    @JoinColumn(name = "mission_id")
+    private Mission mission;
+
     private String tag;
 }

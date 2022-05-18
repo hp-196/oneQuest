@@ -1,27 +1,33 @@
-package com.oneQuset.oneQuset.Domain.Entity.group;
+package com.oneQuset.oneQuset.domain.entity.group;
 
-import com.oneQuset.oneQuset.Domain.Entity.enum_type.Color;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Create Date : [ 2022 - 05 - 19 ]
+ * Last Update Date : [ 2022 - 05 - 19 ]
+ * Group_Community as GC
+ * 그룹의 태그 정보를 담은 테이블 ( 관심사 )
+ */
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "group_tag")
 public class Group_Tag {
     /**
-     * 그룹 태그 데이터,
-     * number : 그룹 번호
-     * tag : 그룹 태그
-     * id : 유저의 id
+     * id : 그룹 태그의 식별자
+     * group_number : 그룹의 식별 번호
+     * tag : 그룹의 태그
      */
     @Id
     @GeneratedValue
-    private Long number; // group_number
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "group_number")
+    private Group group;
+
     private String tag;
-    private String id;    // user_id
 }

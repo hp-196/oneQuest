@@ -1,27 +1,34 @@
-package com.oneQuset.oneQuset.Domain.Entity.group;
+package com.oneQuset.oneQuset.domain.entity.group;
 
-import com.oneQuset.oneQuset.Domain.Entity.enum_type.Color;
-import lombok.*;
+import com.oneQuset.oneQuset.domain.entity.enum_type.Color;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Create Date : [ 2022 - 05 - 19 ]
+ * Last Update Date : [ 2022 - 05 - 19 ]
+ * Group_Option as GO
+ * 그룹의 옵션을 담은 테이블
+ */
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "group_option")
 public class Group_Option {
     /**
-     * 그룹 옵션 데이터,
-     * number : 그룹 번호
-     * color : 그룹 색상
+     * number : 그룹 옵션의 식별 번호
+     * group_community_number : 그룹 커뮤니티의 식별 번호
+     * color : 그룹의 색상
      */
     @Id
     @GeneratedValue
-    private Long number; // group_community_number
+    private Long number;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne
+    @JoinColumn(name = "group_community_number")
+    private Group_Community group_community;
+
     private Color color;
 }

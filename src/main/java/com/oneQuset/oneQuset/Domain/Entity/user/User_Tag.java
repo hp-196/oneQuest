@@ -1,25 +1,34 @@
-package com.oneQuset.oneQuset.Domain.Entity.user;
+package com.oneQuset.oneQuset.domain.entity.user;
 
 import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Create Date : [ 2022 - 05 - 18 ]
+ * Last Update Date :
+ * User_Tag as UT
+ * 유저의 태그 정보를 담은 테이블 ( 관심사 )
+ */
 @Entity
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user_tag")
 public class User_Tag {
     /**
-     * 유저의 관심사를 나태내는 태그,
-     * id : 유저의 id,
+     * number : user_tag 의 생성 번호
+     * user_id : 유저의 식별자
      * tag : 유저의 태그
      */
     @Id
     @GeneratedValue
-    @Column(name = "user_id")
-    private String id;
+    private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
     private String tag;
 }

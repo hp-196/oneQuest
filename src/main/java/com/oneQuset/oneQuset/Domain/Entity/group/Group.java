@@ -1,37 +1,46 @@
-package com.oneQuset.oneQuset.Domain.Entity.group;
+package com.oneQuset.oneQuset.domain.entity.group;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.sql.Clob;
-import java.sql.Timestamp;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Create Date : [ 2022 - 05 - 19 ]
+ * Last Update Date : [ 2022 - 05 - 19 ]
+ * Group as G
+ * 그룹 데이터를 담은 테이블
+ */
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "group")
 public class Group {
     /**
-     * 그룹 데이터,
-     * number :  그룹의 고유 번호
-     * name : 그룹 이름
-     * group_image : 그룹 이미지
-     * notice : 그룹 공지
-     * create_data : 그룹 생성 일자
+     * number : 그룹의 식별 번호
+     * name : 그룹의 이름
+     * image : 그룹의 대표 이미지
+     * notice : 그룹의 공지
+     * create_date : 그룹의 생성 날짜
+     * update_date : 그룹의 수정 날짜
      */
     @Id
     @GeneratedValue
-    private Long number;    // group_community_number
-    private String name;
-    private String  group_image;
-    private String notice;
-    private Timestamp create_data;
+    private Long number;
 
+    @OneToMany(mappedBy = "group")
+    private List<Group_Community> group_community_list = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group")
+    private List<Group_Tag> group_tag_list = new ArrayList<>();
+
+    private String name;
+    private String image;
+    private String notice;
+    private LocalDateTime create_date;
+    private LocalDateTime update_date;
 
 }

@@ -1,29 +1,55 @@
-package com.oneQuset.oneQuset.Domain.Entity.mission;
+package com.oneQuset.oneQuset.domain.entity.mission;
 
-import com.oneQuset.oneQuset.Domain.Entity.enum_type.Role;
-
-import lombok.*;
+import com.oneQuset.oneQuset.domain.entity.enum_type.Mission_Create_User_Type;
+import com.oneQuset.oneQuset.domain.entity.enum_type.Mission_User_Role;
+import com.oneQuset.oneQuset.domain.entity.group.Group;
+import com.oneQuset.oneQuset.domain.entity.user.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Create Date : [ 2022 - 05 - 18 ]
+ * Last Update Date : [ 2022 - 05 - 19 ]
+ * Mission_Community as MC
+ * 미션의 커뮤니티 정보를 담은 테이블
+ */
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "mission_community")
 public class Mission_Community {
     /**
-     * 미션 커뮤니티 데이터,
-     * number : 미션 번호,
-     * id : 유저의 id,
-     * role : 해당 유저의 역활
+     * number : 미션 커뮤니티의 식별 번호
+     * user_id : 유저의 식별자
+     * mission_title : 미션의 타이틀
+     * group_number : 그룹의 식별 번호
+     * MUR : 미션에서의 유저의 역활
+     * MCUT : 미션을 생성한 유저의 타입
      */
     @Id
     @GeneratedValue
     private Long number;
-    private String id;  // user_id
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "mission_title")
+    private Mission mission;
+
+    @ManyToOne()
+    @JoinColumn(name = "group_number")
+    private Group group;
+
+    @OneToOne(mappedBy = "mission_community")
+    private Mission_Option mission_option;
+
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Mission_User_Role MUR;
+
+    @Enumerated(EnumType.STRING)
+    private Mission_Create_User_Type MCUT;
 }
