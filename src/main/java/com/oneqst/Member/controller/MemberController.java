@@ -63,7 +63,7 @@ public class MemberController {
         Member newMember = memberService.newMember(memberDto);
         memberService.sendMail(newMember);
 
-        return "redirect:/";
+        return "login";
     }
 
 

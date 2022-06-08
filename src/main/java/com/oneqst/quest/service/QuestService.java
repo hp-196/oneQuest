@@ -26,6 +26,7 @@ public class QuestService {
                 .questStartTime(questDto.getQuestStartTime())
                 .questEndTime(questDto.getQuestEndTime())
                 .questUrl(questDto.getQuestUrl())
+                .questMaster(member.getNickname())
                 .questMember(new HashSet<>())
                 .build();
         Quest newQuest = questRepository.save(quest);

@@ -7,18 +7,157 @@
     <div th:replace="fragments.html :: sidebar"></div>
 
 
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio" style="margin-top: 70px">
+      <div class="container col-xl-12">
 
-    <div class="container">
-        <div class="py-5 text-center" sec:authorize="isAuthenticated()">
-            <h2>원퀘스트</h2>
-            <h1>
-                <span th:text="${member.nickname}">회원</span>님 환영합니다
-            </h1>
+        <div class="section-title">
+          <h2>퀘스트 목록</h2>
+          <p>퀘스트를 추가하려면 퀘스트 생성페이지로 이동하세요</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <ul id="portfolio-flters">
+              <li data-filter="*" class="filter-active">All</li>
+              <li data-filter=".filter-app">진행중인 퀘스트</li>
+              <li data-filter=".filter-card">종료될 퀘스트</li>
+              <li data-filter=".filter-web">종료된 퀘스트</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row portfolio-container">
+
+
+          <div sec:authorize="isAuthenticated()" th:each="quest: ${questList}" class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
+                <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4 th:text="${quest.questTitle}"></h4>
+                <p th:text="${quest.questIntroduce}"></p>
+              </div>
+            </div>
+          </div>
+
+
+          <!--
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.2s">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-3.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-3.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">App 2</a></h4>
+                <p>App</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-card wow fadeInUp">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-4.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-4.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">Card 2</a></h4>
+                <p>Card</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-5.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-5.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">Web 2</a></h4>
+                <p>Web</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.2s">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-6.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-6.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">App 3</a></h4>
+                <p>App</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-card wow fadeInUp">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-7.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-7.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">Card 1</a></h4>
+                <p>Card</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-card wow fadeInUp" data-wow-delay="0.1s">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-8.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-8.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">Card 3</a></h4>
+                <p>Card</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.2s">
+            <div class="portfolio-wrap">
+              <figure>
+                <img src="assets/img/portfolio/portfolio-9.jpg" class="img-fluid" alt="">
+                <a href="assets/img/portfolio/portfolio-9.jpg" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" class="link-details" title="More Details"><i class="bx bx-link"></i></a>
+              </figure>
+
+              <div class="portfolio-info">
+                <h4><a href="portfolio-details.html">Web 1</a></h4>
+                <p>Web</p>
+              </div>
+            </div>
+          </div>-->
 
         </div>
-        <div th:replace="fragments.html :: footer"></div>
-    </div>
 
+      </div>
+    </section><!-- End Portfolio Section -->
+
+    <div th:replace="fragments.html :: footer"></div>
 
 
 </body>

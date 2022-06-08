@@ -33,10 +33,11 @@ public class QuestController {
     private final QuestService questService;
     private final QuestRepository questRepository;
 
+    /**
     @InitBinder
     public void initBinder(WebDataBinder binder){
      binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd/MM/yyyy"), true, 10));
-}
+            } **/
     /**
      * 퀘스트 생성 페이지
      */
