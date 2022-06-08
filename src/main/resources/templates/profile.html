@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments.html :: head"></head>
+<body>
+
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>마이페이지</h1>
+
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle">
+              <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle">
+              <h2 th:text="${member.nickname}"></h2>
+              <div class="social-links mt-2">
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">프로필</button>
+                </li>
+
+                <li class="nav-item">
+                  <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">프로필 수정</button>
+                </li>
+
+                <li class="nav-item">
+                  <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">설정</button>
+                </li>
+
+                <li class="nav-item">
+                  <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">비밀번호 변경</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">소개</h5>
+                  <p th:text="${member.introduce}" class="small fst-italic"></p>
+
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">닉네임</div>
+                    <div th:text="${member.nickname}" class="col-lg-9 col-md-8"></div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">직업</div>
+                    <div th:text="${member.job}" class="col-lg-9 col-md-8"></div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">주소</div>
+                    <div th:text="${member.address}" class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">이메일</div>
+                    <div th:text="${member.email}" class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">가입날짜</div>
+                    <div th:text="${#temporals.format(member.signUpTime, 'yyyy-MM-dd')}" class="col-lg-9 col-md-8">Web Designer</div>
+                  </div>
+
+                </div><!-- 프로필 오버뷰 -->
+
+                <div th:if="${isOwner}" class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <!-- Profile Edit Form -->
+                  <form th:action="@{/profile/update}" th:object="${profile}" method="post" novalidate>
+
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">닉네임</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{nickname}" name="fullName" type="text" class="form-control" id="fullName"></input>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="about" class="col-md-4 col-lg-3 col-form-label">소개</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{introduce}" name="about" class="form-control" id="about" style="height: 100px"></input>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Job" class="col-md-4 col-lg-3 col-form-label">직업</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{job}" name="job" type="text" class="form-control" id="Job" ></input>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">주소</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{address}" name="address" type="text" class="form-control" id="Address"></input>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{email}" name="email" type="email" class="form-control" id="Email" ></input>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram 주소</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{url}" name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 이미지</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{profileImage}" name="profileImage" type="file" class="form-control" id="profileImage"></input>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">프로필 수정</button>
+                    </div>
+                  </form><!-- End Profile Edit Form -->
+
+                </div><!-- 프로필 수정 -->
+
+                <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-settings">
+
+                  <!-- Settings Form -->
+                  <form>
+
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
+                      <div class="col-md-8 col-lg-9">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                          <label class="form-check-label" for="changesMade">
+                            웹에서 알림받기
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="newProducts" checked>
+                          <label class="form-check-label" for="newProducts">
+                            스마트폰 알림받기
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="proOffers">
+                          <label class="form-check-label" for="proOffers">
+                            실험용1
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
+                          <label class="form-check-label" for="securityNotify">
+                            실험용2
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">설정 변경</button>
+                    </div>
+                  </form><!-- End settings Form -->
+
+                </div><!-- 세팅 -->
+
+                <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-change-password">
+                  <!-- Change Password Form -->
+                  <form th:action="@{/profile/update/password}" th:object="${password}" method="post">
+
+                    <div class="row mb-3">
+                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">현재 비밀번호</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{currentPassword}" name="password" type="password" class="form-control" id="currentPassword">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">새로운 비밀번호</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{newPassword}" name="newpassword" type="password" class="form-control" id="newPassword">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">비밀번호 재입력</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{reNewPassword}" name="renewpassword" type="password" class="form-control" id="renewPassword">
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">비밀번호 변경</button>
+                    </div>
+                  </form><!-- End Change Password Form -->
+
+                </div><!-- 비밀번호 바꾸기 -->
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+ <div th:replace="fragments.html :: footer"></div>
+
+  <!-- Template Main JS File -->
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

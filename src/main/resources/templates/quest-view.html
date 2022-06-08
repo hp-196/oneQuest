@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div th:replace="fragments.html :: nav"></div>
+    <div th:replace="fragments.html :: sidebar"></div>
+
+
+    <div class="container">
+        <div class="py-5 text-center" sec:authorize="isAuthenticated()">
+
+            <h1>
+                <h1 th:text="${member.nickname}"></h1>
+                <h1 th:text="${quest.questUrl}"></h1>
+                <h1 th:text="${quest.questTitle}"></h1>
+                <h1 th:text="${quest.questStartTime}"></h1>
+                <h1 th:text="${quest.questEndTime}"></h1>
+                <h1 th:text="${quest.questMember[0].nickname}"></h1>
+                <h1 th:text="${quest.questMember[0].email}"></h1>
+                <h1 th:text="${quest.questMember[0].address}"></h1>
+            </h1>
+
+        </div>
+    </div>
+
+
+</body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

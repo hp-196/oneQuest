@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div th:replace="fragments.html :: nav"></div>
+    <div th:replace="fragments.html :: sidebar"></div>
+
+
+
+    <div class="container">
+        <div class="py-5 text-center" sec:authorize="isAuthenticated()">
+            <h2>원퀘스트</h2>
+            <h1>
+                <span th:text="${member.nickname}">회원</span>님 환영합니다
+            </h1>
+
+        </div>
+        <div th:replace="fragments.html :: footer"></div>
+    </div>
+
+
+
+</body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>
