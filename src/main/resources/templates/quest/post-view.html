@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+
+<div class="container">
+
+    <div class="py-5 text-center" sec:authorize="isAuthenticated()">
+        <h1>
+            <h1 th:text="${member.nickname}"></h1>
+            <h1 th:text="${quest.questTitle}"></h1>
+            <h1 th:text="${questPost.title}"></h1>
+            <h1 th:text="${questPost.writer.nickname}"></h1>
+            <h1 th:text="${questPost.content}"></h1>
+            <h1 th:text="${questPost.postTime}"></h1>
+
+        </h1>
+
+    </div>
+    <button sec:authorize="isAuthenticated()"
+            th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}"
+            class="btn-get-started scrollto" role="group">
+        <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/update'}">포스트 수정</a>
+    </button>
+
+
+
+    <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}" th:method="delete">
+        <button sec:authorize="isAuthenticated()"
+                th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}"
+                class="btn btn-primary" type="submit" aria-describedby="submitHelp">포스트 삭제</button>
+    </form>
+
+
+</div>
+
+
+</body>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

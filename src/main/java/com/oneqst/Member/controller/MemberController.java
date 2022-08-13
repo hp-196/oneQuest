@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -105,7 +106,7 @@ public class MemberController {
      * @return
      */
     @PostMapping("/profile/update")
-    public String updateProfile(@CurrentUser Member member, @Valid Profile profile, Errors errors, Model model) {
+    public String updateProfile(@CurrentUser Member member, @Valid Profile profile,  Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute(member);
             log.info(String.valueOf(errors));
@@ -114,6 +115,7 @@ public class MemberController {
         memberService.updateProfile(member, profile);
         return "redirect:/profile/" + member.getNickname();
     }
+
 
     /**
      * 패스워드 업데이트
@@ -132,4 +134,15 @@ public class MemberController {
         return "redirect:/profile/" + member.getNickname();
     }
 
+
+    @PostMapping("/profile/update/profileImage")
+    public String updateProfileImage(@CurrentUser Member member, @Valid Profile profile, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute(member);
+            log.info(String.valueOf(errors));
+            return "redirect:/profile/" + member.getNickname();
+        }
+        memberService.updateProfileImage(profile);
+        return "redirect:/profile/" + member.getNickname();
+    }
 }

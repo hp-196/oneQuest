@@ -20,6 +20,10 @@ public class IndexController {
         if (member != null) {
             model.addAttribute(member);
         }
+        if (member == null) {
+            log.info("멤버가 없어서 로그인페이지 리다이렉트");
+            return "login";
+        }
         model.addAttribute("questList", questRepository.findByQuestMemberContaining(member));
         log.info(String.valueOf(model));
         return "index";

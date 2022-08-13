@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div th:replace="fragments.html :: nav"></div>
+    <div th:replace="fragments.html :: sidebar"></div>
+
+        <!-- ======= Hero Section ======= -->
+    <section id="hero" style="background-image: url(/assets/img/card.jpg);" class="d-flex flex-column justify-content-center align-items-center">
+            <div class="container text-center text-md-left" data-aos="fade-up">
+            <h1 th:text="${quest.questTitle}"></h1>
+            <h2 th:text="${quest.questIntroduce}"></h2>
+                <h2><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h2>
+            <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버 초대</a>
+                <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}" th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
+            </div>
+    </section><!-- End Hero -->
+
+
+
+     <div class="container">
+
+         <div sec:authorize="isAuthenticated()" class="card">
+            <div class="card-body">
+              <h5 class="card-title">회원목록</h5>
+              <span th:each="member: ${quest.questMember}" class="badge bg-primary"><span th:text="${member.nickname}"> </span></span>
+            </div>
+         </div>
+
+         <button  sec:authorize="isAuthenticated()"
+                  th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
+                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}">퀘스트 수정</a>
+         </button>
+
+         <button  sec:authorize="isAuthenticated()"
+                  th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
+                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}">퀘스트 탈퇴</a>
+         </button>
+
+         <button sec:authorize="isAuthenticated()"
+                 th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}">포스팅하기</a>
+         </button>
+
+         <button sec:authorize="isAuthenticated()"
+                 th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}">공지사항 포스팅하기</a>
+         </button>
+
+
+        <div class="py-5 text-center" sec:authorize="isAuthenticated()">
+            <h1>
+                <h1 th:text="${member.nickname}"></h1>
+                <h1 th:text="${quest.questMaster}"></h1>
+                <h1 th:text="${quest.questUrl}"></h1>
+                <h1 th:text="${quest.questTitle}"></h1>
+                <h1 th:text="${quest.questIntroduce}"></h1>
+                <h1 th:text="${quest.questExplain}"></h1>
+                <h1 th:text="${quest.questStartTime}"></h1>
+                <h1 th:text="${quest.questEndTime}"></h1>
+                <h1 th:text="${quest.questMember[0].nickname}"></h1>
+                <h1 th:text="${quest.questMember[0].email}"></h1>
+                <h1>dwdw</h1><h1 th:text="${quest.questMember[0].address}">우왕</h1>
+            </h1>
+        </div>
+
+
+         <div class="row portfolio-container">
+             <h1>------------시작-------------</h1>
+             <h1>여기는 공지사항 존</h1>
+             <h1>여기는 공지사항 존</h1>
+             <div sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}"
+                  th:if="${questPost.notice} == true"
+                  class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
+                 <div class="portfolio-wrap">
+                     <figure>
+                         <img src="/assets/img/logo.png" class="img-fluid" alt="">
+                         <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}"
+                            href="assets/img/portfolio/portfolio-2.jpg"
+                            class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i
+                                 class="bx bx-plus"></i></a>
+                         <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                                 class="bx bx-link"></i></a>
+                     </figure>
+
+                     <div class="portfolio-info">
+                         <p th:text="${questPost.title}"></p>
+                         <p th:text="${questPost.writer.nickname}"></p>
+                         <p th:text="${questPost.content}"></p>
+                     </div>
+                 </div>
+             </div>
+             <h1>여기는 공지사항 존</h1>
+             <h1>여기는 공지사항 존</h1>
+             <h1>-------------끝------------</h1>
+
+         </div>
+
+         <div class="row portfolio-container">
+
+             <div sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}"
+                  th:if="${questPost.notice} == false"
+                  class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
+                 <div class="portfolio-wrap">
+                     <figure>
+                         <img src="/assets/img/logo.png" class="img-fluid" alt="">
+                         <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}" href="assets/img/portfolio/portfolio-2.jpg"
+                            class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i
+                                 class="bx bx-plus"></i></a>
+                         <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                                 class="bx bx-link"></i></a>
+                     </figure>
+
+                     <div class="portfolio-info">
+                         <p th:text="${questPost.title}"></p>
+                         <p th:text="${questPost.writer.nickname}"></p>
+                         <p th:text="${questPost.content}"></p>
+                     </div>
+                 </div>
+             </div>
+
+         </div>
+
+
+
+    </div>
+
+
+</body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

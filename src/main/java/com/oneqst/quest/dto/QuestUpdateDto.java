@@ -1,0 +1,41 @@
+package com.oneqst.quest.dto;
+
+
+import com.oneqst.Member.domain.Member;
+import com.oneqst.quest.domain.Quest;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+
+@Data
+@NoArgsConstructor
+public class QuestUpdateDto {
+
+
+    @Length(min = 2, max = 30)
+    private String questTitle; //퀘스트 제목
+
+    @Length(max = 50)
+    private String questIntroduce; //퀘스트 짧은 설명
+
+    private String questExplain; //퀘스트 긴 설명
+
+    private String questStartTime; //퀘스트 시작 시간
+
+    private String questEndTime; //퀘스트 종료 시간
+
+    @Length(min = 2, max = 50)
+    private String questUrl; //퀘스트 주소
+
+    public QuestUpdateDto(Quest quest) {
+        this.questTitle = quest.getQuestTitle();
+        this.questIntroduce = quest.getQuestIntroduce();
+        this.questExplain = quest.getQuestExplain();
+        this.questStartTime = quest.getQuestStartTime();
+        this.questEndTime = quest.getQuestEndTime();
+        this.questUrl = quest.getQuestUrl();
+    }
+
+}

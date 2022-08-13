@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+<div class="container">
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                    <div class="d-flex justify-content-center py-4">
+                        <a href="index.html" class="logo d-flex align-items-center w-auto">
+                            <img src="assets/img/logo.png" alt="">
+                            <span class="d-none d-lg-block">OneQuest</span>
+                        </a>
+                    </div><!-- End Logo -->
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-0 fs-4">포스팅 생성</h5>
+                                <p class="text-center small">포스팅 생성 페이지입니다</p>
+                            </div>
+
+                            <form class="row g-3 needs-validation" th:action="@{'/quest/' + ${quest.questUrl} + '/post'}" th:object="${questPostDto}"
+                                  method="post" novalidate>
+                                <div class="col-12">
+                                    <label for="questTitle" class="form-label">포스팅 제목</label>
+                                    <input type="text" name="questTitle" class="form-control" id="questTitle"
+                                           th:field="*{title}" required>
+                                    <div class="invalid-feedback">포스팅 제목을 입력하시오</div>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}"
+                                           th:errors="*{title}">questTitle Error</small>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="questExplain" class="form-label">내용</label>
+                                    <input type="text" name="questExplain" class="form-control" id="questExplain"
+                                           th:field="*{content}" style="height: 200px" required>
+                                    <div class="invalid-feedback">퀘스트 설명을 입력하시오</div>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}"
+                                           th:errors="*{content}">questExplain Error</small>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100" type="submit">포스팅 등록</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <div th:replace="fragments.html :: footer"></div>
+</div>
+
+
+<script th:replace="fragments.html :: form-validation"></script>
+
+</body>
+<script src="assets/js/main.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

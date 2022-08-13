@@ -57,6 +57,10 @@
                   <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">비밀번호 변경</button>
                 </li>
 
+                <li class="nav-item">
+                  <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-profileImage">프로필 사진 변경</button>
+                </li>
+
               </ul>
               <div class="tab-content pt-2">
 
@@ -96,7 +100,7 @@
 
                 </div><!-- 프로필 오버뷰 -->
 
-                <div th:if="${isOwner}" class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                <div th:if="${isOwner}" class="tab-pane fade profile-edit pt-3" id="profile-edit" >
 
                   <!-- Profile Edit Form -->
                   <form th:action="@{/profile/update}" th:object="${profile}" method="post" novalidate>
@@ -140,13 +144,6 @@
                       <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram 주소</label>
                       <div class="col-md-8 col-lg-9">
                         <input th:field="*{url}" name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 이미지</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input th:field="*{profileImage}" name="profileImage" type="file" class="form-control" id="profileImage"></input>
                       </div>
                     </div>
 
@@ -231,6 +228,32 @@
 
                 </div><!-- 비밀번호 바꾸기 -->
 
+                <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-change-profileImage">
+                  <!-- Change Password Form -->
+                  <form th:action="@{/profile/update/profileImage}" th:object="${profile}" method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                      <!--<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 이미지</label>-->
+                      <div class="col-md-8 col-lg-9">
+                        <input th:field="*{profileImage}" name="file" type="hidden" class="form-control" id="profileImage"></input>
+
+                          <div class="custom-file">
+                            <input type="file" class="form-control" id="profile-image-file">
+                            <!--<label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>-->
+                          </div>
+                          <div id="new-profile-image-control" class="form-control">
+                            <button class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                            <button class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                          </div>
+                          <div id="cropped-new-profile-image" class="mt-3"></div>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary" id="confirm-button">프로필 사진 변경</button>
+                    </div>
+                  </form><!-- End Change Password Form -->
+
+                </div><!-- 프로필 사진 바꾸기 -->
               </div><!-- End Bordered Tabs -->
 
             </div>
@@ -247,7 +270,84 @@
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- cropper 관련 링크 추가 -->
+  <link href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
+  <script src="/node_modules/cropper/dist/cropper.min.js"></script>
+  <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
+
+<script type="application/javascript">
+  $(function () {
+    cropper = '';
+    let $confirmBtn = $('#confirm-button');
+    let $resetBtn = $("#reset-button");
+    let $cutBtn = $('#cut-button');
+    let $newProfileImage = $('#new-profile-image');
+    let $currentProfileImage = $("#current-profile-image");
+    let $resultImage = $('#cropped-new-profile-image');
+    let $profileImage = $('#profileImage');
+
+    // 초기 버튼과 새로운 프로필 이미지 숨기기
+    $newProfileImage.hide();
+    $cutBtn.hide();
+    $resetBtn.hide();
+    $confirmBtn.hide();
+
+    $("#profile-image-file").change(function (e) {      // 프로필 사진이 바뀔때
+      if (e.target.files.length === 1) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          if (e.target.result) {                           // 파일을 가져왔을 경우
+            // 이미지태그 만들기
+            let img = document.createElement("img");
+            img.id = 'new-profile';
+            img.src = e.target.result;
+            img.width = 250;
+
+            $newProfileImage.html(img);     // newProfileImage영역에 위에서 만든 이미지 태그 삽입
+            $newProfileImage.show();
+            $currentProfileImage.hide();
+
+            // Cropper 적용
+            let $newImage = $(img);
+            //$newImage.cropper({aspectRatio: 1});
+            cropper = $newImage.data('cropper');
+
+            $cutBtn.show();
+            $confirmBtn.hide();
+            $resetBtn.show();
+          }
+        };
+
+        reader.readAsDataURL(e.target.files[0]);
+      }
+      let dataUrl = cropper.getCroppedCanvas().toDataURL();
+      let newImage = document.createElement("img");
+      newImage.id = "cropped-new-profile-image";
+      newImage.src = dataUrl;
+      newImage.width = 125;
+      $resultImage.html(newImage);
+      $resultImage.show();
+      $confirmBtn.show();
+
+      $confirmBtn.click(function () {
+        $newProfileImage.html(newImage);
+        $cutBtn.hide();
+        $confirmBtn.hide();
+        $profileImage.val(dataUrl);
+      });
+    });
+
+    $resetBtn.click(function () {
+      $currentProfileImage.show();
+      $newProfileImage.hide();
+      $resultImage.hide();
+      $resetBtn.hide();
+      $cutBtn.hide();
+      $confirmBtn.hide();
+      $profileImage.val('');
+    });
+  });
+</script>
 
 </body>
-
 </html>

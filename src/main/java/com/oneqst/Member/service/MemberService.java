@@ -8,6 +8,7 @@ import com.oneqst.Member.dto.MemberDto;
 import com.oneqst.Member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -109,7 +115,6 @@ public class MemberService implements UserDetailsService {
         member.setIntroduce(profile.getIntroduce());
         member.setJob(profile.getJob());
         member.setUrl(profile.getUrl());
-        member.setProfileImage(profile.getProfileImage());
         memberRepository.save(member);
 
     }
@@ -133,4 +138,14 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
         return true;
     }
+
+
+    public void updateProfileImage(Profile profile) {
+        Member member = memberRepository.findByNickname(profile.getNickname());
+        member.setProfileImage(profile.getProfileImage());
+        memberRepository.save(member);
+
+    }
+
+
 }
