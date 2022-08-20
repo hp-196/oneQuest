@@ -6,6 +6,7 @@
     <div th:replace="fragments.html :: nav"></div>
     <div th:replace="fragments.html :: sidebar"></div>
 
+    <main id="main" class="main">
         <!-- ======= Hero Section ======= -->
     <section id="hero" style="background-image: url(/assets/img/card.jpg);" class="d-flex flex-column justify-content-center align-items-center">
             <div class="container text-center text-md-left" data-aos="fade-up">
@@ -16,8 +17,6 @@
                 <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}" th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
             </div>
     </section><!-- End Hero -->
-
-
 
      <div class="container">
 
@@ -125,7 +124,7 @@
 
 
     </div>
-
+    </main>
 
 </body>
     <script src="/assets/js/main.js"></script>
