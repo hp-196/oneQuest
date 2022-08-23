@@ -556,7 +556,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 1200px) {
-  #main, #footer {
+  #main, #footer, #hero {
     margin-left: 260px;
   }
 }
@@ -566,7 +566,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 @media (min-width: 1200px) {
-  .toggle-sidebar #main, .toggle-sidebar #footer {
+  .toggle-sidebar #main, #hero, .toggle-sidebar #footer {
     margin-left: 0;
   }
   .toggle-sidebar .sidebar {
@@ -1082,10 +1082,10 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 #hero {
   width: 100%;
-  height: 30vh;
+  height: 50vh;
   background-size: cover;
   position: relative;
-  margin-top: 70px;
+  margin-top: 60px;
   padding: 0;
 }
 #hero:before {
@@ -1131,11 +1131,7 @@ h1, h2, h3, h4, h5, h6 {
 #hero .btn-get-started:hover {
   background: #4ea5e0;
 }
-@media (max-width: 992px) {
-  #hero {
-    height: calc(100vh - 70px);
-  }
-}
+
 @media (max-width: 768px) {
   #hero h1 {
     font-size: 30px;

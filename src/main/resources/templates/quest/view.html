@@ -6,17 +6,21 @@
     <div th:replace="fragments.html :: nav"></div>
     <div th:replace="fragments.html :: sidebar"></div>
 
-    <main id="main" class="main">
-        <!-- ======= Hero Section ======= -->
-    <section id="hero" style="background-image: url(/assets/img/card.jpg);" class="d-flex flex-column justify-content-center align-items-center">
-            <div class="container text-center text-md-left" data-aos="fade-up">
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" style="background-image: url(/assets/img/card.jpg);"
+             class="d-flex flex-column justify-content-center align-items-center">
+        <div class="container text-center text-md-left" data-aos="fade-up">
             <h1 th:text="${quest.questTitle}"></h1>
             <h2 th:text="${quest.questIntroduce}"></h2>
-                <h2><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h2>
-            <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버 초대</a>
-                <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}" th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
-            </div>
+            <h2><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h2>
+            <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버
+                초대</a>
+            <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}"
+               th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
+        </div>
     </section><!-- End Hero -->
+
+    <main id="main" class="main">
 
      <div class="container">
 
