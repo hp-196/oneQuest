@@ -3,7 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments.html :: head"></head>
+<head th:replace="fragments.html :: head">
+</head>
 <body>
 
 <div th:replace="fragments.html :: nav"></div>
@@ -13,32 +14,30 @@
 
     <div class="pagetitle">
       <h1>마이페이지</h1>
-
-    </div><!-- End Page Title -->
+    </div>
 
     <section class="section profile">
       <div class="row">
+
+        <!-- 프로필 요약 탭 -->
         <div class="col-xl-4">
-
           <div class="card">
-            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-              <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle">
-              <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle">
+            <div id="cropped-new-profile-image" class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile">
+              <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile">
               <h2 th:text="${member.nickname}"></h2>
               <div class="social-links mt-2">
                 <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="col-xl-8">
-
           <div class="card">
             <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
+
+              <!-- 프로필 탭 -->
               <ul class="nav nav-tabs nav-tabs-bordered">
 
                 <li class="nav-item">
@@ -57,13 +56,11 @@
                   <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">비밀번호 변경</button>
                 </li>
 
-                <li class="nav-item">
-                  <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-profileImage">프로필 사진 변경</button>
-                </li>
 
               </ul>
-              <div class="tab-content pt-2">
 
+              <div class="tab-content pt-2">
+                <!-- 프로필 오버뷰 -->
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">소개</h5>
                   <p th:text="${member.introduce}" class="small fst-italic"></p>
@@ -98,13 +95,24 @@
                     <div th:text="${#temporals.format(member.signUpTime, 'yyyy-MM-dd')}" class="col-lg-9 col-md-8">Web Designer</div>
                   </div>
 
-                </div><!-- 프로필 오버뷰 -->
+                </div>
 
+                <!-- 프로필 수정 폼 -->
                 <div th:if="${isOwner}" class="tab-pane fade profile-edit pt-3" id="profile-edit" >
 
-                  <!-- Profile Edit Form -->
-                  <form th:action="@{/profile/update}" th:object="${profile}" method="post" novalidate>
+                  <div class="row mb-3">
+                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 사진</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input type="file" class="form-control" id="profile-image-file">
+                    </div>
+                    <div id="new-profile-image" class="mt-3 mb-3"></div>
+                    <div id="new-profile-image-control">
+                      <button class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                      <button class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                    </div>
+                  </div>
 
+                  <form th:action="@{/profile/update}" th:object="${profile}" method="post" novalidate>
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">닉네임</label>
                       <div class="col-md-8 col-lg-9">
@@ -147,18 +155,22 @@
                       </div>
                     </div>
 
+                    <div class="form-group">
+                      <input id="profileImage" type="hidden" th:field="*{profileImage}" class="form-control"/>
+                    </div>
+
+
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">프로필 수정</button>
                     </div>
-                  </form><!-- End Profile Edit Form -->
 
-                </div><!-- 프로필 수정 -->
+                  </form>
 
+                </div>
+
+                <!-- 알람 세팅 폼 -->
                 <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-settings">
-
-                  <!-- Settings Form -->
                   <form>
-
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
                       <div class="col-md-8 col-lg-9">
@@ -192,10 +204,11 @@
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">설정 변경</button>
                     </div>
-                  </form><!-- End settings Form -->
+                  </form>
 
-                </div><!-- 세팅 -->
+                </div>
 
+                <!-- 비밀번호 변경 폼 -->
                 <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
                   <form th:action="@{/profile/update/password}" th:object="${password}" method="post">
@@ -224,37 +237,11 @@
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">비밀번호 변경</button>
                     </div>
-                  </form><!-- End Change Password Form -->
+                  </form>
 
-                </div><!-- 비밀번호 바꾸기 -->
+                </div>
 
-                <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-change-profileImage">
-                  <!-- Change Password Form -->
-                  <form th:action="@{/profile/update/profileImage}" th:object="${profile}" method="post" enctype="multipart/form-data">
-                    <div class="row mb-3">
-                      <!--<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 이미지</label>-->
-                      <div class="col-md-8 col-lg-9">
-                        <input th:field="*{profileImage}" name="file" type="hidden" class="form-control" id="profileImage"></input>
-
-                          <div class="custom-file">
-                            <input type="file" class="form-control" id="profile-image-file">
-                            <!--<label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>-->
-                          </div>
-                          <div id="new-profile-image-control" class="form-control">
-                            <button class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
-                            <button class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
-                          </div>
-                          <div id="cropped-new-profile-image" class="mt-3"></div>
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary" id="confirm-button">프로필 사진 변경</button>
-                    </div>
-                  </form><!-- End Change Password Form -->
-
-                </div><!-- 프로필 사진 바꾸기 -->
-              </div><!-- End Bordered Tabs -->
+              </div>
 
             </div>
           </div>
@@ -263,91 +250,84 @@
       </div>
     </section>
 
-  </main><!-- End #main -->
+  </main>
 
  <div th:replace="fragments.html :: footer"></div>
 
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- cropper 관련 링크 추가 -->
+
   <link href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
   <script src="/node_modules/cropper/dist/cropper.min.js"></script>
   <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
+  <script type="application/javascript">
+    $(function () {
+      cropper = '';
+      let $resetBtn = $("#reset-button");
+      let $cutBtn = $("#cut-button");
+      let $newProfileImage = $("#new-profile-image");
+      let $resultImage = $("#cropped-new-profile-image");
+      let $currentProfileImage = $("#current-profile-image");
+      let $profileImage = $("#profileImage");
 
-<script type="application/javascript">
-  $(function () {
-    cropper = '';
-    let $confirmBtn = $('#confirm-button');
-    let $resetBtn = $("#reset-button");
-    let $cutBtn = $('#cut-button');
-    let $newProfileImage = $('#new-profile-image');
-    let $currentProfileImage = $("#current-profile-image");
-    let $resultImage = $('#cropped-new-profile-image');
-    let $profileImage = $('#profileImage');
+      $newProfileImage.hide();
+      $cutBtn.hide();
+      $resetBtn.hide();
 
-    // 초기 버튼과 새로운 프로필 이미지 숨기기
-    $newProfileImage.hide();
-    $cutBtn.hide();
-    $resetBtn.hide();
-    $confirmBtn.hide();
+      $("#profile-image-file").change(function (e) {
+        if (e.target.files.length === 1) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            if (e.target.result) {
+              let img = document.createElement("img");
+              img.id = 'new-profile';
+              img.src = e.target.result;
+              img.width = 250;
 
-    $("#profile-image-file").change(function (e) {      // 프로필 사진이 바뀔때
-      if (e.target.files.length === 1) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          if (e.target.result) {                           // 파일을 가져왔을 경우
-            // 이미지태그 만들기
-            let img = document.createElement("img");
-            img.id = 'new-profile';
-            img.src = e.target.result;
-            img.width = 250;
+              $newProfileImage.html(img);
+              $newProfileImage.show();
+              $currentProfileImage.hide();
 
-            $newProfileImage.html(img);     // newProfileImage영역에 위에서 만든 이미지 태그 삽입
-            $newProfileImage.show();
-            $currentProfileImage.hide();
+              let $newImage = $(img);
+              $newImage.cropper({aspectRatio: 1});
+              cropper = $newImage.data('cropper');
 
-            // Cropper 적용
-            let $newImage = $(img);
-            //$newImage.cropper({aspectRatio: 1});
-            cropper = $newImage.data('cropper');
+              $cutBtn.show();
+              $resetBtn.show();
+            }
+          };
 
-            $cutBtn.show();
-            $confirmBtn.hide();
-            $resetBtn.show();
-          }
-        };
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      });
 
-        reader.readAsDataURL(e.target.files[0]);
-      }
-      let dataUrl = cropper.getCroppedCanvas().toDataURL();
-      let newImage = document.createElement("img");
-      newImage.id = "cropped-new-profile-image";
-      newImage.src = dataUrl;
-      newImage.width = 125;
-      $resultImage.html(newImage);
-      $resultImage.show();
-      $confirmBtn.show();
-
-      $confirmBtn.click(function () {
-        $newProfileImage.html(newImage);
+      $resetBtn.click(function () {
+        $currentProfileImage.show();
+        $newProfileImage.hide();
+        $resetBtn.hide();
         $cutBtn.hide();
-        $confirmBtn.hide();
+        $profileImage.val('');
+      });
+
+      $cutBtn.click(function () {
+        let dataUrl = cropper.getCroppedCanvas().toDataURL();
+        let newImage = document.createElement("img");
+        newImage.id = "cropped-new-profile-image";
+        newImage.src = dataUrl;
+        newImage.width = 125;
+        $newProfileImage.html(newImage);
+        $newProfileImage.hide();
+        $resultImage.html(newImage);
+        $cutBtn.hide();
+        $resetBtn.hide();
         $profileImage.val(dataUrl);
       });
     });
 
-    $resetBtn.click(function () {
-      $currentProfileImage.show();
-      $newProfileImage.hide();
-      $resultImage.hide();
-      $resetBtn.hide();
-      $cutBtn.hide();
-      $confirmBtn.hide();
-      $profileImage.val('');
-    });
-  });
-</script>
+  </script>
+
+
 
 </body>
 </html>

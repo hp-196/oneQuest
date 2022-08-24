@@ -24,9 +24,10 @@
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 
-
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 
 <!-- ======= 네비게이션 바 ver 부트스트랩 ======= -->
@@ -197,10 +198,11 @@
 
         </li><!-- 메세지 바 -->
 
-        <li class="nav-item dropdown pe-3">
+        <li sec:authorize="isAuthenticated()" class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="/assets/img/logo.png" alt="Profile" class="rounded-circle">
+            <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle">
+            <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle">
             <span th:text="${#authentication.name}" class="d-none d-md-block dropdown-toggle ps-2"></span>
           </a><!-- End Profile Iamge Icon -->
 

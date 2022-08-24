@@ -115,6 +115,7 @@ public class MemberService implements UserDetailsService {
         member.setIntroduce(profile.getIntroduce());
         member.setJob(profile.getJob());
         member.setUrl(profile.getUrl());
+        member.setProfileImage(profile.getProfileImage());
         memberRepository.save(member);
 
     }
