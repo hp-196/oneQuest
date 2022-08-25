@@ -40,6 +40,7 @@ public class QuestService {
                 .questEndTime(questDto.getQuestEndTime())
                 .questUrl(questDto.getQuestUrl())
                 .questMaster(member.getNickname())
+                .questImage(questDto.getQuestImage())
                 .questMember(new HashSet<>())
                 .build();
         Quest newQuest = questRepository.save(quest);
@@ -98,6 +99,7 @@ public class QuestService {
         quest.setQuestStartTime(questUpdateDto.getQuestStartTime());
         quest.setQuestEndTime(questUpdateDto.getQuestEndTime());
         quest.setQuestUrl(questUpdateDto.getQuestUrl());
+        quest.setQuestImage(questUpdateDto.getQuestImage());
         questRepository.save(quest);
     }
 

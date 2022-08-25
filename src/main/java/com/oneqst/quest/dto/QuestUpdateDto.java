@@ -29,6 +29,8 @@ public class QuestUpdateDto {
     @Length(min = 2, max = 50)
     private String questUrl; //퀘스트 주소
 
+    private String questImage; //퀘스트 대표 이미지
+
     public QuestUpdateDto(Quest quest) {
         this.questTitle = quest.getQuestTitle();
         this.questIntroduce = quest.getQuestIntroduce();
@@ -36,6 +38,7 @@ public class QuestUpdateDto {
         this.questStartTime = quest.getQuestStartTime();
         this.questEndTime = quest.getQuestEndTime();
         this.questUrl = quest.getQuestUrl();
+        this.questImage = quest.getQuestImage();
     }
 
 }

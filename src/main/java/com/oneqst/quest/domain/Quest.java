@@ -38,6 +38,8 @@ public class Quest {
 
     private String questExplain; //퀘스트 긴 설명
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private String questImage; //퀘스트 소개 이미지
 
     private String questStartTime; //퀘스트 시작 시간

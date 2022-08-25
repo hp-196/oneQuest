@@ -3,6 +3,10 @@ package com.oneqst.quest.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.Basic;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -22,6 +26,9 @@ public class QuestDto {
     private String questStartTime;
 
     private String questEndTime;
+
+    private String questImage; //퀘스트 대표 이미지
+
     @NotBlank
     @Length(min = 2, max = 50)
     private String questUrl; //퀘스트 주소
