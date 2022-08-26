@@ -556,7 +556,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 1200px) {
-  #main, #footer, #hero {
+  #main, #footer, .hero{
     margin-left: 260px;
   }
 }
@@ -566,10 +566,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 @media (min-width: 1200px) {
-  .toggle-sidebar #main, #hero, .toggle-sidebar #footer {
+  .toggle-sidebar #main, .toggle-sidebar #footer, .toggle-sidebar .hero {
     margin-left: 0;
   }
-  .toggle-sidebar .sidebar {
+ .toggle-sidebar .sidebar {
     left: -260px;
   }
 }
@@ -1084,8 +1084,9 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 50vh;
   position: relative;
-  margin-top: 80px;
+  margin-top: 60px;
   padding: 0;
+  transition: all 0.3s;
 }
 
 .hero img {
