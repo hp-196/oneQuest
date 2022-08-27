@@ -35,6 +35,10 @@ public class QuestPost {
 
     private boolean notice; //공지사항 여부
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String postImage; //포스팅 이미지
+
     @OneToMany(mappedBy = "post")
     private List<QuestComment> questCommentList = new ArrayList<>();
 

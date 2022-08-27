@@ -46,7 +46,7 @@ public class Quest {
 
     private String questEndTime; //퀘스트 마감 시간
 
-    private boolean questRecruitEnd; //멤버 모집 여주
+    private boolean questRecruitEnd; //멤버 모집 여부
 
     @OneToMany(mappedBy = "quest")
     private List<QuestPost> questPostList = new ArrayList<>();

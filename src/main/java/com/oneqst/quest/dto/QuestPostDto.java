@@ -17,4 +17,6 @@ public class QuestPostDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime postTime;
 
+    private String postImage;
+
 }

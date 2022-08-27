@@ -26,10 +26,8 @@
               <h5 class="card-title">회원목록</h5>
                 <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}">
               <span>
-                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile"
-                       class="rounded-circle" style="width: 30px; height: 30px">
-                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile"
-                 class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
                   <span class="badge bg-primary" th:text="${member.nickname}"></span>
               </span>
                 </a>
@@ -84,118 +82,69 @@
                          </ul>
 
                          <div class="tab-content pt-2" id="myTabjustifiedContent">
-                             <div class="tab-pane fade show active" id="home-justified" role="tabpanel"
-                                  aria-labelledby="home-tab">
-                                 Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora
-                                 libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem
-                                 <div class="row portfolio-container">
-                                     <h1>------------시작-------------</h1>
-                                     <h1>여기는 공지사항 존</h1>
-                                     <h1>여기는 공지사항 존</h1>
-                                     <div sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}"
-                                          th:if="${questPost.notice} == true"
-                                          class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp"
-                                          data-wow-delay="0.1s">
-                                         <div class="portfolio-wrap">
-                                             <figure>
-                                                 <img src="/assets/img/logo.png" class="img-fluid" alt="">
-                                                 <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}"
-                                                    href="assets/img/portfolio/portfolio-2.jpg"
-                                                    class="link-preview portfolio-lightbox"
-                                                    data-gallery="portfolioGallery" title="Preview"><i
-                                                         class="bx bx-plus"></i></a>
-                                                 <a href="portfolio-details.html" class="link-details"
-                                                    title="More Details"><i
-                                                         class="bx bx-link"></i></a>
-                                             </figure>
+                             <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
+                                 <p>---공지사항---</p>
 
-                                             <div class="portfolio-info">
-                                                 <p th:text="${questPost.title}"></p>
-                                                 <p th:text="${questPost.writer.nickname}"></p>
-                                                 <p th:text="${questPost.content}"></p>
-                                             </div>
+                                     <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
+                                         <div class="card-header">
+                                         <a href="#about" th:href="@{'/profile/' + ${member.getNickname()}}">
+                                          <span>
+                                              <img th:if="${#strings.isEmpty(questPost.writer.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                              <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}" th:src="${questPost.writer.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                              <span class="badge bg-primary" th:text="${questPost.writer.nickname}"></span>
+                                          </span>
+                                         </a>
                                          </div>
-                                     </div>
-                                     <h1>여기는 공지사항 존</h1>
-                                     <h1>여기는 공지사항 존</h1>
-                                     <h1>-------------끝------------</h1>
+                                         <div class="card-body">
+                                             <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
+                                             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}">
+                                                 <img th:if="${!#strings.isEmpty(questPost.postImage)}" th:src="${questPost.postImage}" alt="Profile" style="width: 100px; height: 100px">
+                                                 <p th:text="${questPost.content}">컨텐트</p>
+                                             </a>
 
-                                 </div>
-
-                                 <div class="row portfolio-container">
-
-                                     <div sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}"
-                                          th:if="${questPost.notice} == false"
-                                          class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp"
-                                          data-wow-delay="0.1s">
-                                         <div class="portfolio-wrap">
-                                             <figure>
-                                                 <img src="/assets/img/logo.png" class="img-fluid" alt="">
-                                                 <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}"
-                                                    href="assets/img/portfolio/portfolio-2.jpg"
-                                                    class="link-preview portfolio-lightbox"
-                                                    data-gallery="portfolioGallery" title="Preview"><i
-                                                         class="bx bx-plus"></i></a>
-                                                 <a href="portfolio-details.html" class="link-details"
-                                                    title="More Details"><i
-                                                         class="bx bx-link"></i></a>
-                                             </figure>
-
-                                             <div class="portfolio-info">
-                                                 <p th:text="${questPost.title}"></p>
-                                                 <p th:text="${questPost.writer.nickname}"></p>
-                                                 <p th:text="${questPost.content}"></p>
-                                             </div>
                                          </div>
+                                         <div class="card-footer" th:text="${questPost.postTime}">포스팅 시간</div>
                                      </div>
 
-                                 </div>
+                                 <p>---공지사항---</p>
+
+                                     <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
+                                         <div class="card-header">
+                                             <a href="#about" th:href="@{'/profile/' + ${member.getNickname()}}">
+                                              <span>
+                                                  <img th:if="${#strings.isEmpty(questPost.writer.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                  <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}" th:src="${questPost.writer.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                  <span class="badge bg-primary" th:text="${questPost.writer.nickname}"></span>
+                                              </span>
+                                             </a>
+                                         </div>
+                                         <div class="card-body">
+                                             <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
+                                             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}">
+                                                 <img th:if="${!#strings.isEmpty(questPost.postImage)}" th:src="${questPost.postImage}" alt="Profile" style="width: 100px; height: 100px">
+                                                 <p th:text="${questPost.content}">컨텐트</p>
+                                             </a>
+                                         </div>
+                                         <div class="card-footer" th:text="${questPost.postTime}">포스팅 시간</div>
+                                     </div>
+
                              </div>
-                             <div class="tab-pane fade" id="profile-justified" role="tabpanel"
-                                  aria-labelledby="profile-tab">
+                             <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
                                  Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia.
                                  Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia
                                  distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam
                                  voluptatum dicta.
                              </div>
-                             <div class="tab-pane fade" id="contact-justified" role="tabpanel"
-                                  aria-labelledby="contact-tab">
+                             <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="contact-tab">
                                  Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque.
                                  Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit
                                  molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
                              </div>
                          </div><!-- End Default Tabs -->
-
                      </div>
                  </div>
-
-
              </div>
-
          </div>
-
-        <div class="py-5 text-center" sec:authorize="isAuthenticated()">
-            <h1>
-                <h1 th:text="${member.nickname}"></h1>
-                <h1 th:text="${quest.questMaster}"></h1>
-                <h1 th:text="${quest.questUrl}"></h1>
-                <h1 th:text="${quest.questTitle}"></h1>
-                <h1 th:text="${quest.questIntroduce}"></h1>
-                <h1 th:text="${quest.questExplain}"></h1>
-                <h1 th:text="${quest.questStartTime}"></h1>
-                <h1 th:text="${quest.questEndTime}"></h1>
-                <h1 th:text="${quest.questMember[0].nickname}"></h1>
-                <h1 th:text="${quest.questMember[0].email}"></h1>
-                <h1>dwdw</h1><h1 th:text="${quest.questMember[0].address}">우왕</h1>
-            </h1>
-        </div>
-
-
-
-
-
-
-
 
     </div>
     </main>

@@ -55,6 +55,7 @@ public class QuestService {
         QuestPost questPost = QuestPost.builder()
                 .title(questPostDto.getTitle())
                 .content(questPostDto.getContent())
+                .postImage(questPostDto.getPostImage())
                 .build();
         questPost.setWriter(member);
         questPost.setQuest(quest);
@@ -72,6 +73,7 @@ public class QuestService {
         QuestPost questPost = QuestPost.builder()
                 .title(questPostDto.getTitle())
                 .content(questPostDto.getContent())
+                .postImage(questPostDto.getPostImage())
                 .build();
         questPost.setWriter(member);
         questPost.setQuest(quest);
