@@ -97,7 +97,8 @@ public class MemberController {
             model.addAttribute(new Password());
             model.addAttribute("isOwner", profileMember);
         }
-        model.addAttribute("member", profileMember);
+        model.addAttribute("member", member);
+        model.addAttribute("profileMember", profileMember);
         return "profile";
     }
 

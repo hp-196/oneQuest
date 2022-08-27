@@ -24,13 +24,15 @@
          <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
             <div class="card-body">
               <h5 class="card-title">회원목록</h5>
-              <span th:each="member: ${quest.questMember}">
+                <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}">
+              <span>
                   <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile"
                        class="rounded-circle" style="width: 30px; height: 30px">
                   <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile"
                  class="rounded-circle" style="width: 30px; height: 30px">
                   <span class="badge bg-primary" th:text="${member.nickname}"></span>
               </span>
+                </a>
             </div>
          </div>
 
