@@ -19,7 +19,6 @@
     </div>
 
     <main id="main" class="main">
-
      <div>
          <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
             <div class="card-body">
@@ -34,29 +33,23 @@
             </div>
          </div>
 
-         <button  sec:authorize="isAuthenticated()"
-                  th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
-                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}">퀘스트 수정</a>
+         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn btn-primary">
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" style="color: white">퀘스트 수정</a>
          </button>
 
-         <button  sec:authorize="isAuthenticated()"
-                  th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
-                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}">퀘스트 탈퇴</a>
+         <button  sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-danger">
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" style="color: white">퀘스트 탈퇴</a>
          </button>
 
-         <button sec:authorize="isAuthenticated()"
-                 th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
+         <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
              <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}">포스팅하기</a>
          </button>
 
-         <button sec:authorize="isAuthenticated()"
-                 th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
+         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
              <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}">공지사항 포스팅하기</a>
          </button>
 
-         <div class="row">
-
-
+         <div class="row mt-4">
              <div class="col-xl-12">
                  <div class="card">
                      <div class="card-body">
@@ -83,17 +76,11 @@
 
                          <div class="tab-content pt-2" id="myTabjustifiedContent">
                              <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
-                                 <p>---공지사항---</p>
-
                                      <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
                                          <div class="card-header">
-                                         <a href="#about" th:href="@{'/profile/' + ${member.getNickname()}}">
                                           <span>
-                                              <img th:if="${#strings.isEmpty(questPost.writer.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                              <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}" th:src="${questPost.writer.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                              <span class="badge bg-primary" th:text="${questPost.writer.nickname}"></span>
+                                              <i class="bi bi-bell fs-5"><span>공지</span></i>
                                           </span>
-                                         </a>
                                          </div>
                                          <div class="card-body">
                                              <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
@@ -105,8 +92,6 @@
                                          </div>
                                          <div class="card-footer" th:text="${questPost.postTime}">포스팅 시간</div>
                                      </div>
-
-                                 <p>---공지사항---</p>
 
                                      <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
                                          <div class="card-header">
