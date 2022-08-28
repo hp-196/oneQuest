@@ -1,10 +1,12 @@
 package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestComment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
+import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.QuestCommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
@@ -27,6 +29,7 @@ public class QuestService {
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
     private final QuestCommentRepository questCommentRepository;
+    private final AuthPostRepository authPostRepository;
 
     /**
      * 퀘스트 생성
@@ -159,5 +162,21 @@ public class QuestService {
         member.removeComment(questComment);
         questPost.removeComment(questComment);
         questCommentRepository.delete(questComment);
+    }
+
+    /**
+     * 퀘스트 인증 포스팅
+     */
+    public AuthPost AuthPost(AuthPostDto authPostDto, Quest quest, Member member) {
+        AuthPost authPost = AuthPost.builder()
+                .title(authPostDto.getTitle())
+                .content(authPostDto.getContent())
+                .postTime(LocalDateTime.now())
+                .postImage(authPostDto.getPostImage())
+                .writer(member)
+                .quest(quest)
+                .build();
+        AuthPost newAuthPost = authPostRepository.save(authPost);
+        return newAuthPost;
     }
 }

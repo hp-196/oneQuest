@@ -5,10 +5,7 @@ import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestComment;
 import com.oneqst.quest.domain.QuestPost;
-import com.oneqst.quest.dto.QuestDto;
-import com.oneqst.quest.dto.QuestPostDto;
-import com.oneqst.quest.dto.QuestPostUpdateDto;
-import com.oneqst.quest.dto.QuestUpdateDto;
+import com.oneqst.quest.dto.*;
 import com.oneqst.quest.repository.QuestCommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
@@ -227,6 +224,9 @@ public class QuestController {
         return "redirect:/quest/" + url;
     }
 
+    /**
+     * 퀘스트 공지사항 포스팅
+     */
     @GetMapping("/quest/{url}/post/notice")
     public String questNotice(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
@@ -254,6 +254,7 @@ public class QuestController {
         QuestPost questPost = questService.questNoticePost(questPostDto, quest, member);
         return "redirect:/quest/" + quest.getQuestUrl() + "/post/" + questPost.getId();
     }
+
 
 
 
