@@ -34,19 +34,19 @@
          </div>
 
          <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn btn-primary">
-             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" style="color: white">퀘스트 수정</a>
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
          </button>
 
          <button  sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-danger">
-             <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" style="color: white">퀘스트 탈퇴</a>
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
          </button>
 
-         <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
-             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}">포스팅하기</a>
+         <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn-quest-view btn btn-primary mx-1">
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}" class="btn-quest-view-a">포스팅하기</a>
          </button>
 
-         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
-             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}">공지사항 포스팅하기</a>
+         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn-quest-view btn btn-success">
+             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}" class="btn-quest-view-a">공지사항 포스팅하기</a>
          </button>
 
          <div class="row mt-4">

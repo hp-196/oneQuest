@@ -1275,3 +1275,15 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   text-transform: uppercase;
 }
+
+/*--------------------------------------------------------------
+# 퀘스트 뷰 포스팅 버튼
+--------------------------------------------------------------*/
+.btn-quest-view {
+  float: right;
+  color: white;
+}
+
+.btn-quest-view-a {
+  color: white;
+}
