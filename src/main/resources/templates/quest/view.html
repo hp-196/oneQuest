@@ -76,7 +76,7 @@
 
                          <div class="tab-content pt-2" id="myTabjustifiedContent">
                              <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
-                                     <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
+                                 <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
                                          <div class="card-header">
                                           <span>
                                               <i class="bi bi-bell fs-5"><span>공지</span></i>
@@ -92,10 +92,9 @@
                                          </div>
                                          <div class="card-footer" th:text="${questPost.postTime}">포스팅 시간</div>
                                      </div>
-
-                                     <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
+                                 <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
                                          <div class="card-header">
-                                             <a href="#about" th:href="@{'/profile/' + ${member.getNickname()}}">
+                                             <a href="#about" th:href="@{'/profile/' + ${questPost.writer.nickname}}">
                                               <span>
                                                   <img th:if="${#strings.isEmpty(questPost.writer.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
                                                   <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}" th:src="${questPost.writer.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
@@ -112,13 +111,37 @@
                                          </div>
                                          <div class="card-footer" th:text="${questPost.postTime}">포스팅 시간</div>
                                      </div>
-
                              </div>
                              <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                 Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia.
-                                 Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia
-                                 distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam
-                                 voluptatum dicta.
+                                 <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-primary mt-3 mb-3">
+                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post'}" class="btn-quest-view-a">인증하기</a>
+                                 </button>
+                                 <div class="card" sec:authorize="isAuthenticated()" th:each="authpost: ${authPostList}">
+                                     <div class="card-header">
+                                         <a href="#about" th:href="@{'/profile/' + ${authpost.writer.nickname}}">
+                                              <span>
+                                                  <img th:if="${#strings.isEmpty(authpost.writer.profileImage)}"
+                                                       src="/assets/img/logo.png" alt="Profile" class="rounded-circle"
+                                                       style="width: 30px; height: 30px">
+                                                  <img th:if="${!#strings.isEmpty(authpost.writer.profileImage)}"
+                                                       th:src="${authpost.writer.profileImage}" alt="Profile"
+                                                       class="rounded-circle" style="width: 30px; height: 30px">
+                                                  <span class="badge bg-primary"
+                                                        th:text="${authpost.writer.nickname}"></span>
+                                              </span>
+                                         </a>
+                                     </div>
+                                     <div class="card-body">
+                                         <h5 class="card-title" th:text="${authpost.title}">타이틀</h5>
+                                         <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post/' + ${authpost.id}}">
+                                             <img th:if="${!#strings.isEmpty(authpost.postImage)}"
+                                                  th:src="${authpost.postImage}" alt="Profile"
+                                                  style="width: 100px; height: 100px">
+                                             <p th:text="${authpost.content}">컨텐트</p>
+                                         </a>
+                                     </div>
+                                     <div class="card-footer" th:text="${authpost.postTime}">포스팅 시간</div>
+                                 </div>
                              </div>
                              <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="contact-tab">
                                  Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque.

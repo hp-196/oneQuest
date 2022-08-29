@@ -164,19 +164,4 @@ public class QuestService {
         questCommentRepository.delete(questComment);
     }
 
-    /**
-     * 퀘스트 인증 포스팅
-     */
-    public AuthPost AuthPost(AuthPostDto authPostDto, Quest quest, Member member) {
-        AuthPost authPost = AuthPost.builder()
-                .title(authPostDto.getTitle())
-                .content(authPostDto.getContent())
-                .postTime(LocalDateTime.now())
-                .postImage(authPostDto.getPostImage())
-                .writer(member)
-                .quest(quest)
-                .build();
-        AuthPost newAuthPost = authPostRepository.save(authPost);
-        return newAuthPost;
-    }
 }

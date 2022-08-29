@@ -21,9 +21,7 @@
         </h1>
 
     </div>
-    <button sec:authorize="isAuthenticated()"
-            th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}"
-            class="btn-get-started scrollto" role="group">
+    <button sec:authorize="isAuthenticated()" th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
         <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/update'}">포스트 수정</a>
     </button>
 

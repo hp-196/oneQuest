@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+<main id="main" class="main">
+
+    <button sec:authorize="isAuthenticated()" th:if="${authPost.writer.nickname == member.nickname}" class="btn btn-primary">
+        <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post/' + ${authPost.getId()} +'/update'}" class="btn-quest-view-a">인증 수정</a>
+    </button>
+
+    <form th:action="@{'/quest/' + ${quest.questUrl} + '/auth/post/' + ${authPost.getId()} + '/delete'}" th:method="delete">
+        <button sec:authorize="isAuthenticated()" th:if="${authPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}"
+                class="btn btn-warning" type="submit">인증 삭제
+        </button>
+    </form>
+
+
+
+    <p th:text="${authPost.title}"></p>
+    <p th:text="${authPost.writer.nickname}"></p>
+    <p th:text="${authPost.content}"></p>
+    <p th:text="${authPost.postTime}"></p>
+    <img th:if="${!#strings.isEmpty(authPost.postImage)}" th:src="${authPost.postImage}" alt="Profile" style="width: 100px; height: 100px">
+</main>
+
+</body>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

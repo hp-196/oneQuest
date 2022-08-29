@@ -2,10 +2,12 @@ package com.oneqst.quest.controller;
 
 import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
+import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestComment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
+import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.QuestCommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
@@ -33,6 +35,7 @@ public class QuestController {
     private final QuestService questService;
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
+    private final AuthPostRepository authPostRepository;
 
     /**
      * 퀘스트 생성 페이지
@@ -65,10 +68,11 @@ public class QuestController {
     public String questView(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
         List<QuestPost> questPostList = questPostRepository.findByQuest(quest);
+        List<AuthPost> authPostList = authPostRepository.findByQuest(quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute("questPostList", questPostList);
-        log.info(member.getPostList().toString());
+        model.addAttribute("authPostList", authPostList);
 
         return "quest/view";
 
@@ -154,7 +158,6 @@ public class QuestController {
         Quest quest = questRepository.findByQuestUrl(url);
         if (errors.hasErrors()) {
             log.info(String.valueOf(errors));
-            log.info("퀘스트 포스팅 실패");
             return "quest/quest-posting";
         }
         QuestPost questPost = questService.questPost(questPostDto, quest, member);
@@ -199,15 +202,12 @@ public class QuestController {
                                      @Valid QuestPostUpdateDto questPostUpdateDto, Errors errors) {
         QuestPost questPost = questPostRepository.getOne(id);
         if (errors.hasErrors()) {
-            log.info("퀘스트 포스트 수정 매개변수 에러");
             return "redirect:/quest/" + url + "/post/" + id;
         }
-        log.info(questPost.getWriter().getNickname());
         if (questPost.getWriter().getNickname().equals(member.getNickname())) {
             questService.updateQuestPost(questPost, questPostUpdateDto);
             return "redirect:/quest/" + url + "/post/" + id;
         }
-        log.info("퀘스트 포스트 수정 에러");
         return "redirect:/quest/" + url + "/post/" + id;
     }
 
@@ -219,8 +219,6 @@ public class QuestController {
         QuestPost questPost = questPostRepository.getOne(id);
         questService.deleteQuestPost(questPost);
         //member.deletePost(questPost);
-        log.info("포스트 삭제 성공");
-        log.info(member.getPostList().toString());
         return "redirect:/quest/" + url;
     }
 
@@ -247,7 +245,6 @@ public class QuestController {
                                    @Valid QuestPostDto questPostDto, Errors errors) {
         Quest quest = questRepository.findByQuestUrl(url);
         if (errors.hasErrors()) {
-            log.info(String.valueOf(errors));
             log.info("퀘스트 포스팅 실패");
             return "quest/quest-posting";
         }
