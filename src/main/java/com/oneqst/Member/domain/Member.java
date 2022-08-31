@@ -1,6 +1,6 @@
 package com.oneqst.Member.domain;
 
-import com.oneqst.quest.domain.QuestComment;
+import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import lombok.*;
 
@@ -52,11 +52,11 @@ public class Member {
 
     private boolean webAlarm; //웹 알람 여부
 
-    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "writer")
     private List<QuestPost> postList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "writer")
-    private List<QuestComment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    private List<Comment> commentList = new ArrayList<>();
 
 
     /*********************** 연관관계 편의 메소드 **********************/
@@ -64,12 +64,12 @@ public class Member {
         this.postList.add(questPost);
     }
 
-    public void removeComment(QuestComment questComment) {
-        this.commentList.remove(questComment);
+    public void removeComment(Comment comment) {
+        this.commentList.remove(comment);
     }
 
-    public void addCommentList(QuestComment questComment) {
-        this.commentList.add(questComment);
+    public void addCommentList(Comment comment) {
+        this.commentList.add(comment);
     }
 
     public void EmailTokenCreate() {

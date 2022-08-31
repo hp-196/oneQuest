@@ -4,7 +4,6 @@ import com.oneqst.Member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,16 +39,16 @@ public class QuestPost {
     private String postImage; //포스팅 이미지
 
     @OneToMany(mappedBy = "post")
-    private List<QuestComment> questCommentList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
 
     /*********************** 연관관계 편의 메소드 **********************/
 
-    public void addCommentList(QuestComment questComment) {
-        this.questCommentList.add(questComment);
+    public void addCommentList(Comment comment) {
+        this.commentList.add(comment);
     }
 
-    public void removeComment(QuestComment questComment) {
-        this.questCommentList.remove(questComment);
+    public void removeComment(Comment comment) {
+        this.commentList.remove(comment);
     }
 }

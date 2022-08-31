@@ -5,8 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -14,15 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestComment {
+public class Comment {
 
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member writer; //댓글 작성자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private QuestPost post; //포스트
 
     private String content; //댓글 내용

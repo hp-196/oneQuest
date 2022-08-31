@@ -7,34 +7,72 @@
 <div th:replace="fragments.html :: sidebar"></div>
 
 
-<div class="container">
+<main id="main" class="main">
 
-    <div class="py-5 text-center" sec:authorize="isAuthenticated()">
-        <h1>
-            <h1 th:text="${member.nickname}"></h1>
-            <h1 th:text="${quest.questTitle}"></h1>
-            <h1 th:text="${questPost.title}"></h1>
-            <h1 th:text="${questPost.writer.nickname}"></h1>
-            <h1 th:text="${questPost.content}"></h1>
-            <h1 th:text="${questPost.postTime}"></h1>
 
-        </h1>
-
+    <div class="card mb-2">
+        <div sec:authorize="isAuthenticated()">
+            <h1>
+                <h1 th:text="${member.nickname}"></h1>
+                <h1 th:text="${quest.questTitle}"></h1>
+                <h1 th:text="${questPost.title}"></h1>
+                <h1 th:text="${questPost.writer.nickname}"></h1>
+                <h1 th:text="${questPost.content}"></h1>
+                <h1 th:text="${questPost.postTime}"></h1>
+            </h1>
+        </div>
     </div>
-    <button sec:authorize="isAuthenticated()" th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" role="group">
-        <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/update'}">포스트 수정</a>
-    </button>
-
 
 
     <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}" th:method="delete">
         <button sec:authorize="isAuthenticated()"
                 th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}"
-                class="btn btn-primary" type="submit" aria-describedby="submitHelp">포스트 삭제</button>
+                class="btn btn-primary" type="submit">포스트 삭제
+        </button>
     </form>
+    <button sec:authorize="isAuthenticated()"
+            th:if="${questPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}"
+            class="btn btn-primary">
+        <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/update'}" class="btn-quest-view-a">포스트
+            수정</a>
+    </button>
+
+    <div class="card mb-2 mt-2" th:each="comment: ${commentList}">
+        <p th:text="${comment.content}"></p>
+        <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/comment/delete/' + ${comment.id}}" th:method="delete">
+            <button sec:authorize="isAuthenticated()"
+                    class="btn btn-primary" type="submit">댓글 삭제
+            </button>
+        </form>
+    </div>
+
+    <div class="card mb-2 mt-2">
+        <div class="card-header bg-light">댓글</div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="form-inline mb-2">
+                            <span>
+                                <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle profile-image">
+                                <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle profile-image">
+                                <span class="badge bg-primary" th:text="${member.nickname}"></span>
+                            </span>
+                    </div>
+                    <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/comment'}"
+                          th:object="${commentDto}" method="post">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" th:field="*{content}"></textarea>
+                        <button type="submit" class="btn btn-primary mt-3">작성</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
 
 
-</div>
+
+</main>
+
+
 
 
 </body>

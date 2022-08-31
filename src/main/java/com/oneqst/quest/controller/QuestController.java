@@ -4,13 +4,13 @@ import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.domain.QuestComment;
+import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
 import com.oneqst.quest.repository.AuthPostRepository;
-import com.oneqst.quest.repository.QuestCommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
+import com.oneqst.quest.service.CommentService;
 import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -33,6 +31,7 @@ import java.util.Optional;
 public class QuestController {
 
     private final QuestService questService;
+    private final CommentService commentService;
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
     private final AuthPostRepository authPostRepository;
@@ -95,8 +94,7 @@ public class QuestController {
     }
 
     /**
-     * 퀘스트 수정
-     * th:action="@{update}" 만해도 되는데 왜이러는지 모르겠음
+     * 퀘스트 수정 POST
      */
     @PostMapping("/quest/{url}/update")
     public String questUpdatePost(@CurrentUser Member member, @PathVariable String url, @Valid QuestUpdateDto questUpdateDto, Errors errors, Model model) {
@@ -170,11 +168,12 @@ public class QuestController {
     @GetMapping("/quest/{url}/post/{id}")
     public String getQuestPost(@CurrentUser Member member, @PathVariable String url,
                                @PathVariable Long id, Model model) {
-        QuestPost questPost = questPostRepository.getOne(id);
-        List<QuestComment> commentList = questService.findCommentAll(questPost, id);
+        QuestPost questPost = questPostRepository.getById(id);
+        List<Comment> commentList = commentService.findCommentAll(id);
         model.addAttribute(member);
         model.addAttribute(questRepository.findByQuestUrl(url));
         model.addAttribute(questPost);
+        model.addAttribute(new CommentDto());
         model.addAttribute("commentList", commentList);
         return "quest/post-view";
     }
@@ -195,7 +194,7 @@ public class QuestController {
     }
 
     /**
-     * 퀘스트 포스팅 수정
+     * 퀘스트 포스팅 수정 POST
      */
     @PostMapping("/quest/{url}/post/{id}/update")
     public String updateQuestPosting(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id,
@@ -238,7 +237,7 @@ public class QuestController {
     }
 
     /**
-     * 퀘스트 공지사항 포스팅
+     * 퀘스트 공지사항 포스팅 POST
      */
     @PostMapping("/quest/{url}/post/notice")
     public String questNoticePost(@CurrentUser Member member, @PathVariable String url,
