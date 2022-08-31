@@ -9,7 +9,6 @@
 
 <main id="main" class="main">
 
-
     <div class="card mb-2">
         <div sec:authorize="isAuthenticated()">
             <h1>
@@ -18,7 +17,7 @@
                 <h1 th:text="${questPost.title}"></h1>
                 <h1 th:text="${questPost.writer.nickname}"></h1>
                 <h1 th:text="${questPost.content}"></h1>
-                <h1 th:text="${questPost.postTime}"></h1>
+                <h1 class="time" th:text="${questPost.postTime}"></h1>
             </h1>
         </div>
     </div>
@@ -37,17 +36,29 @@
             수정</a>
     </button>
 
-    <div class="card mb-2 mt-2" th:each="comment: ${commentList}">
-        <p th:text="${comment.content}"></p>
-        <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/comment/delete/' + ${comment.id}}" th:method="delete">
-            <button sec:authorize="isAuthenticated()"
-                    class="btn btn-primary" type="submit">댓글 삭제
-            </button>
-        </form>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">댓글창</h5>
+            <table class="table table-hover">
+                <tbody>
+                <tr th:each="comment: ${commentList}">
+                    <td th:text="${comment.writer.nickname}">닉네임</td>
+                    <td th:text="${comment.content}">내용</td>
+                    <td class="time" th:text="${comment.postTime}">댓글 작성 시간</td>
+                    <td>
+                        <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/comment/delete/' + ${comment.id}}" th:method="delete">
+                            <button th:if="${member.nickname == comment.writer.nickname}" class="bi bi-x btn-delete" type="submit"></button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="card mb-2 mt-2">
-        <div class="card-header bg-light">댓글</div>
+
+    <div class="card mb-2 mt-1">
+        <div class="card-header bg-light">댓글 작성</div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
@@ -60,8 +71,9 @@
                     </div>
                     <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/comment'}"
                           th:object="${commentDto}" method="post">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" th:field="*{content}"></textarea>
+                    <textarea class="form-control needs-validation" id="exampleFormControlTextarea1" rows="3" th:field="*{content}"></textarea>
                         <button type="submit" class="btn btn-primary mt-3">작성</button>
+                        <small class="invalid-feedback">댓글제한수임ㅋㅋ</small>
                     </form>
                 </li>
             </ul>
@@ -78,4 +90,20 @@
 </body>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        moment.locale('ko');
+        $(".time").text(function (index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('MMMM Do, h:mm');
+        });
+        $(".yearDateTime").text(function (index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('L h:mm');
+        });
+
+    })
+</script>
+
 </html>

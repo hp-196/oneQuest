@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -38,6 +39,7 @@ public class CommentService {
                 .content(commentDto.getContent())
                 .writer(member)
                 .post(questPost)
+                .postTime(LocalDateTime.now())
                 .build();
         member.addCommentList(comment);
         questPost.addCommentList(comment);
@@ -48,7 +50,8 @@ public class CommentService {
      * 댓글 삭제
      */
     public void deleteComment(Member member, QuestPost questPost, Comment comment) {
-
+        member.removeComment(comment);
+        questPost.removeComment(comment);
         commentRepository.delete(comment);
     }
 }

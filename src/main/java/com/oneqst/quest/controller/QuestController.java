@@ -175,6 +175,8 @@ public class QuestController {
         model.addAttribute(questPost);
         model.addAttribute(new CommentDto());
         model.addAttribute("commentList", commentList);
+        log.info(String.valueOf(member.getCommentList()));
+        log.info(String.valueOf(questPost.getCommentList()));
         return "quest/post-view";
     }
 

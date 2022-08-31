@@ -2,8 +2,10 @@ package com.oneqst.quest.domain;
 
 import com.oneqst.Member.domain.Member;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,6 +25,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     private QuestPost post; //포스트
 
+    @NotBlank
     private String content; //댓글 내용
 
     private LocalDateTime postTime; //댓글 쓴 시간
