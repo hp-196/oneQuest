@@ -51,6 +51,7 @@ public class Quest {
     @OneToMany(mappedBy = "quest")
     private List<QuestPost> questPostList = new ArrayList<>();
 
+
     /*********************** 연관관계 편의 메소드 **********************/
 
     public void addPost(QuestPost questPost) {

@@ -13,4 +13,6 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
     Quest findByQuestUrl(String url);
 
     List<Quest> findByQuestMemberContaining(Member member);
+
+    List<Quest> findByQuestMemberNotContaining(Member member);
 }

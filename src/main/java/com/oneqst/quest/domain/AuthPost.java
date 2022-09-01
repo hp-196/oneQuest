@@ -38,6 +38,9 @@ public class AuthPost {
 
     private boolean confirm; //검증 여부
 
+    @OneToOne(mappedBy = "authPost")
+    private Score score; //점수
+
     @OneToMany(mappedBy = "authPost")
     private List<Comment> commentList = new ArrayList<>();
 }

@@ -30,7 +30,6 @@
 
 
         <div class="row portfolio-container">
-
           <div sec:authorize="isAuthenticated()" th:each="quest: ${questList}" class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
             <div class="portfolio-wrap">
               <figure>
@@ -46,8 +45,35 @@
               </div>
             </div>
           </div>
-
         </div>
+
+          <div th:if="${!#strings.isEmpty(questList)}" class="section-title mt-5 mb-5">
+              <h2>이런 퀘스트는 어떠세요?</h2>
+              <p>아래의 카드를 눌러 이동해보세요</p>
+          </div>
+
+          <div th:if="${!#strings.isEmpty(questList)}" class="row portfolio-container">
+              <div sec:authorize="isAuthenticated()" th:each="quest: ${notQuestList}"
+                   class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
+                  <div class="portfolio-wrap">
+                      <figure>
+                          <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
+                          <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
+                               alt="Profile">
+                          <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
+                             class="link-preview portfolio-lightbox" data-gallery="portfolioGallery" title="Preview"><i
+                                  class="bx bx-plus"></i></a>
+                          <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                                  class="bx bx-link"></i></a>
+                      </figure>
+
+                      <div class="portfolio-info">
+                          <h4 th:text="${quest.questTitle}"></h4>
+                          <p th:text="${quest.questIntroduce}"></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
 
       </div>
     </section><!-- End Portfolio Section -->

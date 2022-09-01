@@ -12,8 +12,7 @@
         <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">
         <h3 class="text1" th:text="${quest.questTitle}"></h3>
         <h3 class="text2"><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h3>
-        <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버
-            초대</a>
+        <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버 초대</a>
         <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}"
            th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
     </div>
@@ -146,6 +145,9 @@
                                                   th:src="${authpost.postImage}" alt="Profile"
                                                   style="width: 100px; height: 100px">
                                              <p th:text="${authpost.content}">컨텐트</p>
+                                             <button class="btn btn-outline-success">
+                                                 <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/' + ${authpost.id} + '/score'}">인증완료</a>
+                                             </button>
                                          </a>
                                      </div>
                                      <div class="card-footer">
@@ -154,9 +156,63 @@
                                  </div>
                              </div>
                              <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="contact-tab">
-                                 Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque.
-                                 Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit
-                                 molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
+                                 <div class="card">
+                                     <div class="card-body">
+                                         <h5 class="card-title">나의 랭킹은?</h5>
+
+                                         <!-- Table with stripped rows -->
+                                         <table class="table table-striped">
+                                             <thead>
+                                             <tr>
+                                                 <th scope="col">#</th>
+                                                 <th scope="col">닉네임</th>
+                                                 <th scope="col">점수</th>
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             <tr>
+                                                 <th scope="row">1</th>
+                                                 <td>
+                                                     <span>
+                                                      <img src="/assets/img/노을.jpg" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                      <span class="badge bg-primary">차광욱</span>
+                                                     </span>
+                                                 </td>
+                                                 <td>15</td>
+                                             </tr>
+                                             <tr>
+                                                 <th scope="row">2</th>
+                                                 <td>
+                                                     <span>
+                                                      <img src="/assets/img/사진작가.jpg" alt="Profile" class="rounded-circle"
+                                                           style="width: 30px; height: 30px">
+                                                      <span class="badge bg-primary">hp196</span>
+                                                     </span>
+                                                 </td>
+                                                 <td>10</td>
+                                             </tr>
+                                             <tr>
+                                                 <th scope="row">3</th>
+                                                 <td>
+                                                     <span>
+                                                      <img src="/assets/img/인사.jpg" alt="Profile" class="rounded-circle"
+                                                           style="width: 30px; height: 30px">
+                                                      <span class="badge bg-primary">hello</span>
+                                                     </span>
+                                                 </td>
+                                                 <td>5</td>
+                                             </tr>
+
+                                             </tbody>
+                                         </table>
+                                         <!-- End Table with stripped rows -->
+
+                                     </div>
+                                 </div>
+                                 <div>
+                                     <p>나의 점수는?</p>
+                                     <p th:text="${score}"></p>
+                                 </div>
                              </div>
                          </div><!-- End Default Tabs -->
                      </div>

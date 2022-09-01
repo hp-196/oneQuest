@@ -46,7 +46,7 @@
                     </ul>
                 </div>
             </div>
-            <img th:if="${!#strings.isEmpty(authPost.postTime)}" th:src="${authPost.postImage}" class="post-image">
+            <img th:if="${!#strings.isEmpty(authPost.postImage)}" th:src="${authPost.postImage}" class="post-image">
             <p th:text="${authPost.content}"></p>
         </div>
         <div class="card-footer">

@@ -25,6 +25,7 @@ public class IndexController {
             return "login";
         }
         model.addAttribute("questList", questRepository.findByQuestMemberContaining(member));
+        model.addAttribute("notQuestList", questRepository.findByQuestMemberNotContaining(member));
         log.info(String.valueOf(model));
         return "index";
 

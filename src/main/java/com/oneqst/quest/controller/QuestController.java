@@ -2,14 +2,14 @@ package com.oneqst.quest.controller;
 
 import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
-import com.oneqst.quest.domain.AuthPost;
-import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.domain.Comment;
-import com.oneqst.quest.domain.QuestPost;
+import com.oneqst.Member.repository.MemberRepository;
+import com.oneqst.quest.domain.*;
 import com.oneqst.quest.dto.*;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
+import com.oneqst.quest.repository.ScoreRepository;
+import com.oneqst.quest.service.AuthService;
 import com.oneqst.quest.service.CommentService;
 import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +35,8 @@ public class QuestController {
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
     private final AuthPostRepository authPostRepository;
+    private final ScoreRepository scoreRepository;
+    private final AuthService authService;
 
     /**
      * 퀘스트 생성 페이지
@@ -68,10 +70,14 @@ public class QuestController {
         Quest quest = questRepository.findByQuestUrl(url);
         List<QuestPost> questPostList = questPostRepository.findByQuest(quest);
         List<AuthPost> authPostList = authPostRepository.findByQuest(quest);
+        List<Score> scoreList = scoreRepository.findByQuest(quest);
+        int score = authService.countScore(scoreList, member, 0);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute("questPostList", questPostList);
         model.addAttribute("authPostList", authPostList);
+        model.addAttribute("scoreList", scoreList);
+        model.addAttribute("score",score);
 
         return "quest/view";
 

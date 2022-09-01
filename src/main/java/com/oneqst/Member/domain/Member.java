@@ -1,7 +1,9 @@
 package com.oneqst.Member.domain;
 
 import com.oneqst.quest.domain.Comment;
+import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
+import com.oneqst.quest.domain.Score;
 import lombok.*;
 
 import javax.persistence.*;
@@ -58,6 +60,13 @@ public class Member {
     @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Score> scoreList = new ArrayList<>();
+
+    @ManyToMany
+    private List<Quest> questList = new ArrayList<>();
+
+
 
     /*********************** 연관관계 편의 메소드 **********************/
     public void addPost(QuestPost questPost) {
@@ -82,4 +91,5 @@ public class Member {
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
 }
