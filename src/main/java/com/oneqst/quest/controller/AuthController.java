@@ -77,7 +77,6 @@ public class AuthController {
         model.addAttribute(authPost);
         model.addAttribute(member);
         model.addAttribute(new CommentDto());
-        log.info(commentList.toString());
         return "quest/auth-view";
     }
 

@@ -46,7 +46,8 @@
                     </ul>
                 </div>
             </div>
-            <h th:text="${authPost.content}"></h>
+            <img th:if="${!#strings.isEmpty(authPost.postTime)}" th:src="${authPost.postImage}" class="post-image">
+            <p th:text="${authPost.content}"></p>
         </div>
         <div class="card-footer">
             <span>게시일:</span> <span class="yearDateTime" th:text="${authPost.postTime}"></span>

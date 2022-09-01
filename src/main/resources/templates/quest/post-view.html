@@ -39,7 +39,8 @@
                     </ul>
                 </div>
             </div>
-            <h th:text="${questPost.content}"></h>
+            <img th:if="${!#strings.isEmpty(questPost.postTime)}" th:src="${questPost.postImage}" class="post-image">
+            <p th:text="${questPost.content}"></p>
         </div>
         <div class="card-footer">
             <span>게시일:</span> <span class="yearDateTime" th:text="${questPost.postTime}"></span>
