@@ -23,7 +23,10 @@ public class Comment {
     private Member writer; //댓글 작성자
 
     @ManyToOne
-    private QuestPost post; //포스트
+    private QuestPost post; //커뮤니티 게시판포스트
+
+    @ManyToOne
+    private AuthPost authPost; //인증 게시판 포스트
 
     @NotBlank
     private String content; //댓글 내용

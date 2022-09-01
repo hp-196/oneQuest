@@ -3,13 +3,17 @@ package com.oneqst.quest.controller;
 import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.AuthPost;
+import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.AuthPostDto;
 import com.oneqst.quest.dto.AuthPostUpdateDto;
+import com.oneqst.quest.dto.CommentDto;
 import com.oneqst.quest.repository.AuthPostRepository;
+import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
 import com.oneqst.quest.service.AuthService;
+import com.oneqst.quest.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -30,6 +35,7 @@ public class AuthController {
     private final QuestRepository questRepository;
     private final AuthPostRepository authPostRepository;
     private final AuthService authService;
+    private final CommentService commentService;
 
     /**
      * 퀘스트 인증 포스팅 GET
@@ -54,8 +60,8 @@ public class AuthController {
     public String questAuthPost(@CurrentUser Member member, @PathVariable String url,
                                 @Valid AuthPostDto authPostDto) {
         Quest quest = questRepository.findByQuestUrl(url);
-        authService.AuthPost(authPostDto, quest, member);
-        return "redirect:/quest/" + url;
+        AuthPost authPost = authService.AuthPost(authPostDto, quest, member);
+        return "redirect:/quest/" + url + "/auth/post/" + authPost.getId();
     }
 
     /**
@@ -65,9 +71,13 @@ public class AuthController {
     public String getAuthPost(@CurrentUser Member member, @PathVariable String url,
                               @PathVariable Long id, Model model) {
         AuthPost authPost = authPostRepository.getOne(id);
+        List<Comment> commentList = commentService.findCommentAuth(authPost);
         model.addAttribute(questRepository.findByQuestUrl(url));
+        model.addAttribute("commentList", commentList);
         model.addAttribute(authPost);
         model.addAttribute(member);
+        model.addAttribute(new CommentDto());
+        log.info(commentList.toString());
         return "quest/auth-view";
     }
 
@@ -100,7 +110,7 @@ public class AuthController {
     /**
      * 퀘스트 인증 페이지 삭제
      */
-    @DeleteMapping("/quest/{url}/auth/post/{id}/delete")
+    @GetMapping("/quest/{url}/auth/post/{id}/delete")
     public String deleteAuthPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         AuthPost authPost = authPostRepository.getById(id);
         if (member.equals(authPost.getWriter())) {

@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -35,4 +37,7 @@ public class AuthPost {
     private String postImage; //포스팅 이미지
 
     private boolean confirm; //검증 여부
+
+    @OneToMany(mappedBy = "authPost")
+    private List<Comment> commentList = new ArrayList<>();
 }
