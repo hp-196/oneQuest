@@ -19,10 +19,10 @@ public class Comment {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Member writer; //댓글 작성자
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private QuestPost post; //포스트
 
     @NotBlank

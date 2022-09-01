@@ -76,8 +76,8 @@ public class QuestService {
         questPost.setQuest(quest);
         questPost.setPostTime(LocalDateTime.now());
         QuestPost newQuestPost = questPostRepository.save(questPost);
-        //quest.addPost(newQuestPost);
-        //member.addPost(newQuestPost);
+//        quest.addPost(newQuestPost);
+//        member.addPost(newQuestPost);
         return newQuestPost;
     }
 

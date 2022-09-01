@@ -215,11 +215,12 @@ public class QuestController {
     /**
      * 퀘스트 포스팅 삭제
      */
-    @DeleteMapping("/quest/{url}/post/{id}")
+//    @DeleteMapping("/quest/{url}/post/{id}")
+    @GetMapping("/quest/{url}/post/{id}/delete")
     public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
-        QuestPost questPost = questPostRepository.getOne(id);
+        QuestPost questPost = questPostRepository.getById(id);
         questService.deleteQuestPost(questPost);
-        //member.deletePost(questPost);
+//        member.removePost(questPost);
         return "redirect:/quest/" + url;
     }
 

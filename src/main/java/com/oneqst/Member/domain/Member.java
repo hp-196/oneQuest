@@ -64,6 +64,9 @@ public class Member {
         this.postList.add(questPost);
     }
 
+    public void removePost(QuestPost questPost) {
+        this.postList.remove(questPost);
+    }
     public void removeComment(Comment comment) {
         this.commentList.remove(comment);
     }
