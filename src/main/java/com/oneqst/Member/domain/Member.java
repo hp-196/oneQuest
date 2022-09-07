@@ -63,9 +63,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Score> scoreList = new ArrayList<>();
 
-    @ManyToMany
-    private List<Quest> questList = new ArrayList<>();
-
 
 
     /*********************** 연관관계 편의 메소드 **********************/
