@@ -1,9 +1,6 @@
 package com.oneqst.Member.domain;
 
-import com.oneqst.quest.domain.Comment;
-import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.domain.QuestPost;
-import com.oneqst.quest.domain.Score;
+import com.oneqst.quest.domain.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -63,8 +60,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Score> scoreList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "questMaster")
-    private List<Quest> questLIst = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<MemberQuest> memberQuestList = new ArrayList<>();
+
 
 
 

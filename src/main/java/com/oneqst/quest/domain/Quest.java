@@ -49,6 +49,9 @@ public class Quest {
     @OneToMany(mappedBy = "quest")
     private List<QuestPost> questPostList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "quest")
+    private List<MemberQuest> memberQuestList = new ArrayList<>();
+
 
     /*********************** 연관관계 편의 메소드 **********************/
 
@@ -62,6 +65,8 @@ public class Quest {
     public boolean isMaster(Member member) {
         return this.questMaster.equals(member.getNickname());
     }
+
+
 
 //    public void addQuestMember(Member member) {
 //        this.questMember.add(member);

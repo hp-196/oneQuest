@@ -78,6 +78,7 @@ public class QuestController {
         model.addAttribute("authPostList", authPostList);
         model.addAttribute("scoreList", scoreList);
         model.addAttribute("score",score);
+        log.info(String.valueOf(quest.getMemberList()));
 
         return "quest/view";
 
