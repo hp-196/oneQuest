@@ -29,7 +29,7 @@
             <div class="card-title">
                 <span class="size-font" th:text="${authPost.title}"></span>
                 <div class="dropdown float-right" sec:authorize="isAuthenticated()"
-                     th:if="${authPost.writer.nickname == member.nickname && quest.isMember(#authentication.principal)}">
+                     th:if="${authPost.writer.nickname == member.nickname}">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                        data-bs-toggle="dropdown" aria-expanded="false"></a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

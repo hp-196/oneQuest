@@ -24,10 +24,8 @@ public class Quest {
     @GeneratedValue
     private Long id;
 
-    private String questMaster; //퀘스트 마스터
-
-    @ManyToMany
-    private Set<Member> questMember = new HashSet<>(); //퀘스트 맴버
+    @ManyToOne
+    private Member questMaster; //퀘스트 맴버
 
     private String questTitle; //퀘스트 제목
 
@@ -60,25 +58,24 @@ public class Quest {
     public void deletePost(QuestPost questPost) {
         this.questPostList.remove(questPost);
     }
-    public void addQuestMember(Member member) {
-        this.questMember.add(member);
-    }
-
-    public void questWithdraw(Member member) {
-        this.getQuestMember().remove(member);
-    }
-
 
     public boolean isMaster(Member member) {
         return this.questMaster.equals(member.getNickname());
     }
 
-    public boolean isMember(MemberInfo memberInfo) {
-        return this.questMember.contains(memberInfo.getMember());
-    }
-
-    public boolean isJoinable(MemberInfo memberInfo) {
-        Member member = memberInfo.getMember();
-        return !this.questMember.contains(member);
-    }
+//    public void addQuestMember(Member member) {
+//        this.questMember.add(member);
+//    }
+//
+//    public void questWithdraw(Member member) {
+//        this.getQuestMember().remove(member);
+//    }
+//    public boolean isMember(MemberInfo memberInfo) {
+//        return this.questMember.contains(memberInfo.getMember());
+//    }
+//
+//    public boolean isJoinable(MemberInfo memberInfo) {
+//        Member member = memberInfo.getMember();
+//        return !this.questMember.contains(member);
+//    }
 }

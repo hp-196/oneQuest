@@ -12,8 +12,8 @@
         <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">
         <h3 class="text1" th:text="${quest.questTitle}"></h3>
         <h3 class="text2"><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h3>
-        <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버 초대</a>
-        <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}"
+        <a href="#about"  class="btn-get-started scrollto">멤버 초대</a>
+        <a href="#about"
            th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
     </div>
 
@@ -22,21 +22,21 @@
          <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
             <div class="card-body">
               <h5 class="card-title">회원목록</h5>
-                <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}">
-              <span>
-                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                  <span class="badge bg-primary" th:text="${member.nickname}"></span>
-              </span>
-                </a>
+<!--                <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}">-->
+<!--              <span>-->
+<!--                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">-->
+<!--                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">-->
+<!--                  <span class="badge bg-primary" th:text="${member.nickname}"></span>-->
+<!--              </span>-->
+<!--                </a>-->
             </div>
          </div>
 
-         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn btn-primary">
+         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname}" class="btn btn-primary">
              <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
          </button>
 
-         <button  sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-danger">
+         <button  sec:authorize="isAuthenticated()"  class="btn btn-danger">
              <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
          </button>
 
@@ -68,7 +68,7 @@
                          <div class="tab-content pt-2" id="myTabjustifiedContent">
                              <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
                                  <button sec:authorize="isAuthenticated()"
-                                         th:if="${quest.isMember(#authentication.principal)}"
+
                                          class="btn btn-primary mt-3 mb-3">
                                      <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}" class="btn-quest-view-a">포스팅하기</a>
                                  </button>
@@ -120,7 +120,7 @@
                                      </div>
                              </div>
                              <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                 <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-primary mt-3 mb-3">
+                                 <button sec:authorize="isAuthenticated()"  class="btn btn-primary mt-3 mb-3">
                                      <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post'}" class="btn-quest-view-a">인증하기</a>
                                  </button>
                                  <div class="card" sec:authorize="isAuthenticated()" th:each="authpost: ${authPostList}">

@@ -40,12 +40,10 @@ public class QuestService {
                 .questStartTime(questDto.getQuestStartTime())
                 .questEndTime(questDto.getQuestEndTime())
                 .questUrl(questDto.getQuestUrl())
-                .questMaster(member.getNickname())
+                .questMaster(member)
                 .questImage(questDto.getQuestImage())
-                .questMember(new HashSet<>())
                 .build();
         Quest newQuest = questRepository.save(quest);
-        newQuest.addQuestMember(member);
         return newQuest;
     }
 
@@ -76,8 +74,6 @@ public class QuestService {
         questPost.setQuest(quest);
         questPost.setPostTime(LocalDateTime.now());
         QuestPost newQuestPost = questPostRepository.save(questPost);
-//        quest.addPost(newQuestPost);
-//        member.addPost(newQuestPost);
         return newQuestPost;
     }
 
@@ -114,19 +110,7 @@ public class QuestService {
         questPostRepository.delete(questPost);
     }
 
-    /**
-     * 퀘스트 멤버 추가
-     */
-    public void addQuestMember(Quest quest, Member member) {
-        quest.addQuestMember(member);
-    }
 
-    /**
-     * 퀘스트 탈퇴
-     */
-    public void questWithdraw(Quest quest, Member member) {
-        quest.questWithdraw(member);
-    }
 
 
 

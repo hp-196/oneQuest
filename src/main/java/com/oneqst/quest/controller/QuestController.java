@@ -124,7 +124,7 @@ public class QuestController {
         Quest quest = questRepository.findByQuestUrl(url);
         model.addAttribute(member);
         model.addAttribute(quest);
-        questService.addQuestMember(quest, member);
+//        questService.addQuestMember(quest, member);
         return "redirect:/quest/" + quest.getQuestUrl();
     }
 
@@ -134,7 +134,7 @@ public class QuestController {
     @GetMapping("/quest/{url}/withdraw")
     public String questWithdraw(@CurrentUser Member member, @PathVariable String url) {
         Quest quest = questRepository.findByQuestUrl(url);
-        questService.questWithdraw(quest, member);
+//        questService.questWithdraw(quest, member);
         return "redirect:/quest/" + quest.getQuestUrl();
     }
 
