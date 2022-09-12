@@ -24,7 +24,7 @@ public class IndexController {
             log.info("멤버가 없어서 로그인페이지 리다이렉트");
             return "login";
         }
-        model.addAttribute("questList", questRepository.findByQuestMaster(member));
+        model.addAttribute("questList", questRepository.findByMemberListContaining(member));
         log.info(String.valueOf(model));
         return "index";
 

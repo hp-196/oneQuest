@@ -1,6 +1,7 @@
 package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
@@ -29,6 +30,7 @@ public class QuestService {
     private final QuestPostRepository questPostRepository;
     private final CommentRepository questCommentRepository;
     private final AuthPostRepository authPostRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 퀘스트 생성
@@ -41,11 +43,13 @@ public class QuestService {
                 .questStartTime(questDto.getQuestStartTime())
                 .questEndTime(questDto.getQuestEndTime())
                 .questUrl(questDto.getQuestUrl())
-                .questMaster(member)
+                .memberList(new ArrayList<>())
                 .questImage(questDto.getQuestImage())
                 .build();
         Quest newQuest = questRepository.save(quest);
-
+        member.setQuest(newQuest);
+        memberRepository.save(member);
+        newQuest.getMemberList().add(member);
         return newQuest;
     }
 

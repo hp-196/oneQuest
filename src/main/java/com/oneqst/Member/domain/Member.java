@@ -60,8 +60,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Score> scoreList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberQuest> memberQuestList = new ArrayList<>();
+    @ManyToOne
+    private Quest quest;
 
 
 

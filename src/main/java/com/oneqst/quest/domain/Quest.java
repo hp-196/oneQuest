@@ -24,8 +24,8 @@ public class Quest {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private Member questMaster; //퀘스트 맴버
+    @OneToMany(mappedBy = "quest")
+    private List<Member> memberList = new ArrayList<>();
 
     private String questTitle; //퀘스트 제목
 
@@ -49,8 +49,7 @@ public class Quest {
     @OneToMany(mappedBy = "quest")
     private List<QuestPost> questPostList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "quest")
-    private List<MemberQuest> memberQuestList = new ArrayList<>();
+
 
 
     /*********************** 연관관계 편의 메소드 **********************/
@@ -62,9 +61,9 @@ public class Quest {
         this.questPostList.remove(questPost);
     }
 
-    public boolean isMaster(Member member) {
-        return this.questMaster.equals(member.getNickname());
-    }
+//    public boolean isMaster(Member member) {
+//        return this.questMaster.equals(member.getNickname());
+//    }
 
 
 

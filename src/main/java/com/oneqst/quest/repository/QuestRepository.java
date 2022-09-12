@@ -12,6 +12,8 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
 
     Quest findByQuestUrl(String url);
 
-    List<Quest> findByQuestMaster(Member member);
+//    List<Quest> findByQuestMaster(Member member);
+
+    List<Quest> findByMemberListContaining(Member member);
 
 }
