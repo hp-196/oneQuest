@@ -10,8 +10,9 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface QuestRepository extends JpaRepository<Quest, Long>, QuestRepositoryCustom {
+    Quest findByQuestUrl(String url);
 
-    List<Quest> findByQuestMemberContaining(Member member);
+    List<Quest> findByQuestMemberEquals(Member member);
 
     List<Quest> findByQuestMemberEqualsAndQuestTitleIsContaining(Member member, String str);
 }
