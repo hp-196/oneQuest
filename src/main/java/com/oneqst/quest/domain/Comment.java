@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id @GeneratedValue
+    @Column(name = "comment_id")
     private Long id;
 
     @ManyToOne

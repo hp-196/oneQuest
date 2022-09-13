@@ -16,6 +16,7 @@ public class Score {
 
     @Id
     @GeneratedValue
+    @Column(name = "score_id")
     private Long id;
 
     private int score;

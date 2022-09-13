@@ -30,4 +30,12 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
                         member.nickname.eq(nickname))
                 .fetch();
     }
+
+    // 수정필요
+    @Override
+    public List<Quest> total_search(Long member_id) {
+        return queryFactory
+                .selectFrom(quest)
+                .fetch();
+    }
 }
