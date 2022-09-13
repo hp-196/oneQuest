@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -22,9 +23,9 @@ public class QuestUpdateDto {
 
     private String questExplain; //퀘스트 긴 설명
 
-    private String questStartTime; //퀘스트 시작 시간
+    private LocalDateTime questStartTime; //퀘스트 시작 시간
 
-    private String questEndTime; //퀘스트 종료 시간
+    private LocalDateTime questEndTime; //퀘스트 종료 시간
 
     @Length(min = 2, max = 50)
     private String questUrl; //퀘스트 주소

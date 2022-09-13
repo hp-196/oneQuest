@@ -6,7 +6,6 @@
     <div th:replace="fragments.html :: nav"></div>
     <div th:replace="fragments.html :: sidebar"></div>
 
-
     <div class="hero">
         <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
         <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">

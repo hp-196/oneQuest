@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Data
 public class QuestDto {
@@ -23,9 +24,9 @@ public class QuestDto {
     @NotBlank
     private String questExplain; //퀘스트 긴 설명
 
-    private String questStartTime;
+    private LocalDateTime questStartTime;
 
-    private String questEndTime;
+    private LocalDateTime questEndTime;
 
     private String questImage; //퀘스트 대표 이미지
 

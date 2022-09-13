@@ -43,9 +43,9 @@ public class Quest {
     @Basic(fetch = FetchType.LAZY)
     private String questImage; //퀘스트 소개 이미지
 
-    private String questStartTime; //퀘스트 시작 시간
+    private LocalDateTime questStartTime; //퀘스트 시작 시간
 
-    private String questEndTime; //퀘스트 마감 시간
+    private LocalDateTime questEndTime; //퀘스트 마감 시간
 
     private boolean questRecruitEnd; //멤버 모집 여부
 
@@ -55,9 +55,6 @@ public class Quest {
 
     /*********************** 연관관계 편의 메소드 **********************/
 
-    public void addPost(QuestPost questPost) {
-        this.questPostList.add(questPost);
-    }
     public void deletePost(QuestPost questPost) {
         this.questPostList.remove(questPost);
     }
