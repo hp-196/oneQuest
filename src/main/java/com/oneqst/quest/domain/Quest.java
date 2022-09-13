@@ -77,7 +77,7 @@ public class Quest {
 
 
     public boolean isMaster(Member member) {
-        return this.questMaster.equals(member.getNickname());
+        return this.questMaster.contains(member);
     }
 
     public boolean isMember(MemberInfo memberInfo) {

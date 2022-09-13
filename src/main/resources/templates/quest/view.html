@@ -42,7 +42,7 @@
             </div>
          </div>
 
-         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn btn-primary">
+         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member)}" class="btn btn-primary">
              <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
          </button>
 
