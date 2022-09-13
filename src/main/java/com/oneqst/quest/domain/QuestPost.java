@@ -38,7 +38,7 @@ public class QuestPost {
     @Basic(fetch = FetchType.LAZY)
     private String postImage; //포스팅 이미지
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
 
