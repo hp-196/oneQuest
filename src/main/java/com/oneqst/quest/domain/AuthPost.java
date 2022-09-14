@@ -18,7 +18,6 @@ import java.util.List;
 public class AuthPost {
 
     @Id @GeneratedValue
-    @Column(name = "AuthPost_id")
     private Long id;
 
     private String title; //포스트 제목

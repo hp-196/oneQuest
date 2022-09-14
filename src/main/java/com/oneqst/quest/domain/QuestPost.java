@@ -18,7 +18,6 @@ import java.util.List;
 public class QuestPost {
     
     @Id @GeneratedValue
-    @Column(name = "QuestPost_id")
     private Long id;
     
     private String title; //포스트 제목

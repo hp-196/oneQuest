@@ -2,6 +2,7 @@ package com.oneqst.quest.controller;
 
 import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.*;
 import com.oneqst.quest.dto.*;
 import com.oneqst.quest.repository.AuthPostRepository;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +57,8 @@ public class QuestController {
             log.info(String.valueOf(errors));
             return "new-quest";
         }
-        Quest newQuest = questService.newQuest(questDto, member);
+        Member newMember = member;
+        Quest newQuest = questService.newQuest(questDto, newMember);
         return "redirect:/quest/" + newQuest.getQuestUrl();
     }
 

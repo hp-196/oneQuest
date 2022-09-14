@@ -10,7 +10,8 @@ import java.util.List;
 
 @Transactional
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByPost(QuestPost questPost);
 
+    List<Comment> findByPost(QuestPost questPost);
     List<Comment> findByAuthPost(AuthPost authPost);
+
 }

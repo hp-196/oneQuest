@@ -9,6 +9,8 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
+
     boolean existsByEmail(String email);
 
     boolean existsByNickname(String nickname);
@@ -16,4 +18,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByEmail(String email);
 
     Member findByNickname(String nickname);
+
+
+
 }
