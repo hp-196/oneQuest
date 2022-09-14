@@ -6,14 +6,13 @@
     <div th:replace="fragments.html :: nav"></div>
     <div th:replace="fragments.html :: sidebar"></div>
 
-
     <div class="hero">
         <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
         <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">
         <h3 class="text1" th:text="${quest.questTitle}"></h3>
         <h3 class="text2"><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h3>
-        <a href="#about" th:if="${!quest.isJoinable(#authentication.principal)}" class="btn-get-started scrollto">멤버 초대</a>
-        <a href="#about" th:if="${quest.isJoinable(#authentication.principal)}"
+        <a href="#about" th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto">멤버 초대</a>
+        <a href="#about" th:if="${!quest.isMember(#authentication.principal)}"
            th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
     </div>
 
@@ -22,7 +21,17 @@
          <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
             <div class="card-body">
               <h5 class="card-title">회원목록</h5>
-                <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}">
+                <span>관리자 : </span>
+                <a href="#about" th:each="member: ${quest.questMaster}" th:href="@{'/profile/' + ${member.getNickname()}}">
+              <span>
+                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                  <span class="badge bg-success" th:text="${member.nickname}"></span>
+              </span>
+                </a>
+                <p></p>
+                <span>회원 : </span>
+                <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}" th:if="${!quest.questMaster.contains(member)}">
               <span>
                   <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
                   <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
@@ -32,7 +41,7 @@
             </div>
          </div>
 
-         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}" class="btn btn-primary">
+         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member)}" class="btn btn-primary">
              <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
          </button>
 

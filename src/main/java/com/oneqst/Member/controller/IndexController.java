@@ -27,7 +27,6 @@ public class IndexController {
             log.info("멤버가 없어서 로그인페이지 리다이렉트");
             return "login";
         }
-        List<Quest> quests = questRepository.total_quests();
         model.addAttribute("questList", questRepository.my_quests(member.getId()));
         model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
         log.info(String.valueOf(model));

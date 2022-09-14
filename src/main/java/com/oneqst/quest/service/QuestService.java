@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -26,8 +27,6 @@ public class QuestService {
 
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
-    private final CommentRepository questCommentRepository;
-    private final AuthPostRepository authPostRepository;
 
     /**
      * 퀘스트 생성
@@ -40,11 +39,12 @@ public class QuestService {
                 .questStartTime(questDto.getQuestStartTime())
                 .questEndTime(questDto.getQuestEndTime())
                 .questUrl(questDto.getQuestUrl())
-                .questMaster(member.getNickname())
                 .questImage(questDto.getQuestImage())
-                .questMember(new HashSet<>())
+                .questMember(new ArrayList<>())
+                .questMaster(new ArrayList<>())
                 .build();
         Quest newQuest = questRepository.save(quest);
+        newQuest.addQuestMaster(member);
         newQuest.addQuestMember(member);
         return newQuest;
     }
@@ -76,8 +76,6 @@ public class QuestService {
         questPost.setQuest(quest);
         questPost.setPostTime(LocalDateTime.now());
         QuestPost newQuestPost = questPostRepository.save(questPost);
-//        quest.addPost(newQuestPost);
-//        member.addPost(newQuestPost);
         return newQuestPost;
     }
 
@@ -126,11 +124,14 @@ public class QuestService {
      */
     public void questWithdraw(Quest quest, Member member) {
         quest.questWithdraw(member);
+        if (quest.getQuestMaster().size() + quest.getQuestMember().size() == 0) {
+            deleteQuest(quest);
+        }
     }
 
-
-
-
+    private void deleteQuest(Quest quest) {
+        questRepository.delete(quest);
+    }
 
 
 }

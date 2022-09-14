@@ -65,6 +65,9 @@ public class QuestController {
     @GetMapping("/quest/{url}")
     public String questView(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
+        if (quest == null) {
+            return "redirect:/";
+        }
         List<QuestPost> questPostList = questPostRepository.findByQuest(quest);
         List<AuthPost> authPostList = authPostRepository.findByQuest(quest);
         List<Score> scoreList = scoreRepository.findByQuest(quest);
@@ -217,7 +220,6 @@ public class QuestController {
     /**
      * 퀘스트 포스팅 삭제
      */
-//    @DeleteMapping("/quest/{url}/post/{id}")
     @GetMapping("/quest/{url}/post/{id}/delete")
     public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         QuestPost questPost = questPostRepository.getById(id);

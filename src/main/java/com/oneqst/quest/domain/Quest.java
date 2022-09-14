@@ -25,10 +25,11 @@ public class Quest {
     @Column(name = "Quest_id")
     private Long id;
 
-    private String questMaster; //퀘스트 마스터
+    @ManyToMany
+    private List<Member> questMaster = new ArrayList<>(); //퀘스트 마스터
 
     @ManyToMany
-    private Set<Member> questMember = new HashSet<>(); //퀘스트 맴버
+    private List<Member> questMember = new ArrayList<>(); //퀘스트 맴버
 
     private String questTitle; //퀘스트 제목
 
@@ -43,43 +44,53 @@ public class Quest {
     @Basic(fetch = FetchType.LAZY)
     private String questImage; //퀘스트 소개 이미지
 
-    private String questStartTime; //퀘스트 시작 시간
+    private LocalDateTime questStartTime; //퀘스트 시작 시간
 
-    private String questEndTime; //퀘스트 마감 시간
+    private LocalDateTime questEndTime; //퀘스트 마감 시간
 
     private boolean questRecruitEnd; //멤버 모집 여부
 
-    @OneToMany(mappedBy = "quest")
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
     private List<QuestPost> questPostList = new ArrayList<>();
 
 
     /*********************** 연관관계 편의 메소드 **********************/
 
-    public void addPost(QuestPost questPost) {
-        this.questPostList.add(questPost);
-    }
     public void deletePost(QuestPost questPost) {
         this.questPostList.remove(questPost);
+    }
+    public void addQuestMaster(Member member) {
+        this.questMaster.add(member);
     }
     public void addQuestMember(Member member) {
         this.questMember.add(member);
     }
 
     public void questWithdraw(Member member) {
+        if (this.questMaster.contains(member)) {
+            this.getQuestMaster().remove(member);
+        }
         this.getQuestMember().remove(member);
     }
 
 
     public boolean isMaster(Member member) {
-        return this.questMaster.equals(member.getNickname());
+        return this.questMaster.contains(member);
     }
 
     public boolean isMember(MemberInfo memberInfo) {
-        return this.questMember.contains(memberInfo.getMember());
+        return this.questMember.contains(memberInfo.getMember()) || this.questMaster.contains(memberInfo.getMember());
     }
 
     public boolean isJoinable(MemberInfo memberInfo) {
         Member member = memberInfo.getMember();
         return !this.questMember.contains(member);
+    }
+
+    public List<Member> allList() {
+        List<Member> memberList = new ArrayList<>();
+        memberList.addAll(this.questMaster);
+        memberList.addAll(this.questMember);
+        return memberList;
     }
 }

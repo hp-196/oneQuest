@@ -39,9 +39,9 @@ public class AuthPost {
 
     private boolean confirm; //검증 여부
 
-    @OneToOne(mappedBy = "authPost")
+    @OneToOne(mappedBy = "authPost", cascade = CascadeType.REMOVE)
     private Score score; //점수
 
-    @OneToMany(mappedBy = "authPost")
+    @OneToMany(mappedBy = "authPost", cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 }

@@ -24,4 +24,3 @@ public interface QuestRepository extends JpaRepository<Quest, Long>, QuestReposi
     // querydsl 로 변경 예정
     List<Quest> findByQuestMemberEqualsAndQuestTitleIsContaining(Member member, String str);
 }
-
