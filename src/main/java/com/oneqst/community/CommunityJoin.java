@@ -16,7 +16,7 @@ public class CommunityJoin {
 
     @Id
     @GeneratedValue
-    @Column(name = "communityJoin_id")
+    @Column(name = "CommunityJoin_id")
     private Long id;
 
     @ManyToOne

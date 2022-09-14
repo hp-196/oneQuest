@@ -22,7 +22,7 @@ public class Quest {
 
     @Id
     @GeneratedValue
-    @Column(name = "quest_id")
+    @Column(name = "Quest_id")
     private Long id;
 
     private String questMaster; //퀘스트 마스터

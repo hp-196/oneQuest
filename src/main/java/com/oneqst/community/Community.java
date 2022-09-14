@@ -20,7 +20,7 @@ public class Community {
 
     @Id
     @GeneratedValue
-    @Column(name = "community_id")
+    @Column(name = "Community_id")
     private Long id;
 
     @ManyToOne

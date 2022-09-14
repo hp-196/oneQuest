@@ -12,7 +12,9 @@ import java.util.List;
 public interface QuestRepository extends JpaRepository<Quest, Long>, QuestRepositoryCustom {
     Quest findByQuestUrl(String url);
 
-    List<Quest> findByQuestMemberEquals(Member member);
+    Quest findByQuestMemberNotContaining(Member member);
+
+    List<Quest> findByQuestMemberContaining(Member member);
 
     List<Quest> findByQuestMemberEqualsAndQuestTitleIsContaining(Member member, String str);
 }
