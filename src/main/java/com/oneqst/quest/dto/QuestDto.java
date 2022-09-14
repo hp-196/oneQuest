@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data

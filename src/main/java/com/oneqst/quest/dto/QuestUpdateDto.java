@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 public class QuestUpdateDto {
-
 
     @Length(min = 2, max = 30)
     private String questTitle; //퀘스트 제목
@@ -41,5 +41,4 @@ public class QuestUpdateDto {
         this.questUrl = quest.getQuestUrl();
         this.questImage = quest.getQuestImage();
     }
-
 }

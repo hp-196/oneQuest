@@ -3,6 +3,7 @@ package com.oneqst.quest.repository.query;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.Member.domain.QMember;
 import com.oneqst.quest.domain.Quest;
+import com.oneqst.quest.dto.QuestIndexDto;
 import com.oneqst.quest.repository.QuestRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,9 +24,7 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
 
     @Override
     public List<Quest> total_quests() {
-        return queryFactory
-                .selectFrom(quest)
-                .fetch();
+        return null;
     }
 
     // TODO 다 긁어온뒤 내 id가 포함된것과 포함되지 않은것을 나누기
