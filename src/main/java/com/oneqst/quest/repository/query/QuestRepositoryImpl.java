@@ -22,20 +22,28 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
     }
 
     @Override
-    public List<Quest> search(String nickname, String title) {
+    public List<Quest> total_quests() {
         return queryFactory
                 .selectFrom(quest)
-                .where(
-                        quest.questTitle.contains(title),
-                        member.nickname.eq(nickname))
                 .fetch();
     }
 
-    // 수정필요
+    // TODO 다 긁어온뒤 내 id가 포함된것과 포함되지 않은것을 나누기
     @Override
-    public List<Quest> total_search(Long member_id) {
+    public List<Quest> my_quests(Long member_id) {
         return queryFactory
                 .selectFrom(quest)
+                .join(quest.questMember, member).fetchJoin()
+                .where(member.id.eq(member_id))
+                .fetch();
+    }
+
+    @Override
+    public List<Quest> other_quests(Long member_id) {
+        return queryFactory
+                .selectFrom(quest)
+                .join(quest.questMember, member).fetchJoin()
+                .where(member.id.ne(member_id))
                 .fetch();
     }
 }
