@@ -145,8 +145,5 @@ public class MemberService implements UserDetailsService {
         Member member = memberRepository.findByNickname(profile.getNickname());
         member.setProfileImage(profile.getProfileImage());
         memberRepository.save(member);
-
     }
-
-
 }

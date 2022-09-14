@@ -10,8 +10,5 @@ import java.util.Optional;
 
 @Transactional
 public interface QuestPostRepository extends JpaRepository<QuestPost, Long> {
-
-
     List<QuestPost> findByQuest(Quest quest);
-
 }

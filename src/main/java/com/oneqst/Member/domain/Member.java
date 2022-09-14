@@ -22,6 +22,7 @@ import java.util.UUID;
 public class Member {
 
     @Id @GeneratedValue
+    @Column(name = "Member_id")
     private Long id;
 
     @Column(unique = true)
