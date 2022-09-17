@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class QuestUpdateDto {
 
-
     @Length(min = 2, max = 30)
     private String questTitle; //퀘스트 제목
 
@@ -45,5 +44,4 @@ public class QuestUpdateDto {
         this.questUrl = quest.getQuestUrl();
         this.questImage = quest.getQuestImage();
     }
-
 }
