@@ -29,7 +29,6 @@ public class IndexController {
         }
         model.addAttribute("questList", questRepository.my_quests(member.getId()));
         model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
-        log.info(String.valueOf(model));
         return "index";
     }
 }
