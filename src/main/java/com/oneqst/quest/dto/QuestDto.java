@@ -3,11 +3,13 @@ package com.oneqst.quest.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Basic;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,9 +26,11 @@ public class QuestDto {
     @NotBlank
     private String questExplain; //퀘스트 긴 설명
 
-    private LocalDateTime questStartTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate questStartTime;
 
-    private LocalDateTime questEndTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate questEndTime;
 
     private String questImage; //퀘스트 대표 이미지
 

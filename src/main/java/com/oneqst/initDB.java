@@ -2,6 +2,7 @@ package com.oneqst;
 
 import com.oneqst.Member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
 @RequiredArgsConstructor
 public class initDB {
     private final InitService initService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
@@ -33,7 +35,6 @@ public class initDB {
                     .nickname("admin")
                     .password("1234")
                     .build();
-
             em.persist(member);
         }
     }

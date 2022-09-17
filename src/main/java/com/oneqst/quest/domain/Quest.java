@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -44,9 +45,9 @@ public class Quest {
     @Basic(fetch = FetchType.LAZY)
     private String questImage; //퀘스트 소개 이미지
 
-    private LocalDateTime questStartTime; //퀘스트 시작 시간
+    private LocalDate questStartTime; //퀘스트 시작 시간
 
-    private LocalDateTime questEndTime; //퀘스트 마감 시간
+    private LocalDate questEndTime; //퀘스트 마감 시간
 
     private boolean questRecruitEnd; //멤버 모집 여부
 

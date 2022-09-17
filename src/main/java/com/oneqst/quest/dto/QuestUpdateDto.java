@@ -6,8 +6,10 @@ import com.oneqst.quest.domain.Quest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,9 +25,11 @@ public class QuestUpdateDto {
 
     private String questExplain; //퀘스트 긴 설명
 
-    private LocalDateTime questStartTime; //퀘스트 시작 시간
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate questStartTime; //퀘스트 시작 시간
 
-    private LocalDateTime questEndTime; //퀘스트 종료 시간
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate questEndTime; //퀘스트 종료 시간
 
     @Length(min = 2, max = 50)
     private String questUrl; //퀘스트 주소
