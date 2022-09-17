@@ -71,10 +71,11 @@ public class QuestService {
                 .title(questPostDto.getTitle())
                 .content(questPostDto.getContent())
                 .postImage(questPostDto.getPostImage())
+                .writer(member)
+                .quest(quest)
+                .postTime(LocalDateTime.now())
                 .build();
-        questPost.setWriter(member);
-        questPost.setQuest(quest);
-        questPost.setPostTime(LocalDateTime.now());
+
         QuestPost newQuestPost = questPostRepository.save(questPost);
         return newQuestPost;
     }
