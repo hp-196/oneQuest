@@ -1,6 +1,7 @@
 package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
@@ -25,6 +26,7 @@ public class CommentService {
     private final QuestPostRepository questPostRepository;
     private final AuthPostRepository authPostRepository;
     private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
     /**
      * 해당 포스팅 댓글 전체 조회
      */
@@ -52,8 +54,6 @@ public class CommentService {
                 .post(questPost)
                 .postTime(LocalDateTime.now())
                 .build();
-        member.addCommentList(comment);
-        questPost.addCommentList(comment);
         commentRepository.save(comment);
     }
 
@@ -67,7 +67,6 @@ public class CommentService {
                 .authPost(authPost)
                 .postTime(LocalDateTime.now())
                 .build();
-        member.addCommentList(comment);
         commentRepository.save(comment);
     }
 
@@ -75,8 +74,6 @@ public class CommentService {
      * 댓글 삭제
      */
     public void deleteComment(Member member, QuestPost questPost, Comment comment) {
-        member.removeComment(comment);
-        questPost.removeComment(comment);
         commentRepository.delete(comment);
     }
 
