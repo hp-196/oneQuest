@@ -23,10 +23,10 @@ public class AuthPost {
 
     private String title; //포스트 제목
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member writer; //포스트 작성자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Quest quest; //퀘스트
 
     private String content; //포스트 내용
@@ -39,7 +39,7 @@ public class AuthPost {
 
     private boolean confirm; //검증 여부
 
-    @OneToOne(mappedBy = "authPost", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "authPost", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Score score; //점수
 
     @OneToMany(mappedBy = "authPost", cascade = CascadeType.REMOVE)

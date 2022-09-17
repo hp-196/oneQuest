@@ -21,12 +21,12 @@ public class Score {
 
     private int score;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private AuthPost authPost;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Quest quest;
 }

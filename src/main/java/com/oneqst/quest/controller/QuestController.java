@@ -78,7 +78,6 @@ public class QuestController {
         model.addAttribute("authPostList", authPostList);
         model.addAttribute("scoreList", scoreList);
         model.addAttribute("score",score);
-
         return "quest/view";
 
     }
@@ -182,6 +181,7 @@ public class QuestController {
         model.addAttribute(questPost);
         model.addAttribute(new CommentDto());
         model.addAttribute("commentList", commentList);
+
         return "quest/post-view";
     }
 

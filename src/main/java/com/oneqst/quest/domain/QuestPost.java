@@ -23,10 +23,10 @@ public class QuestPost {
     
     private String title; //포스트 제목
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member writer; //포스트 작성자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Quest quest; //퀘스트
 
     private String content; //포스트 내용

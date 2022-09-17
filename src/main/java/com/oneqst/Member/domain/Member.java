@@ -58,7 +58,7 @@ public class Member {
     @OneToMany(mappedBy = "writer")
     private List<QuestPost> postList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "writer")
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
