@@ -3,12 +3,14 @@ package com.oneqst.Member.controller;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.repository.QuestRepository;
+import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -17,6 +19,7 @@ import java.util.List;
 public class IndexController {
 
     private final QuestRepository questRepository;
+    private final QuestService questService;
 
     @GetMapping("/")
     public String home(@CurrentUser Member member, Model model) {

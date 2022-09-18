@@ -3,6 +3,7 @@ package com.oneqst.quest.domain;
 import com.oneqst.Member.controller.MemberInfo;
 import com.oneqst.Member.domain.Member;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class Quest {
 
     @Id
@@ -91,5 +93,9 @@ public class Quest {
         memberList.addAll(this.questMaster);
         memberList.addAll(this.questMember);
         return memberList;
+    }
+
+    public boolean compareDate() {
+        return (this.questEndTime.isEqual(LocalDate.now()) ? true : this.questEndTime.isAfter(LocalDate.now()) ? true : false);
     }
 }
