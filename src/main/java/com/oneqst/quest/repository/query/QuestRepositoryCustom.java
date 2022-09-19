@@ -15,4 +15,7 @@ public interface QuestRepositoryCustom {
 
     // 자신이 포함되지 않은 퀘스트
     List<Quest> other_quests(Long member_id);
+
+    // 검색
+    List<Quest> Search(Long member_id, String title);
 }

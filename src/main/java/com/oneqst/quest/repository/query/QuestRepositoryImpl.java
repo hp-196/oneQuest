@@ -33,7 +33,8 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
-                .where(member.id.eq(member_id))
+                .where(
+                        member.id.eq(member_id))
                 .fetch();
     }
 
@@ -43,6 +44,17 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
                 .where(member.id.ne(member_id))
+                .fetch();
+    }
+
+    @Override
+    public List<Quest> Search(Long member_id, String title) {
+        return queryFactory
+                .selectFrom(quest)
+                .join(quest.questMember, member).fetchJoin()
+                .where(
+                        member.id.eq(member_id),
+                        quest.questTitle.contains(title))
                 .fetch();
     }
 }
