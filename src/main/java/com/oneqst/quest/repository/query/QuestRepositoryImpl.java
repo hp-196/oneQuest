@@ -54,7 +54,12 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
                 .join(quest.questMember, member).fetchJoin()
                 .where(
                         member.id.eq(member_id),
-                        quest.questTitle.contains(title))
+                        title_contains(title)
+                )
                 .fetch();
+    }
+
+    public static BooleanExpression title_contains(String title) {
+        return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
     }
 }
