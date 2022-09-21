@@ -42,8 +42,8 @@
     </div><!-- 로고 사진 -->
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <form class="search-form d-flex align-items-center" method="GET" action="/search/list">
+        <input type="text" name="q" placeholder="Search" title="Enter search keyword">  <!-- 검색 창 -->
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div><!-- 검색 바 -->

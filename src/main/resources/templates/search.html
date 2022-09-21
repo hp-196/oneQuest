@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+
+<main id="main" class="main">
+
+
+    <!-- 퀘스트 리스트 -->
+    <section id="portfolio" class="portfolio">
+        <div class="container col-xl-12">
+            <div class="section-title">
+                <h2>퀘스트 목록</h2>
+                <p>퀘스트를 추가하려면 퀘스트 생성페이지로 이동하세요</p>
+            </div>
+
+            <div class="row">
+                <div th:if="${questList.size > 0}" class="col-lg-12">
+                    <ul id="portfolio-flters">
+                        <li data-filter="*" class="filter-active">All</li>
+                        <li data-filter=".filter-go">진행중인 퀘스트</li>
+                        <li data-filter=".filter-end">종료된 퀘스트</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="row portfolio-container">
+                <div sec:authorize="isAuthenticated()" th:each="quest: ${questList}"
+                     th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'"
+                     class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="portfolio-wrap">
+                        <figure>
+                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
+                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
+                                 alt="Profile">
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
+                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                               title="Preview"><i class="bx bx-plus"></i></a>
+                            <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                                    class="bx bx-link"></i></a>
+                        </figure>
+
+                        <div class="portfolio-info">
+                            <h4 th:text="${quest.questTitle}"></h4>
+                            <p th:text="${quest.questIntroduce}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!--            <div th:if="${!#strings.isEmpty(questList)}" class="section-title mt-5 mb-5">-->
+<!--                <h2>이런 퀘스트는 어떠세요?</h2>-->
+<!--                <p>아래의 카드를 눌러 이동해보세요</p>-->
+<!--            </div>-->
+
+<!--            <div th:if="${!#strings.isEmpty(questList)}" class="row portfolio-container">-->
+<!--                <div sec:authorize="isAuthenticated()" th:each="quest: ${notQuestList}"-->
+<!--                     class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">-->
+<!--                    <div class="portfolio-wrap">-->
+<!--                        <figure>-->
+<!--                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">-->
+<!--                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"-->
+<!--                                 alt="Profile">-->
+<!--                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"-->
+<!--                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"-->
+<!--                               title="Preview"><i-->
+<!--                                    class="bx bx-plus"></i></a>-->
+<!--                            <a href="portfolio-details.html" class="link-details" title="More Details"><i-->
+<!--                                    class="bx bx-link"></i></a>-->
+<!--                        </figure>-->
+
+<!--                        <div class="portfolio-info">-->
+<!--                            <h4 th:text="${quest.questTitle}"></h4>-->
+<!--                            <p th:text="${quest.questIntroduce}"></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+        </div>
+    </section>
+
+
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+
+
+</body>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+</html>
