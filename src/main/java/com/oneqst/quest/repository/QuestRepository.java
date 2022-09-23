@@ -23,4 +23,7 @@ public interface QuestRepository extends JpaRepository<Quest, Long>, QuestReposi
     // 퀘스트 멤버가 동일하고, 퀘스트 이름이 포함되는지
     // querydsl 로 변경 예정
     List<Quest> findByQuestMemberEqualsAndQuestTitleIsContaining(Member member, String str);
+
+    //제목 검색
+    List<Quest> findByQuestTitleContainingAndQuestMemberNotContains(String title, Member member);
 }
