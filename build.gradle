@@ -47,7 +47,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
 
     // P6spy
-//    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
 
     //@Valid 어노테이션
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
