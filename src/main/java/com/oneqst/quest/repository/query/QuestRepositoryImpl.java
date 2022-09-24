@@ -5,8 +5,12 @@ import com.oneqst.Member.domain.QMember;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.QuestIndexDto;
 import com.oneqst.quest.repository.QuestRepository;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -57,6 +61,17 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
                         title_contains(title)
                 )
                 .fetch();
+    }
+
+    @Override
+    public Page<Quest> search_paging(Member member, String title, Pageable pageable) {
+        QueryResults<Quest> result = queryFactory
+                .selectFrom(quest)
+                .where(quest.questTitle.contains(title).and(quest.questMember.contains(member).not()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
     public static BooleanExpression title_contains(String title) {
