@@ -36,7 +36,7 @@ public class SearchController {
 
     @GetMapping("/search/list")
     public String search(@CurrentUser Member member,
-                         @PageableDefault(size = 6, sort = "questStartTime", direction = Sort.Direction.ASC) Pageable pageable,
+                         @PageableDefault(size = 9) Pageable pageable,
                          @RequestParam(value="title") String title, Model model) {
         if (member != null) {
             model.addAttribute(member);

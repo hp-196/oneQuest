@@ -29,7 +29,7 @@
 
 
             <div class="row portfolio-container">
-                <div sec:authorize="isAuthenticated()" th:each="quest: ${questList}"
+                <div sec:authorize="isAuthenticated()" th:each="quest: ${questList.getContent()}"
                      th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'"
                      class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
@@ -52,34 +52,22 @@
                 </div>
             </div>
 
-<!--            <div th:if="${!#strings.isEmpty(questList)}" class="section-title mt-5 mb-5">-->
-<!--                <h2>이런 퀘스트는 어떠세요?</h2>-->
-<!--                <p>아래의 카드를 눌러 이동해보세요</p>-->
-<!--            </div>-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!questList.hasPrevious()} ? disabled">
+                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${questList.getNumber() - 1}}"  class="page-link">Previous</a>
+                    </li>
 
-<!--            <div th:if="${!#strings.isEmpty(questList)}" class="row portfolio-container">-->
-<!--                <div sec:authorize="isAuthenticated()" th:each="quest: ${notQuestList}"-->
-<!--                     class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">-->
-<!--                    <div class="portfolio-wrap">-->
-<!--                        <figure>-->
-<!--                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">-->
-<!--                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"-->
-<!--                                 alt="Profile">-->
-<!--                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"-->
-<!--                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"-->
-<!--                               title="Preview"><i-->
-<!--                                    class="bx bx-plus"></i></a>-->
-<!--                            <a href="portfolio-details.html" class="link-details" title="More Details"><i-->
-<!--                                    class="bx bx-link"></i></a>-->
-<!--                        </figure>-->
+                    <li class="page-item" th:classappend="${pageNumber == questList.getNumber()} ? active"
+                        th:each="pageNumber : ${#numbers.sequence(0, questList.getTotalPages() - 1)}">
+                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${pageNumber}}" th:text="${pageNumber+1}" class="page-link" href="#">페이징번호</a>
+                    </li>
 
-<!--                        <div class="portfolio-info">-->
-<!--                            <h4 th:text="${quest.questTitle}"></h4>-->
-<!--                            <p th:text="${quest.questIntroduce}"></p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+                    <li class="page-item" th:classappend="${!questList.hasNext()} ? disabled">
+                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${questList.getNumber() + 1}}" class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
 
         </div>
     </section>
