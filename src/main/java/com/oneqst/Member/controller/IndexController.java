@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Controller
@@ -33,5 +34,38 @@ public class IndexController {
         model.addAttribute("questList", questRepository.my_quests(member.getId()));
         model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
         return "index";
+    }
+
+    /**
+     * 임의 퀘스트 추가
+     */
+    @GetMapping("/add")
+    public String addData() {
+        Random random = new Random();
+        //진행중 퀘스트
+        for (int i=0; i<30; i++) {
+            Quest quest = Quest.builder()
+                    .questTitle("now" + random.nextInt(5000))
+                    .questIntroduce("now is run")
+                    .questExplain("explain")
+                    .questStartTime(LocalDate.now())
+                    .questEndTime(LocalDate.now().plusDays(random.nextInt(50)))
+                    .questUrl("url"+String.valueOf(random.nextInt(5000)))
+                    .build();
+            questRepository.save(quest);
+        }
+        //종료 퀘스트
+        for (int j=0; j<30; j++) {
+            Quest quest = Quest.builder()
+                    .questTitle("the end" + random.nextInt(5000))
+                    .questIntroduce("quest is end")
+                    .questExplain("explain")
+                    .questStartTime(LocalDate.now().minusDays(random.nextInt(50)))
+                    .questEndTime(LocalDate.now().minusDays(1))
+                    .questUrl("url"+String.valueOf(random.nextInt(5000)))
+                    .build();
+            questRepository.save(quest);
+        }
+        return "redirect:/";
     }
 }
