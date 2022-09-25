@@ -1,10 +1,7 @@
 package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
-import com.oneqst.Member.domain.QMember;
 import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.dto.QuestIndexDto;
-import com.oneqst.quest.repository.QuestRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,10 +16,10 @@ import java.util.List;
 import static com.oneqst.Member.domain.QMember.*;
 import static com.oneqst.quest.domain.QQuest.*;
 
-public class QuestRepositoryImpl implements QuestRepositoryCustom {
+public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
-    public QuestRepositoryImpl(EntityManager em) {
+    public QuestRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
