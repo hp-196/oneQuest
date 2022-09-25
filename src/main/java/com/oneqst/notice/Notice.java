@@ -28,6 +28,8 @@ public class Notice {
 
     private LocalDateTime noticeTime; //알림시간
 
+    private boolean checked; //알림 체크 여부
+
 
 
 
