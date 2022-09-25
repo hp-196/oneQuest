@@ -30,6 +30,8 @@ public class Notice {
 
     private boolean checked; //알림 체크 여부
 
+    private String url; //알림 주소
+
 
 
 
