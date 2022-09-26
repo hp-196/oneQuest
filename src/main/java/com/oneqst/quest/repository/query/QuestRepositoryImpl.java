@@ -1,10 +1,7 @@
 package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
-import com.oneqst.Member.domain.QMember;
 import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.dto.QuestIndexDto;
-import com.oneqst.quest.repository.QuestRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,44 +24,44 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
     }
 
     @Override
-    public List<Quest> total_quests() {
+    public List<Quest> totalQuests() {
         return null;
     }
 
     // TODO 다 긁어온뒤 내 id가 포함된것과 포함되지 않은것을 나누기
     @Override
-    public List<Quest> my_quests(Long member_id) {
+    public List<Quest> myQuests(Long memberId) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
                 .where(
-                        member.id.eq(member_id))
+                        member.id.eq(memberId))
                 .fetch();
     }
 
     @Override
-    public List<Quest> other_quests(Long member_id) {
+    public List<Quest> otherQuests(Long memberId) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
-                .where(member.id.ne(member_id))
+                .where(member.id.ne(memberId))
                 .fetch();
     }
 
     @Override
-    public List<Quest> Search(Long member_id, String title) {
+    public List<Quest> search(Long memberId, String title) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
                 .where(
-                        member.id.eq(member_id),
-                        title_contains(title)
+                        member.id.eq(memberId),
+                        titleContains(title)
                 )
                 .fetch();
     }
 
     @Override
-    public Page<Quest> search_paging(Member member, String title, Pageable pageable) {
+    public Page<Quest> searchPaging(Member member, String title, Pageable pageable) {
         QueryResults<Quest> result = queryFactory
                 .selectFrom(quest)
                 .where(quest.questTitle.contains(title).and(quest.questMember.contains(member).not()))
@@ -74,7 +71,7 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
-    public static BooleanExpression title_contains(String title) {
+    public static BooleanExpression titleContains(String title) {
         return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
     }
 }

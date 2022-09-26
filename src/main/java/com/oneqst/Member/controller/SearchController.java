@@ -6,7 +6,6 @@ import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +45,7 @@ public class SearchController {
             return "login";
         }
         model.addAttribute("searchTitle", title);
-        model.addAttribute("questList", questRepository.search_paging(member, title, pageable));
+        model.addAttribute("questList", questRepository.searchPaging(member, title, pageable));
 //        model.addAttribute("questList", questRepository.findByQuestTitleContainingAndQuestMemberNotContains(title, member));
         return "search";
     }

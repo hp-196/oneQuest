@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -31,8 +30,8 @@ public class IndexController {
             log.info("멤버가 없어서 로그인페이지 리다이렉트");
             return "login";
         }
-        model.addAttribute("questList", questRepository.my_quests(member.getId()));
-        model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
+        model.addAttribute("questList", questRepository.myQuests(member.getId()));
+        model.addAttribute("notQuestList", questRepository.otherQuests(member.getId()));
         return "index";
     }
 
