@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments.html :: head">
+</head>
+<body>
+
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>알림페이지</h1>
+    </div>
+
+    <div class="card" th:each="notice : ${noticeList}">
+        <span th:text="${notice.member.nickname}"></span> <span>님에게 알람이왔습니다</span>
+<!--        <span>게시글 제목 :</span> <span th:text="${notice.title}"></span>-->
+        <span>댓글 :</span> <span th:text="${notice.content}"></span>
+        <a href="#about" th:href="@{${notice.getUrl()}}">이동</a>
+    </div>
+
+
+
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
