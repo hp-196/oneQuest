@@ -9,5 +9,7 @@ import java.util.List;
 @Transactional
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
-    List<Notice> findByMemberAndCheckedOrderByNoticeTime(Member member, boolean checked);
+    List<Notice> findByMemberAndCheckedOrderByNoticeTimeDesc(Member member, boolean checked);
+
+    Long countByCheckedAndMember(boolean checked, Member member);
 }
