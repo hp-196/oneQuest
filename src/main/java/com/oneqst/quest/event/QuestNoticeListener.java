@@ -1,5 +1,7 @@
 package com.oneqst.quest.event;
 
+import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.notice.Notice;
 import com.oneqst.notice.NoticeRepository;
 import com.oneqst.notice.NoticeType;
@@ -28,6 +30,7 @@ public class QuestNoticeListener {
 
     private final NoticeRepository noticeRepository;
     private final QuestPostRepository questPostRepository;
+    private final MemberRepository memberRepository;
 
 
     /**
@@ -45,6 +48,24 @@ public class QuestNoticeListener {
         notice.setChecked(false);
         notice.setUrl("/quest/" + questPost.getQuest().getQuestUrl() + "/post/" + questPost.getId());
         notice.setNoticeType(NoticeType.POST_COMMENT);
+        noticeRepository.save(notice);
+    }
+
+    /**
+     * 멤버 초대 알림
+     */
+    @EventListener
+    public void inviteMemberEvent(InviteNotice inviteNotice) {
+        String nameOrEmail = inviteNotice.getNickNameOrEmail();
+        Member member = memberRepository.findByNicknameOrEmail(nameOrEmail, nameOrEmail);
+        Notice notice = new Notice();
+        notice.setMember(member); //초대받은 멤버
+        notice.setContent(inviteNotice.getMember().getNickname()); //초대한 멤버
+        notice.setTitle(inviteNotice.getQuest().getQuestTitle());
+        notice.setUrl("/quest/"+inviteNotice.getQuest().getQuestUrl()+"/join");
+        notice.setNoticeTime(LocalDateTime.now());
+        notice.setChecked(false);
+        notice.setNoticeType(NoticeType.QUEST_INVITE);
         noticeRepository.save(notice);
     }
 }

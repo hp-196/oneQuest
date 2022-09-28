@@ -74,6 +74,7 @@ public class QuestController {
         int score = authService.countScore(scoreList, member, 0);
         model.addAttribute(member);
         model.addAttribute(quest);
+        model.addAttribute(new InviteDto());
         model.addAttribute("questPostList", questPostList);
         model.addAttribute("authPostList", authPostList);
         model.addAttribute("scoreList", scoreList);
@@ -124,6 +125,20 @@ public class QuestController {
         model.addAttribute(member);
         model.addAttribute(quest);
         questService.addQuestMember(quest, member);
+        return "redirect:/quest/" + quest.getQuestUrl();
+    }
+
+    /**
+     * 퀘스트 멤버 초대
+     */
+    @PostMapping("/quest/{url}/invite")
+    public String inviteMember(@CurrentUser Member member, @Valid InviteDto inviteDto,
+                             @PathVariable String url, Errors errors) {
+        if (errors.hasErrors()) {
+            return "redirect:/quest/" + url;
+        }
+        Quest quest = questRepository.findByQuestUrl(url);
+        questService.inviteMember(inviteDto, member, quest);
         return "redirect:/quest/" + quest.getQuestUrl();
     }
 

@@ -5,12 +5,14 @@ import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
+import com.oneqst.quest.event.InviteNotice;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class QuestService {
 
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 퀘스트 생성
@@ -120,6 +123,7 @@ public class QuestService {
         quest.addQuestMember(member);
     }
 
+
     /**
      * 퀘스트 탈퇴
      */
@@ -130,9 +134,24 @@ public class QuestService {
         }
     }
 
+    /**
+     * 퀘스트 삭제
+     */
     private void deleteQuest(Quest quest) {
         questRepository.delete(quest);
     }
 
 
+    /**
+     * 퀘스트 멤버 초대
+     */
+    public boolean inviteMember(InviteDto inviteDto, Member member, Quest quest) {
+        String name = inviteDto.getNickNameOrEmail();
+        if (name.equals(member.getNickname()) || name.equals(member.getEmail())) {
+            log.info("자기자신을 초대할순 없습니다");
+            return false;
+        }
+        eventPublisher.publishEvent(new InviteNotice(inviteDto, member, quest));
+        return true;
+    }
 }
