@@ -42,7 +42,7 @@ public class QuestNoticeListener {
         QuestPost questPost = questPostRepository.findById(commentNotice.getQuestPost().getId()).get();
         Notice notice = new Notice();
         notice.setTitle(questPost.getTitle());
-        notice.setMember(comment.getWriter());
+        notice.setMember(questPost.getWriter());
         notice.setContent(comment.getContent());
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);

@@ -58,7 +58,9 @@ public class CommentService {
                 .postTime(LocalDateTime.now())
                 .build();
         commentRepository.save(comment);
-        eventPublisher.publishEvent(new CommentNotice(comment, questPost));
+        if (!member.equals(questPost.getWriter())) {
+            eventPublisher.publishEvent(new CommentNotice(comment, questPost));
+        }
     }
 
     /**
