@@ -1310,3 +1310,71 @@ h1, h2, h3, h4, h5, h6 {
 .size-font {
   font-size: 25px;
 }
+
+/*--------------------------------------------------------------
+# 알림 타임라인 뷰 css
+--------------------------------------------------------------*/
+.timeline{
+  background-color: #fff;
+  color:#000;
+  padding:30px 20px;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+}
+.timeline ul{
+  list-style-type:none;
+  border-left:2px solid #094a68;
+  padding:10px 5px;
+}
+.timeline ul li{
+  padding:20px 20px;
+  position:relative;
+  cursor:pointer;
+  transition:.5s;
+}
+.timeline ul li span{
+  display:inline-block;
+  background-color:wheat;
+  border-radius:25px;
+  padding:2px 5px;
+  font-size:15px;
+  text-align:center;
+}
+.timeline ul li .content h3{
+  color:black;
+  font-size:17px;
+  padding-top:5px;
+}
+.timeline ul li .content p{
+  padding:5px 0px 15px 0px;
+  font-size:15px;
+  color:black;
+}
+.timeline ul li:before{
+  position:absolute;
+  content:'';
+  width:10px;
+  height:10px;
+  background-color:#34ace0;
+  border-radius:50%;
+  left:-11px;
+  top:28px;
+  transition:.5s;
+}
+.timeline ul li:hover{
+  color: #4154f1;
+  background: #f6f9ff;
+}
+.timeline ul li:hover:before{
+  background-color:#0F0;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+}
+@media (max-width:300px){
+  .timeline{
+    width:100%;
+    padding:30px 5px 30px 10px;
+  }
+  .timeline ul li .content h3{
+    color:#34ace0;
+    font-size:15px;
+  }
+}

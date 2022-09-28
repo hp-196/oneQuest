@@ -16,14 +16,21 @@
         <h1>알림페이지</h1>
     </div>
 
-    <div class="card" th:each="notice : ${noticeList}">
-        <span th:text="${notice.member.nickname}"></span> <span>님에게 알람이왔습니다</span>
-<!--        <span>게시글 제목 :</span> <span th:text="${notice.title}"></span>-->
-        <span>댓글 :</span> <span th:text="${notice.content}"></span>
-        <a href="#about" th:href="@{${notice.getUrl()}}">이동</a>
+    <div th:if="${newNoticeCount > 0}" class="timeline">
+        <p th:text="|${newNoticeCount}개의 새로운 알람이 있습니다|">알림개수</p>
+        <ul>
+            <li th:each="notice : ${noticeList}">
+                    <span th:text="${#temporals.format(notice.getNoticeTime(), 'MM-dd')}">알림날짜</span> <a th:href="@{'/notice/' + ${notice.getId()} + '/delete'}"><p style="float:right;">X</p></a>
+                <a href="#about" th:href="@{${notice.getUrl()}}">
+                <div class="content">
+                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}" th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()} 님으로 부터 댓글이 달렸습니다|"></h3>
+                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_INVITE}" th:text="|${notice.getByMember()} 님으로 부터 ${notice.getTitle()} 퀘스트 초대를 받았습니다|"></h3>
+                    <p th:text="${notice.getContent()}">?</p>
+                </div>
+                </a>
+            </li>
+        </ul>
     </div>
-
-
 
 </main>
 
