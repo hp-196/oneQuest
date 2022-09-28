@@ -120,7 +120,9 @@ public class QuestService {
      * 퀘스트 멤버 추가
      */
     public void addQuestMember(Quest quest, Member member) {
-        quest.addQuestMember(member);
+        if (!quest.getQuestMember().contains(member)) {
+            quest.addQuestMember(member);
+        }
     }
 
 
