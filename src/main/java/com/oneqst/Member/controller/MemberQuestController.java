@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MemberQuestController {
     private final QuestRepository questRepository;
 
-    @GetMapping("/my-quest")
-    public String myQuest(@CurrentUser Member member, Model model) {
+    @GetMapping("/my-master-quest")
+    public String myMasterQuests(@CurrentUser Member member, Model model) {
         if (member != null) {
             model.addAttribute(member);
         }
@@ -23,7 +23,22 @@ public class MemberQuestController {
             log.info("멤버가 없어서 로그인페이지 리다이렉트");
             return "login";
         }
-        model.addAttribute("questList", questRepository.myQuests(member.getId()));
-        return "my-quest";
+        model.addAttribute("questList", questRepository.masterQuests(member.getId()));
+        return "my-master-quest";
     }
+
+    @GetMapping("/my-member-quest")
+    public String myMemberQuests(@CurrentUser Member member, Model model) {
+        if (member != null) {
+            model.addAttribute(member);
+        }
+        if (member == null) {
+            log.info("멤버가 없어서 로그인페이지 리다이렉트");
+            return "login";
+        }
+        model.addAttribute("questList", questRepository.memberQuests(member.getId()));
+        return "my-member-quest";
+    }
+
+
 }

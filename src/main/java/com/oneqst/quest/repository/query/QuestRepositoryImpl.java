@@ -13,8 +13,8 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.oneqst.Member.domain.QMember.*;
-import static com.oneqst.quest.domain.QQuest.*;
+import static com.oneqst.Member.domain.QMember.member;
+import static com.oneqst.quest.domain.QQuest.quest;
 
 public class QuestRepositoryImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -23,20 +23,38 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public List<Quest> totalQuests() {
-        return null;
+    public static BooleanExpression titleContains(String title) {
+        return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
     }
 
-    // TODO 다 긁어온뒤 내 id가 포함된것과 포함되지 않은것을 나누기
     @Override
-    public List<Quest> myQuests(Long memberId) {
+    public List<Quest> totalQuests(Long memberId) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
                 .where(
+                        member.id.eq(memberId)
+                ).fetch();
+    }
+
+    @Override
+    public List<Quest> masterQuests(Long memberId) {
+        return queryFactory
+                .selectFrom(quest)
+                .join(quest.questMaster, member).fetchJoin()
+                .where(
                         member.id.eq(memberId))
                 .fetch();
+    }
+
+    @Override
+    public List<Quest> memberQuests(Long memberId) {
+        return queryFactory
+                .selectFrom(quest)
+                .join(quest.questMember, member).fetchJoin()
+                .where(
+                        member.id.eq(memberId)
+                ).fetch();
     }
 
     @Override
@@ -69,9 +87,5 @@ public class QuestRepositoryImpl implements QuestRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
-    }
-
-    public static BooleanExpression titleContains(String title) {
-        return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
     }
 }

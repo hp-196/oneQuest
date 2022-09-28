@@ -30,7 +30,7 @@ public class IndexController {
             log.info("멤버가 없어서 로그인페이지 리다이렉트");
             return "login";
         }
-        model.addAttribute("questList", questRepository.myQuests(member.getId()));
+        model.addAttribute("questList", questRepository.totalQuests(member.getId()));
         model.addAttribute("notQuestList", questRepository.otherQuests(member.getId()));
         return "index";
     }

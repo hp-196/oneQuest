@@ -21,7 +21,7 @@ class QuestRepositoryTest {
         // given
 
         // when
-        List<Quest> quests = questRepository.myQuests(1L);
+        List<Quest> quests = questRepository.masterQuests(1L);
 
         // then
         Assertions.assertEquals(quests.size(),2,"동일해야합니다.");
