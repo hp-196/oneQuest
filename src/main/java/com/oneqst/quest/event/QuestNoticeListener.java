@@ -41,9 +41,10 @@ public class QuestNoticeListener {
         Comment comment = commentNotice.getComment();
         QuestPost questPost = questPostRepository.findById(commentNotice.getQuestPost().getId()).get();
         Notice notice = new Notice();
-        notice.setTitle(questPost.getTitle());
-        notice.setMember(questPost.getWriter());
-        notice.setContent(comment.getContent());
+        notice.setTitle(questPost.getTitle()); //퀘스트 포스팅 제목
+        notice.setMember(questPost.getWriter()); //알림받을 멤버
+        notice.setContent(comment.getContent()); //댓글 내용
+        notice.setByMember(comment.getWriter().getNickname()); //알림당사자 닉네임
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
         notice.setUrl("/quest/" + questPost.getQuest().getQuestUrl() + "/post/" + questPost.getId());
@@ -60,8 +61,8 @@ public class QuestNoticeListener {
         Member member = memberRepository.findByNicknameOrEmail(nameOrEmail, nameOrEmail);
         Notice notice = new Notice();
         notice.setMember(member); //초대받은 멤버
-        notice.setContent(inviteNotice.getMember().getNickname()); //초대한 멤버
-        notice.setTitle(inviteNotice.getQuest().getQuestTitle());
+        notice.setByMember(inviteNotice.getMember().getNickname()); //초대한 멤버
+        notice.setTitle(inviteNotice.getQuest().getQuestTitle()); //퀘스트 제목
         notice.setUrl("/quest/"+inviteNotice.getQuest().getQuestUrl()+"/join");
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);

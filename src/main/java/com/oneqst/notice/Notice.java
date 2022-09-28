@@ -13,15 +13,17 @@ import java.time.LocalDateTime;
 public class Notice {
 
     @Id @GeneratedValue
-    @Column(name = "NOTICE_ID")
+    @Column(name = "notice_id")
     private Long id;
 
     private String title; //알림 제목
 
     private String content; //알림 내용
 
+    private String byMember; //알림당사자 닉네임
+
     @ManyToOne
-    private Member member; //알림 멤버
+    private Member member; //알림을 받을 멤버
 
     @Enumerated(EnumType.STRING)
     private NoticeType noticeType; //알림 타입
