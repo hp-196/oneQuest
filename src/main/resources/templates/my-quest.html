@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+        xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head">
     <title>"myQuestPage"</title>
 </head>
@@ -9,10 +9,10 @@
 <div th:replace="fragments.html :: nav"></div>
 <div th:replace="fragments.html :: sidebar"></div>
 
-<main id="main" class="main">
+<main class="main" id="main">
 
     <!-- 퀘스트 리스트 -->
-    <section id="portfolio" class="portfolio">
+    <section class="portfolio" id="portfolio">
         <div class="container col-xl-12">
             <div class="section-title">
                 <h2>자신의 전체 퀘스트 목록</h2>
@@ -20,9 +20,9 @@
             </div>
 
             <div class="row">
-                <div th:if="${questList.size > 0}" class="col-lg-12">
+                <div class="col-lg-12" th:if="${questList.size > 0}">
                     <ul id="portfolio-flters">
-                        <li data-filter="*" class="filter-active">All</li>
+                        <li class="filter-active" data-filter="*">All</li>
                         <li data-filter=".filter-go">진행중인 퀘스트</li>
                         <li data-filter=".filter-end">종료된 퀘스트</li>
                     </ul>
@@ -30,18 +30,18 @@
             </div>
 
             <div class="row portfolio-container">
-                <div sec:authorize="isAuthenticated()" th:each="quest: ${questList}"
-                     th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'"
-                     class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s"
+                        sec:authorize="isAuthenticated()"
+                        th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'" th:each="quest: ${questList}">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
-                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
-                                 alt="Profile">
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
-                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="Preview"><i class="bx bx-plus"></i></a>
-                            <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                            <img alt="Profile" src="/assets/img/logo.png" th:if="${#strings.isEmpty(quest.questImage)}">
+                            <img alt="Profile" th:if="${!#strings.isEmpty(quest.questImage)}"
+                                    th:src="${quest.getQuestImage()}">
+                            <a class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                                href="assets/img/portfolio/portfolio-2.jpg" th:href="@{'/quest/' + ${quest.questUrl}}"
+                                title="Preview"><i class="bx bx-plus"></i></a>
+                            <a class="link-details" href="portfolio-details.html" title="More Details"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
