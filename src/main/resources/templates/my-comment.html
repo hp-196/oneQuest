@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+<main class="main" id="main">
+
+    <!-- 퀘스트 리스트 -->
+    <section class="portfolio" id="portfolio">
+        <div class="container col-xl-12">
+            <div class="section-title">
+                <h2>자신의 댓글 목록</h2>
+            </div>
+
+            <div class="row portfolio-container">
+                <div class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s"
+                     sec:authorize="isAuthenticated()" th:each="comment: ${myCommentList}">
+                    <div class="portfolio-wrap">
+                        <figure>
+                            <a class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                               href="assets/img/portfolio/portfolio-2.jpg" th:href="@{'/quest/' + ${quest.questUrl}}"
+                               title="Preview"><i class="bx bx-plus"></i></a>
+                            <a class="link-details" href="portfolio-details.html" title="More Details"><i
+                                    class="bx bx-link"></i></a>
+                        </figure>
+                        <div class="portfolio-info">
+                            <h4 th:text="${quest.questTitle}"></h4>
+                            <p th:text="${quest.questIntroduce}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+
+</body>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+</html>

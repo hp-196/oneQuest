@@ -1,9 +1,9 @@
 package com.oneqst.quest.repository.query;
 
-import com.oneqst.quest.domain.Comment;
+import com.oneqst.quest.dto.MyCommentDto;
 
 import java.util.List;
 
 public interface CommentRepositoryCustom {
-    public List<Comment> myComment(Long memberId);
+    public List<MyCommentDto> myComment(Long memberId);
 }

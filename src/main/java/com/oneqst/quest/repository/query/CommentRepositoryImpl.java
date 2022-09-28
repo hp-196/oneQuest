@@ -1,6 +1,7 @@
 package com.oneqst.quest.repository.query;
 
-import com.oneqst.quest.domain.Comment;
+import com.oneqst.quest.dto.MyCommentDto;
+import com.oneqst.quest.dto.QMyCommentDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 import static com.oneqst.Member.domain.QMember.member;
 import static com.oneqst.quest.domain.QComment.comment;
+import static com.oneqst.quest.domain.QQuest.quest;
 
 public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -18,9 +20,14 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     }
 
     @Override
-    public List<Comment> myComment(Long memberId) {
+    public List<MyCommentDto> myComment(Long memberId) {
         return queryFactory
-                .selectFrom(comment)
+                .select(new QMyCommentDto(
+                        quest.questTitle,
+                        comment.writer.nickname,
+                        comment.content,
+                        comment.postTime))
+                .from(comment)
                 .join(comment.writer, member).fetchJoin()
                 .where(
                         writerEq(memberId)
