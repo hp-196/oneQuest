@@ -23,9 +23,9 @@
                     <span th:text="${#temporals.format(notice.getNoticeTime(), 'MM-dd')}">알림날짜</span> <a th:href="@{'/notice/' + ${notice.getId()} + '/delete'}"><p style="float:right;">X</p></a>
                 <a href="#about" th:href="@{${notice.getUrl()}}">
                 <div class="content">
-                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}" th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()} 님으로 부터 댓글이 달렸습니다|"></h3>
-                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_INVITE}" th:text="|${notice.getByMember()} 님으로 부터 ${notice.getTitle()} 퀘스트 초대를 받았습니다|"></h3>
-                    <p th:text="${notice.getContent()}">?</p>
+                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}" th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()}님의 댓글이 달렸습니다|"></h3>
+                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_INVITE}" th:text="|${notice.getByMember()}님의 ${notice.getTitle()} 퀘스트 초대를 받았습니다|"></h3>
+                    <p th:text="${notice.getContent()}"></p>
                 </div>
                 </a>
             </li>
@@ -35,7 +35,7 @@
 </main>
 
 <div th:replace="fragments.html :: footer"></div>
-
+<script th:replace="fragments.html :: timeFormat"></script>
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

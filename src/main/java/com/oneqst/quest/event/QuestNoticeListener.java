@@ -63,6 +63,7 @@ public class QuestNoticeListener {
         notice.setMember(member); //초대받은 멤버
         notice.setByMember(inviteNotice.getMember().getNickname()); //초대한 멤버
         notice.setTitle(inviteNotice.getQuest().getQuestTitle()); //퀘스트 제목
+        notice.setContent("링크를 클릭하면 가입이 완료됩니다.");
         notice.setUrl("/quest/"+inviteNotice.getQuest().getQuestUrl()+"/join");
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
