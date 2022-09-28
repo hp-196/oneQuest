@@ -267,19 +267,5 @@
 </body>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
-<script type="application/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-
-        moment.locale('ko');
-        $(".time").text(function (index, dateTime) {
-            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('MMMM Do, h:mm');
-        });
-        $(".yearDateTime").text(function (index, dateTime) {
-            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LL h:mm');
-        });
-
-    })
-</script>
+<script th:replace="fragments.html :: timeFormat"></script>
 </html>
