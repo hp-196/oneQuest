@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -70,12 +71,26 @@ public class AuthService {
         return newScore;
     }
 
-    public int countScore(List<Score> scoreList, Member member, int a) {
-        for (Score score : scoreList) {
-            if (score.getMember().equals(member)) {
-                a+=score.getScore();
+    /**
+     * 인증 포스팅 점수 계산
+     */
+    public List<Map.Entry<Member, Integer>> countScore(List<Score> scoreList , List<Member> memberList) {
+
+        Map<Member,Integer> rating = new HashMap<>();
+        for (Member member : memberList) {
+            int i=0;
+            for (Score score : scoreList) {
+                if (member.equals(score.getMember())) {
+                    i+=5;
+                }
             }
+            rating.put(member,i);
         }
-        return a;
+        List<Map.Entry<Member,Integer>> list = new ArrayList<>(rating.entrySet());
+        list.sort(((o1, o2) -> rating.get(o2.getKey()) - rating.get(o1.getKey())));
+
+        return list;
     }
+
+
 }

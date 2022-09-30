@@ -211,37 +211,18 @@
                                              </tr>
                                              </thead>
                                              <tbody>
-                                             <tr>
+                                             <tr th:each="score : ${scoreMap}">
                                                  <th scope="row">1</th>
                                                  <td>
+                                                     <a href="#about" th:href="@{'/profile/' + ${score.key.nickname}}">
                                                      <span>
-                                                      <img src="/assets/img/노을.jpg" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                      <span class="badge bg-primary">차광욱</span>
+                                                      <img th:if="${#strings.isEmpty(score.key.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                        <img th:if="${!#strings.isEmpty(score.key.profileImage)}" th:src="${score.key.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                      <span th:text="${score.key.nickname}" class="badge bg-primary">차광욱</span>
                                                      </span>
+                                                     </a>
                                                  </td>
-                                                 <td>15</td>
-                                             </tr>
-                                             <tr>
-                                                 <th scope="row">2</th>
-                                                 <td>
-                                                     <span>
-                                                      <img src="/assets/img/사진작가.jpg" alt="Profile" class="rounded-circle"
-                                                           style="width: 30px; height: 30px">
-                                                      <span class="badge bg-primary">hp196</span>
-                                                     </span>
-                                                 </td>
-                                                 <td>10</td>
-                                             </tr>
-                                             <tr>
-                                                 <th scope="row">3</th>
-                                                 <td>
-                                                     <span>
-                                                      <img src="/assets/img/인사.jpg" alt="Profile" class="rounded-circle"
-                                                           style="width: 30px; height: 30px">
-                                                      <span class="badge bg-primary">hello</span>
-                                                     </span>
-                                                 </td>
-                                                 <td>5</td>
+                                                 <td th:text="${score.value}">점수</td>
                                              </tr>
 
                                              </tbody>
@@ -252,7 +233,7 @@
                                  </div>
                                  <div>
                                      <p>나의 점수는?</p>
-                                     <p th:text="${score}"></p>
+                                     <p>점수</p>
                                  </div>
                              </div>
                          </div><!-- End Default Tabs -->
