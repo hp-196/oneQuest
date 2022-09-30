@@ -243,7 +243,6 @@ public class QuestController {
     public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         QuestPost questPost = questPostRepository.getById(id);
         questService.deleteQuestPost(questPost);
-//        member.removePost(questPost);
         return "redirect:/quest/" + url;
     }
 

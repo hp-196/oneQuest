@@ -130,10 +130,16 @@ public class QuestService {
      * 퀘스트 탈퇴
      */
     public void questWithdraw(Quest quest, Member member) {
+        deleteAllQuestPost(member);
         quest.questWithdraw(member);
         if (quest.getQuestMaster().size() + quest.getQuestMember().size() == 0) {
             deleteQuest(quest);
         }
+    }
+
+    private void deleteAllQuestPost(Member member) {
+        List<QuestPost> questPostList = questPostRepository.findByWriter(member);
+        questPostRepository.deleteAll(questPostList);
     }
 
     /**
