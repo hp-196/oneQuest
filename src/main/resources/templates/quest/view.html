@@ -186,7 +186,7 @@
                                                   th:src="${authpost.postImage}" alt="Profile"
                                                   style="width: 100px; height: 100px">
                                              <p th:text="${authpost.content}">컨텐트</p>
-                                             <button class="btn btn-outline-success">
+                                             <button class="btn btn-outline-success" th:if="${!authpost.isConfirm()}">
                                                  <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/' + ${authpost.id} + '/score'}">인증완료</a>
                                              </button>
                                          </a>

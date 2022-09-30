@@ -22,6 +22,9 @@ public class ScoreController {
     private final AuthPostRepository authPostRepository;
     private final AuthService authService;
 
+    /**
+     * 인증 점수 적립
+     */
     @GetMapping("/quest/{url}/auth/{id}/score")
     public String getScore(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         AuthPost authPost = authPostRepository.getById(id);

@@ -37,6 +37,7 @@ public class AuthService {
                 .postImage(authPostDto.getPostImage())
                 .writer(member)
                 .quest(quest)
+                .confirm(false)
                 .build();
         AuthPost newAuthPost = authPostRepository.save(authPost);
         return newAuthPost;
