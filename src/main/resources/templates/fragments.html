@@ -95,20 +95,21 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle">
             <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle">
-            <span th:text="${#authentication.name}" class="d-none d-md-block dropdown-toggle ps-2"></span>
+            <span th:text="${member.nickname}" class="d-none d-md-block dropdown-toggle ps-2"></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6 th:text="${#authentication.name}"></h6>
-              <span th:text="${#authentication.name}">학생</span>
+              <h6 th:text="${member.nickname}"></h6>
+<!--              <h6 th:text="${#authentication.name}"></h6>-->
+              <span th:text="${member.job}">학생</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" th:href="@{'/profile/' + ${#authentication.name}}">
+              <a class="dropdown-item d-flex align-items-center" th:href="@{'/profile/' + ${member.nickname}}">
                 <i class="bi bi-person"></i>
                 <span>마이 프로필</span>
               </a>
@@ -156,7 +157,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a sec:authorize="isAuthenticated()" class="nav-link " th:href="@{'/profile/' + ${#authentication.name}}">
+        <a sec:authorize="isAuthenticated()" class="nav-link " th:href="@{'/profile/' + ${member.nickname}}">
           <i class="bi bi-person"></i>
           <span>마이 프로필</span>
         </a>
