@@ -9,7 +9,9 @@
 <main id="main" class="main">
 
     <div class="card mb-2 text-align">
+        <a href="#" th:href="@{'/quest/' + ${quest.questUrl}}">
         <h4 class="mt-2" th:text="${quest.questTitle}"></h4>
+        </a>
     </div>
 
     <div class="card mb-2">

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -31,6 +32,7 @@ public class IndexController {
             log.info("멤버가 없어서 로그인페이지 리다이렉트");
             return "login";
         }
+        model.addAttribute("member",member);
         model.addAttribute("questList", questRepository.my_quests(member.getId()));
         model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
         return "index";
@@ -64,6 +66,31 @@ public class IndexController {
                     .questEndTime(LocalDate.now().minusDays(1))
                     .questUrl("url"+String.valueOf(random.nextInt(5000)))
                     .build();
+            questRepository.save(quest);
+        }
+        return "redirect:/";
+    }
+
+    /**
+     * 퀘스트 3개 추가
+     */
+    @GetMapping("/three")
+    public String addThree(@CurrentUser Member member) {
+        Random random = new Random();
+        //진행중 퀘스트
+        for (int i=0; i<3; i++) {
+            Quest quest = Quest.builder()
+                    .questTitle("hello" + random.nextInt(5000))
+                    .questIntroduce("now is run")
+                    .questExplain("explain")
+                    .questStartTime(LocalDate.now().minusDays(3))
+                    .questEndTime(LocalDate.now().plusDays(random.nextInt(50)))
+                    .questUrl("url"+String.valueOf(random.nextInt(5000)))
+                    .questMaster(new ArrayList<>())
+                    .questMember(new ArrayList<>())
+                    .build();
+            quest.addQuestMaster(member);
+            quest.addQuestMember(member);
             questRepository.save(quest);
         }
         return "redirect:/";
