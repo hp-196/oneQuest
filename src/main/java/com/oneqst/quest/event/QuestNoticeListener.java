@@ -70,4 +70,21 @@ public class QuestNoticeListener {
         notice.setNoticeType(NoticeType.QUEST_INVITE);
         noticeRepository.save(notice);
     }
+
+    /**
+     * 인증 포스팅 알림
+     */
+    @EventListener
+    public void scoreEvent(ScoreNotice scoreNotice) {
+        Notice notice = new Notice();
+        notice.setNoticeTime(LocalDateTime.now());
+        notice.setMember(scoreNotice.getAuthPost().getWriter());
+        notice.setChecked(false);
+        notice.setTitle(scoreNotice.getAuthPost().getTitle());
+        notice.setContent("링크를 클릭하면 해당 게시글로 이동합니다.");
+        notice.setByMember(scoreNotice.getMember().getNickname());
+        notice.setUrl("/quest/"+scoreNotice.getQuest().getQuestUrl()+"/auth/post/"+scoreNotice.getAuthPost().getId());
+        notice.setNoticeType(NoticeType.QUEST_AUTH);
+        noticeRepository.save(notice);
+    }
 }

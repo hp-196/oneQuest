@@ -29,7 +29,7 @@ public class ScoreController {
     public String getScore(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         AuthPost authPost = authPostRepository.getById(id);
         Quest quest = questRepository.findByQuestUrl(url);
-        authService.plusScore(member, authPost, quest, 5);
+        authService.plusScore(authPost.getWriter(), authPost, quest, 5);
         return "redirect:/quest/" + url;
     }
 }

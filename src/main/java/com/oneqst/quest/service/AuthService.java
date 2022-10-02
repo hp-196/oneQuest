@@ -6,16 +6,17 @@ import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.Score;
 import com.oneqst.quest.dto.AuthPostDto;
 import com.oneqst.quest.dto.AuthPostUpdateDto;
+import com.oneqst.quest.event.ScoreNotice;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,6 +26,7 @@ public class AuthService {
 
     private final AuthPostRepository authPostRepository;
     private final ScoreRepository scoreRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 인증 포스팅 생성
@@ -60,6 +62,9 @@ public class AuthService {
         authPostRepository.delete(authPost);
     }
 
+    /**
+     * 인증 포스팅 점수 추가
+     */
     public Score plusScore(Member member, AuthPost authPost, Quest quest, int sc) {
         Score score = Score.builder()
                 .member(member)
@@ -69,11 +74,12 @@ public class AuthService {
                 .build();
         Score newScore = scoreRepository.save(score);
         authPost.setConfirm(true);
+        eventPublisher.publishEvent(new ScoreNotice(member,authPost,quest,sc));
         return newScore;
     }
 
     /**
-     * 인증 포스팅 점수 계산
+     * 랭킹 뷰 점수 계산
      */
     public List<Map.Entry<Member, Integer>> countScore(List<Score> scoreList , List<Member> memberList) {
 
