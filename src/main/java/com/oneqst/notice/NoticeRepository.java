@@ -11,5 +11,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
     List<Notice> findByMemberAndCheckedOrderByNoticeTimeDesc(Member member, boolean checked);
 
-    Long countByCheckedAndMember(boolean checked, Member member);
+    List<Notice> findByMemberOrderByNoticeTimeDesc(Member member);
+
+    int countByCheckedAndMember(boolean checked, Member member);
 }

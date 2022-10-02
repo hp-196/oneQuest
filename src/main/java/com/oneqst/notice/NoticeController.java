@@ -17,12 +17,13 @@ import java.util.List;
 public class NoticeController {
 
     private final NoticeRepository noticeRepository;
+    private final NoticeService noticeService;
 
     @GetMapping("/notice")
     public String showNotice(@CurrentUser Member member, Model model) {
-        List<Notice> noticeList = noticeRepository.findByMemberAndCheckedOrderByNoticeTimeDesc(member, false);
+        List<Notice> allNotice = noticeRepository.findByMemberOrderByNoticeTimeDesc(member);
         model.addAttribute(member);
-        model.addAttribute("noticeList", noticeList);
+        model.addAttribute("allNotice", allNotice);
         model.addAttribute("newNoticeCount", noticeRepository.countByCheckedAndMember(false, member));
         return "notice/noticeList";
     }
@@ -32,5 +33,12 @@ public class NoticeController {
         Notice notice = noticeRepository.getById(id);
         noticeRepository.delete(notice);
         return "redirect:/notice";
+    }
+
+    @GetMapping("/notice/read/{id}")
+    public String readOneNotice(@PathVariable Long id) {
+        Notice notice = noticeRepository.getById(id);
+        noticeService.readOne(notice);
+        return "redirect:" + notice.getUrl();
     }
 }

@@ -77,7 +77,7 @@
             <li th:each="notice : ${noticeList}" class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
               <div>
-                <a th:href="@{${notice.getUrl()}}">
+                <a th:href="@{'/notice/read/' + ${notice.id}}">
                 <h4 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}" th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()}님의 댓글이 달렸습니다|"></h4>
                 <h4 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_INVITE}" th:text="|${notice.getByMember()}님의 ${notice.getTitle()} 퀘스트 초대를 받았습니다|"></h4>
                 <p th:text="${notice.getContent()}"></p>

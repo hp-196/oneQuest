@@ -1340,14 +1340,12 @@ h1, h2, h3, h4, h5, h6 {
   text-align:center;
 }
 .timeline ul li .content h3{
-  color:black;
   font-size:17px;
   padding-top:5px;
 }
 .timeline ul li .content p{
   padding:5px 0px 15px 0px;
   font-size:15px;
-  color:black;
 }
 .timeline ul li:before{
   position:absolute;
@@ -1377,4 +1375,8 @@ h1, h2, h3, h4, h5, h6 {
     color:#34ace0;
     font-size:15px;
   }
+}
+
+.notice {
+  color: rgb(180,180,180);
 }
