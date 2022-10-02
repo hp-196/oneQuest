@@ -205,24 +205,24 @@
                                          <table class="table table-striped">
                                              <thead>
                                              <tr>
-                                                 <th scope="col">#</th>
+                                                 <th scope="col">순위</th>
                                                  <th scope="col">닉네임</th>
                                                  <th scope="col">점수</th>
                                              </tr>
                                              </thead>
                                              <tbody>
-                                             <tr th:each="score : ${scoreMap}">
-                                                 <th scope="row">1</th>
+                                             <tr th:each="num : ${#numbers.sequence(0,scoreMap.size()-1)}">
+                                                 <th scope="row" th:text="${num+1}">순위</th>
                                                  <td>
-                                                     <a href="#about" th:href="@{'/profile/' + ${score.key.nickname}}">
+                                                     <a href="#about" th:href="@{'/profile/' + ${scoreMap[num].key.nickname}}">
                                                      <span>
-                                                      <img th:if="${#strings.isEmpty(score.key.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                        <img th:if="${!#strings.isEmpty(score.key.profileImage)}" th:src="${score.key.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                      <span th:text="${score.key.nickname}" class="badge bg-primary">차광욱</span>
+                                                      <img th:if="${#strings.isEmpty(scoreMap[num].key.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                        <img th:if="${!#strings.isEmpty(scoreMap[num].key.profileImage)}" th:src="${scoreMap[num].key.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                                      <span th:text="${scoreMap[num].key.nickname}" class="badge bg-primary">차광욱</span>
                                                      </span>
                                                      </a>
                                                  </td>
-                                                 <td th:text="${score.value}">점수</td>
+                                                 <td th:text="${scoreMap[num].value}">점수</td>
                                              </tr>
 
                                              </tbody>
