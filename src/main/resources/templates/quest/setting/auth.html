@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head">
+</head>
+<body>
+
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar-quest"></div>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1 th:text="${quest.questTitle}">퀘스트 제목</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body pt-3">
+
+                    <!-- 보드 탭 -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item">
+                            <a class="nav-link active"  href="charts-echarts.html">회원관리</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"  href="charts-echarts.html">추가예정</a>
+                        </li>
+                    </ul>
+
+                    <!-- 회원관리 탭 -->
+                    <div class="tab-content pt-2">
+                        <div>
+                            <h5 class="card-title">About</h5>
+                            <p class="small fst-italic">Sunt orsquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+
+                            <h5 class="card-title">Profile Details</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Company</div>
+                                <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Job</div>
+                                <div class="col-lg-9 col-md-8">Web Designer</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Country</div>
+                                <div class="col-lg-9 col-md-8">USA</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Address</div>
+                                <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Phone</div>
+                                <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Email</div>
+                                <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+<script th:replace="fragments.html :: timeFormat"></script>
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+</body>
+</html>
