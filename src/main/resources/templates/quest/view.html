@@ -115,7 +115,7 @@
                                  </button>
 
                                  <button sec:authorize="isAuthenticated()"
-                                         th:if="${quest.questMaster == member.nickname && quest.isMember(#authentication.principal)}"
+                                         th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}"
                                          class="btn btn-success mt-3 mb-3">
                                      <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}"
                                         class="btn-quest-view-a">공지사항 포스팅하기</a>
