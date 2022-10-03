@@ -32,13 +32,14 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                         comment.content,
                         comment.postTime))
                 .from(quest, questPost, comment)
-                .distinct()
                 .join(quest.questMember, member)
                 .join(questPost.quest, quest)
                 .join(comment.post, questPost)
                 .where(
                         writerEq(memberId)
-                ).fetch();
+                )
+                .distinct()
+                .fetch();
     }
 
     public static BooleanExpression writerEq(Long memberId) {

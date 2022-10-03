@@ -134,5 +134,7 @@ public class QuestService {
         questRepository.delete(quest);
     }
 
-
+    public List<MyQuestPostDto> myQuestPostLookup(Long memberId) {
+        return questPostRepository.myQuestPost(memberId);
+    }
 }

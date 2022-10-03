@@ -257,4 +257,14 @@ public class QuestController {
         QuestPost questPost = questService.questNoticePost(questPostDto, quest, member);
         return "redirect:/quest/" + quest.getQuestUrl() + "/post/" + questPost.getId();
     }
+
+    /**
+     * 자신의 퀘스트 포스트 조회
+     */
+    @GetMapping("/my-quest-post")
+    public String myQuestPostLookup(@CurrentUser Member member, Model model) {
+        List<MyQuestPostDto> result = questService.myQuestPostLookup(member.getId());
+        model.addAttribute("myQuestPostList", result);
+        return "my-quest-post";
+    }
 }
