@@ -43,7 +43,8 @@ public class CommentController {
             log.info("댓글 작성 실패");
             return "redirect:/quest/" + url + "/post/" + id;
         }
-        QuestPost questPost = questPostRepository.getOne(id);
+//        QuestPost questPost = questPostRepository.getOne(id);
+        QuestPost questPost = questPostRepository.getById(id);
         commentService.commentPost(member, questPost, commentDto);
         return "redirect:/quest/" + url + "/post/" + id;
     }

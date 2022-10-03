@@ -44,4 +44,8 @@ public class AuthPost {
 
     @OneToMany(mappedBy = "authPost", cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
+
+    public boolean isConfirm() {
+        return this.confirm;
+    }
 }

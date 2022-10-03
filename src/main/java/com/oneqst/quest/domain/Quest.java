@@ -54,6 +54,11 @@ public class Quest {
     @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
     private List<QuestPost> questPostList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
+    private List<AuthPost> authPostList = new ArrayList<>();
+
+
+
 
     /*********************** 연관관계 편의 메소드 **********************/
 

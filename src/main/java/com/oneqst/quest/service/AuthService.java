@@ -6,10 +6,12 @@ import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.Score;
 import com.oneqst.quest.dto.AuthPostDto;
 import com.oneqst.quest.dto.AuthPostUpdateDto;
+import com.oneqst.quest.event.ScoreNotice;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class AuthService {
 
     private final AuthPostRepository authPostRepository;
     private final ScoreRepository scoreRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 인증 포스팅 생성
@@ -36,6 +39,7 @@ public class AuthService {
                 .postImage(authPostDto.getPostImage())
                 .writer(member)
                 .quest(quest)
+                .confirm(false)
                 .build();
         AuthPost newAuthPost = authPostRepository.save(authPost);
         return newAuthPost;
@@ -58,6 +62,9 @@ public class AuthService {
         authPostRepository.delete(authPost);
     }
 
+    /**
+     * 인증 포스팅 점수 추가
+     */
     public Score plusScore(Member member, AuthPost authPost, Quest quest, int sc) {
         Score score = Score.builder()
                 .member(member)
@@ -67,15 +74,30 @@ public class AuthService {
                 .build();
         Score newScore = scoreRepository.save(score);
         authPost.setConfirm(true);
+        eventPublisher.publishEvent(new ScoreNotice(member,authPost,quest,sc));
         return newScore;
     }
 
-    public int countScore(List<Score> scoreList, Member member, int a) {
-        for (Score score : scoreList) {
-            if (score.getMember().equals(member)) {
-                a+=score.getScore();
+    /**
+     * 랭킹 뷰 점수 계산
+     */
+    public List<Map.Entry<Member, Integer>> countScore(List<Score> scoreList , List<Member> memberList) {
+
+        Map<Member,Integer> rating = new HashMap<>();
+        for (Member member : memberList) {
+            int i=0;
+            for (Score score : scoreList) {
+                if (member.equals(score.getMember())) {
+                    i+=5;
+                }
             }
+            rating.put(member,i);
         }
-        return a;
+        List<Map.Entry<Member,Integer>> list = new ArrayList<>(rating.entrySet());
+        list.sort(((o1, o2) -> rating.get(o2.getKey()) - rating.get(o1.getKey())));
+
+        return list;
     }
+
+
 }

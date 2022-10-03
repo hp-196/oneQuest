@@ -9,7 +9,9 @@
 <main id="main" class="main">
 
     <div class="card mb-2 text-align">
+        <a href="#" th:href="@{'/quest/' + ${quest.questUrl}}">
         <h4 class="mt-2" th:text="${quest.questTitle}"></h4>
+        </a>
     </div>
 
     <div class="card mb-2">
@@ -124,19 +126,5 @@
 </body>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
-<script type="application/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-
-        moment.locale('ko');
-        $(".time").text(function (index, dateTime) {
-            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('MMMM Do, h:mm');
-        });
-        $(".yearDateTime").text(function (index, dateTime) {
-            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('L h:mm');
-        });
-
-    })
-</script>
+<script th:replace="fragments.html :: timeFormat"></script>
 </html>

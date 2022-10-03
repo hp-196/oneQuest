@@ -2,6 +2,7 @@ package com.oneqst.quest.controller;
 
 import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.*;
 import com.oneqst.quest.dto.*;
 import com.oneqst.quest.repository.AuthPostRepository;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -34,6 +36,7 @@ public class QuestController {
     private final QuestPostRepository questPostRepository;
     private final AuthPostRepository authPostRepository;
     private final ScoreRepository scoreRepository;
+    private final MemberRepository memberRepository;
     private final AuthService authService;
 
     /**
@@ -71,13 +74,15 @@ public class QuestController {
         List<QuestPost> questPostList = questPostRepository.findByQuest(quest);
         List<AuthPost> authPostList = authPostRepository.findByQuest(quest);
         List<Score> scoreList = scoreRepository.findByQuest(quest);
-        int score = authService.countScore(scoreList, member, 0);
+        List<Member> memberList = quest.getQuestMember();
+        List<Map.Entry<Member, Integer>> score = authService.countScore(scoreList, memberList);
         model.addAttribute(member);
         model.addAttribute(quest);
+        model.addAttribute(new InviteDto());
         model.addAttribute("questPostList", questPostList);
         model.addAttribute("authPostList", authPostList);
         model.addAttribute("scoreList", scoreList);
-        model.addAttribute("score",score);
+        model.addAttribute("scoreMap",score);
         return "quest/view";
 
     }
@@ -124,6 +129,20 @@ public class QuestController {
         model.addAttribute(member);
         model.addAttribute(quest);
         questService.addQuestMember(quest, member);
+        return "redirect:/quest/" + quest.getQuestUrl();
+    }
+
+    /**
+     * 퀘스트 멤버 초대
+     */
+    @PostMapping("/quest/{url}/invite")
+    public String inviteMember(@CurrentUser Member member, @Valid InviteDto inviteDto,
+                             @PathVariable String url, Errors errors) {
+        if (errors.hasErrors()) {
+            return "redirect:/quest/" + url;
+        }
+        Quest quest = questRepository.findByQuestUrl(url);
+        questService.inviteMember(inviteDto, member, quest);
         return "redirect:/quest/" + quest.getQuestUrl();
     }
 
@@ -224,7 +243,6 @@ public class QuestController {
     public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         QuestPost questPost = questPostRepository.getById(id);
         questService.deleteQuestPost(questPost);
-//        member.removePost(questPost);
         return "redirect:/quest/" + url;
     }
 
