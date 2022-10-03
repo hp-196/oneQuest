@@ -87,9 +87,10 @@ public class CommentController {
         return "redirect:/quest/" + url + "/auth/post/" + id;
     }
 
-    @GetMapping("/quest/myComment")
+    @GetMapping("/my-comment")
     public String myCommentLookup(@CurrentUser Member member, Model model) {
-        model.addAttribute("myCommentList", commentService.myCommentLookup(member.getId()));
+        Long memberId = member.getId();
+        model.addAttribute("myCommentList", commentService.myCommentLookup(memberId));
         return "my-comment";
     }
 }

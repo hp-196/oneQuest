@@ -16,17 +16,20 @@
                 <h2>자신의 댓글 목록</h2>
             </div>
 
-            <div class="row portfolio-container">
-                <div class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s"
-                        sec:authorize="isAuthenticated()" th:each="comment: ${myCommentList}">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4 th:text="${comment.getContent()}"></h4>
-                            <p th:text="${comment.getPostTime()}"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="row portfolio-container">-->
+<!--                <div class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s"-->
+<!--                        sec:authorize="isAuthenticated()" th:each="comment: ${myCommentList}">-->
+<!--                    <div class="portfolio-wrap">-->
+<!--                        <div class="portfolio-info">-->
+<!--                            <p th:text="${comment.getTitle()}"></p>-->
+<!--                            <p th:text="${comment.getPostTitle()}"></p>-->
+<!--                            <p th:text="${comment.getWriter()}"></p>-->
+<!--                            <p th:text="${comment.getContent()}"></p>-->
+<!--                            <p th:text="${comment.getPostTime()}"></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </section>
 </main>
