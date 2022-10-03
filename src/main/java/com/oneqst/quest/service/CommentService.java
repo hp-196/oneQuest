@@ -6,6 +6,7 @@ import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.CommentDto;
+import com.oneqst.quest.dto.MyCommentDto;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
@@ -82,5 +83,12 @@ public class CommentService {
      */
     public void deleteAuthComment(Comment comment) {
         commentRepository.delete(comment);
+    }
+
+    /**
+     * 자신의 전체 댓글 조회
+     */
+    public List<MyCommentDto> myCommentLookup(Long memberId) {
+        return commentRepository.myComment(memberId);
     }
 }

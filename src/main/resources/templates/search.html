@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+        xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments.html :: head"></head>
 <body>
 <div th:replace="fragments.html :: nav"></div>
@@ -30,16 +30,16 @@
 
             <div class="row portfolio-container">
                 <div sec:authorize="isAuthenticated()" th:each="quest: ${questList.getContent()}"
-                     th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'"
-                     class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
+                        th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'"
+                        class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
                             <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
                             <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
-                                 alt="Profile">
+                                    alt="Profile">
                             <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
-                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="Preview"><i class="bx bx-plus"></i></a>
+                                class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                                title="Preview"><i class="bx bx-plus"></i></a>
                             <a href="portfolio-details.html" class="link-details" title="More Details"><i
                                     class="bx bx-link"></i></a>
                         </figure>

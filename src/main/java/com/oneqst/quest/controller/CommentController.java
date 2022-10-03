@@ -6,6 +6,7 @@ import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.CommentDto;
+import com.oneqst.quest.dto.MyCommentDto;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
@@ -14,6 +15,7 @@ import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -52,7 +55,7 @@ public class CommentController {
      */
     @PostMapping("/quest/{url}/auth/post/{id}/comment")
     public String AuthCommentPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id,
-                                  @Valid CommentDto commentDto, Errors errors) {
+                                    @Valid CommentDto commentDto, Errors errors) {
         if (errors.hasErrors()) {
             log.info(String.valueOf(errors));
             log.info("댓글 작성 실패");
@@ -84,5 +87,12 @@ public class CommentController {
         Comment comment = questCommentRepository.getById(commentId);
         commentService.deleteAuthComment(comment);
         return "redirect:/quest/" + url + "/auth/post/" + id;
+    }
+
+    @GetMapping("/my-comment")
+    public String myCommentLookup(@CurrentUser Member member, Model model) {
+        List<MyCommentDto> result = commentService.myCommentLookup(member.getId());
+        model.addAttribute("myCommentList", result);
+        return "my-comment";
     }
 }
