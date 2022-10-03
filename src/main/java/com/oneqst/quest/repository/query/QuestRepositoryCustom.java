@@ -8,12 +8,13 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface QuestRepositoryCustom {
+    // 자신이 가입된 퀘스트
+    List<Quest> totalQuests(Long memberId);
 
-    // 모든 퀘스트
-    List<Quest> totalQuests();
+    // 자신이 관리자인 퀘스트
+    List<Quest> masterQuests(Long memberId);
 
-    // 자신이 포함된 퀘스트
-    List<Quest> myQuests(Long memberId);
+    List<Quest> memberQuests(Long memberId);
 
     // 자신이 포함되지 않은 퀘스트
     List<Quest> otherQuests(Long memberId);
