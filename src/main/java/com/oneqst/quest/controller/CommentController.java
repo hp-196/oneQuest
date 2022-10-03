@@ -6,6 +6,7 @@ import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.CommentDto;
+import com.oneqst.quest.dto.MyCommentDto;
 import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -89,8 +91,8 @@ public class CommentController {
 
     @GetMapping("/my-comment")
     public String myCommentLookup(@CurrentUser Member member, Model model) {
-        Long memberId = member.getId();
-        model.addAttribute("myCommentList", commentService.myCommentLookup(memberId));
+        List<MyCommentDto> result = commentService.myCommentLookup(member.getId());
+        model.addAttribute("myCommentList", result);
         return "my-comment";
     }
 }
