@@ -1,6 +1,5 @@
 package com.oneqst.quest.repository.query;
 
-import com.oneqst.quest.domain.QQuestPost;
 import com.oneqst.quest.dto.MyCommentDto;
 import com.oneqst.quest.dto.QMyCommentDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -12,8 +11,7 @@ import java.util.List;
 import static com.oneqst.Member.domain.QMember.member;
 import static com.oneqst.quest.domain.QComment.comment;
 import static com.oneqst.quest.domain.QQuest.quest;
-import static com.oneqst.quest.domain.QQuestPost.*;
-import static com.querydsl.jpa.JPAExpressions.select;
+import static com.oneqst.quest.domain.QQuestPost.questPost;
 
 public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory queryFactory;

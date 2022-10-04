@@ -92,6 +92,7 @@ public class CommentController {
     @GetMapping("/my-comment")
     public String myCommentLookup(@CurrentUser Member member, Model model) {
         List<MyCommentDto> result = commentService.myCommentLookup(member.getId());
+        model.addAttribute(member);
         model.addAttribute("myCommentList", result);
         return "my-comment";
     }
