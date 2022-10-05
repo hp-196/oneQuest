@@ -174,49 +174,49 @@
         <li class="nav-item" sec:authorize="!isAuthenticated()">
             <a class="nav-link collapsed" th:href="@{/sign-up}">
                 <i class="bi bi-card-list"></i>
-                <span>Sign In</span>
+                <span>회원가입</span>
             </a>
         </li><!-- 회원가입 사이드바 -->
 
         <li class="nav-item" sec:authorize="!isAuthenticated()">
             <a class="nav-link collapsed" th:href="@{/login}">
                 <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
+                <span>로그인</span>
             </a>
         </li><!-- 로그인 사이드 바 -->
 
         <li class="nav-item" sec:authorize="isAuthenticated()">
             <a class="nav-link collapsed" th:href="@{/new-quest}">
                 <i class="bi bi-question-square"></i>
-                <span>Quest Create</span>
+                <span>퀘스트 생성</span>
             </a>
         </li><!-- 퀘스트 생성 사이드 바 -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" th:href="@{/quest/master}">
                 <i class="bi bi-dash-circle"></i>
-                <span>Quest Master</span>
+                <span>관리자인 퀘스트</span>
             </a>
         </li><!-- 내가 관리자인 퀘스트 조회 -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" th:href="@{/quest/member}">
                 <i class="bi bi-file-earmark"></i>
-                <span>Quest Member</span>
+                <span>참여중인 퀘스트</span>
             </a>
         </li><!-- 참여한 퀘스트 조회 -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" th:href="@{/myPosts}">
                 <i class="bi bi-dash-circle"></i>
-                <span>My Posts</span>
+                <span>나의 포스팅</span>
             </a>
         </li><!-- 포스트 조회 사이드 바 -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" th:href="@{/myComments}">
                 <i class="bi bi-file-earmark"></i>
-                <span>My Comments</span>
+                <span>나의 댓글</span>
             </a>
         </li><!-- 댓글 조회 사이드 바 -->
     </ul>
