@@ -28,4 +28,14 @@ public class SettingService {
     public void relegation(Quest quest, Member manager) {
         quest.removeQuestMaster(manager);
     }
+
+    /**
+     * 모집여부 변경
+     */
+    public void recruitment(Quest quest) {
+        boolean questRecruitEnd = quest.isQuestRecruitEnd();
+        if (questRecruitEnd) {
+            quest.setQuestRecruitEnd(false);
+        } else quest.setQuestRecruitEnd(true);
+    }
 }

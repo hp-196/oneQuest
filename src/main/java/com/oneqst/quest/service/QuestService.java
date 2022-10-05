@@ -39,6 +39,7 @@ public class QuestService {
                 .questEndTime(questDto.getQuestEndTime())
                 .questUrl(questDto.getQuestUrl())
                 .questImage(questDto.getQuestImage())
+                .questRecruitEnd(true)
                 .questMember(new ArrayList<>())
                 .questMaster(new ArrayList<>())
                 .questHost(member)

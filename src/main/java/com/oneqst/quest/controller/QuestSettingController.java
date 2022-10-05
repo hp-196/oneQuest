@@ -9,6 +9,7 @@ import com.oneqst.quest.service.QuestService;
 import com.oneqst.quest.service.SettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class QuestSettingController {
     private final MemberRepository memberRepository;
 
     /**
-     * 퀘스트 설정
+     * 퀘스트 멤버 설정
      */
     @GetMapping("/quest/{url}/setting/auth")
     public String questSetting(@CurrentUser Member member, @PathVariable String url, Model model) {
@@ -37,6 +38,31 @@ public class QuestSettingController {
         model.addAttribute("masterList",quest.getQuestMaster());
         model.addAttribute("memberList",quest.getQuestMember());
         return "quest/setting/auth";
+    }
+
+    /**
+     * 모집 여부 설정
+     */
+    @GetMapping("/quest/{url}/setting/recruitment")
+    public String questRecruitment(@CurrentUser Member member, @PathVariable String url, Model model) {
+        Quest quest = questRepository.findByQuestUrl(url);
+        model.addAttribute(member);
+        model.addAttribute(quest);
+        return "quest/setting/recruitment";
+    }
+
+    /**
+     * 모집 여부 처리 url
+     */
+    @GetMapping("/quest/{url}/recruitment")
+    public String recruitmentOn(@CurrentUser Member member, @PathVariable String url) {
+        Quest quest = questRepository.findByQuestUrl(url);
+        if (!quest.isHostOrMaster(member)) {
+            return "redirect:/quest/" + url + "/setting/recruitment";
+        }
+        settingService.recruitment(quest);
+        return "redirect:/quest/" + url + "/setting/recruitment";
+
     }
 
     /**
