@@ -12,7 +12,9 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1 th:text="${quest.questTitle}">퀘스트 제목</h1>
+        <a href="#" th:href="@{'/quest/' + ${quest.questUrl}}">
+            <h1 th:text="${quest.questTitle}">퀘스트 제목</h1>
+        </a>
     </div>
 
     <div class="row">
@@ -23,11 +25,11 @@
                     <!-- 보드 탭 -->
                     <ul class="nav nav-tabs nav-tabs-bordered">
                         <li class="nav-item">
-                            <a class="nav-link active" href="charts-echarts.html">회원관리</a>
+                            <a class="nav-link active" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">회원관리</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="charts-echarts.html">추가예정</a>
+                            <a class="nav-link" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/recruitment'}">모집설정</a>
                         </li>
                     </ul>
 
