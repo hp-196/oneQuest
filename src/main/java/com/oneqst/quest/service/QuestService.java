@@ -156,4 +156,22 @@ public class QuestService {
         eventPublisher.publishEvent(new InviteNotice(inviteDto, member, quest));
         return true;
     }
+
+    /**
+     * 해당 유저가 관리자인 퀘스트를 조회
+     * @param memberId  유저의 id
+     * @return  해당 유저가 관리자인 퀘스트 목록
+     */
+    public List<Quest> masterQuestLookup(Long memberId) {
+        return questRepository.questMaster(memberId);
+    }
+
+    /**
+     * 해당 유저가 참여한 퀘스트를 조회
+     * @param memberId  유저의 id
+     * @return  해당 유저가 참여한 퀘스트 목록
+     */
+    public List<Quest> memberQuestLookup(Long memberId) {
+        return questRepository.questMember(memberId);
+    }
 }

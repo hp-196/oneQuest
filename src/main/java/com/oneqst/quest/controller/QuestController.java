@@ -276,5 +276,29 @@ public class QuestController {
         return "redirect:/quest/" + quest.getQuestUrl() + "/post/" + questPost.getId();
     }
 
+    /**
+     * 해당 유저가 관리자인 퀘스트를 조회
+     * @param member    유저
+     * @param model 퀘스트 목록
+     * @return  master.html
+     */
+    @GetMapping("/quest/master")
+    public String questMasterLookup(@CurrentUser Member member, Model model) {
+        model.addAttribute(member);
+        model.addAttribute("questList", questRepository.questMaster(member.getId()));
+        return "quest/master";
+    }
 
+    /**
+     * 해당 유저가 참여중인 퀘스트를 조회
+     * @param member    유저
+     * @param model 퀘스트 목록
+     * @return  member.html
+     */
+    @GetMapping("/quest/member")
+    public String questMemberLookup(@CurrentUser Member member, Model model) {
+        model.addAttribute(member);
+        model.addAttribute("questList", questRepository.questMember(member.getId()));
+        return "quest/member";
+    }
 }

@@ -23,13 +23,8 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public static BooleanExpression title_contains(String title) {
+    public static BooleanExpression titleContains(String title) {
         return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
-    }
-
-    @Override
-    public List<Quest> totalQuests() {
-        return null;
     }
 
     @Override
@@ -58,8 +53,26 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .join(quest.questMember, member).fetchJoin()
                 .where(
                         member.id.eq(memberId),
-                        title_contains(title)
+                        titleContains(title)
                 )
+                .fetch();
+    }
+
+    @Override
+    public List<Quest> questMaster(Long memberId) {
+        return queryFactory
+                .selectFrom(quest)
+                .join(quest.questMaster, member).fetchJoin()
+                .where(member.id.eq(memberId))
+                .fetch();
+    }
+
+    @Override
+    public List<Quest> questMember(Long memberId) {
+        return queryFactory
+                .selectFrom(quest)
+                .join(quest.questMaster, member).fetchJoin()
+                .where(member.id.eq(memberId))
                 .fetch();
     }
 

@@ -9,9 +9,6 @@ import java.util.List;
 
 public interface QuestRepositoryCustom {
 
-    // 모든 퀘스트
-    List<Quest> totalQuests();
-
     // 자신이 포함된 퀘스트
     List<Quest> myQuests(Long memberId);
 
@@ -20,6 +17,20 @@ public interface QuestRepositoryCustom {
 
     // 검색
     List<Quest> search(Long memberId, String title);
+
+    /**
+     * 해당 유저가 관리자인 퀘스트 조회
+     * @param memberId  유저의 id
+     * @return  해당 유저가 관리자인 퀘스트 목록
+     */
+    List<Quest> questMaster(Long memberId);
+
+    /**
+     * 해당 유저가 참여한 퀘스트 조회
+     * @param memberId  유저의 id
+     * @return  해당 유저가 참여한 퀘스트 목록
+     */
+    List<Quest> questMember(Long memberId);
 
     //페이징 검색
     Page<Quest> searchPaging(Member member, String title, Pageable pageable);
