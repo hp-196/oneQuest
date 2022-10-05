@@ -273,7 +273,7 @@
         </li><!-- End Blank Page Nav -->
 
         <li class="nav-item" sec:authorize="isAuthenticated()"
-            th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
+            th:if="${quest.isHostOrMaster(member) && quest.isMember(#authentication.principal)}">
             <a class="nav-link collapsed" href="#home" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">
                 <i class="bi bi-gear"></i>
                 <span>퀘스트 설정</span>

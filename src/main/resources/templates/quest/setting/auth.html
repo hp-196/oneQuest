@@ -34,45 +34,65 @@
                     <!-- 회원관리 탭 -->
                     <div class="tab-content pt-2">
                         <div>
-                            <h5 class="card-title">About</h5>
-                            <p class="small fst-italic">Sunt orsquam autem eveniet perspiciatis odit. Fuga sequi sed ea
-                                saepe at unde.</p>
+                            <!-- 호스트 -->
+                            <h5 class="card-title">호스트</h5>
+                            <p class="small fst-italic">퀘스트의 주인입니다.</p>
+                            <a href="#about" th:href="@{'/profile/' + ${quest.getQuestHost().nickname}}">
+                                <span>
+                                    <img th:if="${#strings.isEmpty(quest.getQuestHost().profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                    <img th:if="${!#strings.isEmpty(quest.getQuestHost().profileImage)}" th:src="${quest.getQuestHost().profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                <span class="badge bg-danger" th:text="${quest.getQuestHost().nickname}"></span>
+                                </span>
+                            </a>
 
-                            <h5 class="card-title">Profile Details</h5>
+                            <!-- 매니저 리스트 -->
+                            <h5 class="card-title">매니저</h5>
+                            <p class="small fst-italic">매니저는 퀘스트 인증 및 공지사항, 회원을 관리할 수 있습니다.</p>
 
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                            <div class="row" th:each="manager: ${masterList}">
+                                <div class="col-lg-3 col-md-4 label mb-2">
+                                    <a href="#about" th:href="@{'/profile/' + ${manager.getNickname()}}">
+                                <span>
+                                    <img th:if="${#strings.isEmpty(manager.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                    <img th:if="${!#strings.isEmpty(manager.profileImage)}" th:src="${manager.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                <span class="badge bg-success" th:text="${manager.nickname}"></span>
+                                </span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-9 col-md-8 mb-2">
+                                    <div class="dropdown" th:if="${quest.questHost.equals(member)}">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                            <li><a class="dropdown-item" th:href="@{'/quest/' + ${quest.questUrl} + '/relegation/member/' + ${manager.nickname}}">회원으로 강등</a></li>
+                                            <li><a class="dropdown-item" th:href="@{'/quest/' + ${quest.questUrl} + '/exile/' + ${manager.nickname}}">추방</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Company</div>
-                                <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-                            </div>
+                            <!-- 회원 리스트 -->
+                            <h5 class="card-title">회원</h5>
+                            <p class="small fst-italic">관리자는 악성 회원을 추방시킬수 있습니다. 추방에 조심해주세요.</p>
 
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Job</div>
-                                <div class="col-lg-9 col-md-8">Web Designer</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Country</div>
-                                <div class="col-lg-9 col-md-8">USA</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Address</div>
-                                <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Phone</div>
-                                <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Email</div>
-                                <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                            <div class="row" th:each="user: ${memberList}" th:if="${!quest.isHostOrMaster(user)}">
+                                <div class="col-lg-3 col-md-4 label mb-2">
+                                    <a href="#about" th:href="@{'/profile/' + ${user.getNickname()}}">
+                                <span>
+                                    <img th:if="${#strings.isEmpty(user.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                    <img th:if="${!#strings.isEmpty(user.profileImage)}" th:src="${user.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                                <span class="badge bg-primary" th:text="${user.nickname}"></span>
+                                </span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-9 col-md-8 mb-2">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                            <li><a class="dropdown-item" th:href="@{'/quest/' + ${quest.questUrl} + '/add/manager/' + ${user.nickname}}">매니저로 승격</a></li>
+                                            <li><a class="dropdown-item" th:href="@{'/quest/' + ${quest.questUrl} + '/exile/' + ${user.nickname}}">추방</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>

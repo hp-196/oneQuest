@@ -4,65 +4,7 @@
 <head th:replace="fragments.html :: head"></head>
 <body>
 <div th:replace="fragments.html :: nav"></div>
-<aside th:fragment="sidebar-quest" id="sidebar-quest" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-        <li class="nav-heading">Pages</li>
-
-        <li class="nav-item">
-            <a sec:authorize="isAuthenticated()" class="nav-link " th:href="@{'/profile/' + ${member.nickname}}">
-                <i class="bi bi-person"></i>
-                <span>마이 프로필</span>
-            </a>
-        </li><!-- 프로필 사이드 바 -->
-
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="nav-link collapsed" th:href="@{/sign-up}">
-                <i class="bi bi-card-list"></i>
-                <span>회원 가입</span>
-            </a>
-        </li><!-- 회원가입 사이드바 -->
-
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="nav-link collapsed" th:href="@{/login}">
-                <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
-            </a>
-        </li><!-- 로그인 사이드 바 -->
-
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a class="nav-link collapsed" th:href="@{/new-quest}">
-                <i class="bi bi-question-square"></i>
-                <span>퀘스트 생성</span>
-            </a>
-        </li><!-- 퀘스트 생성 사이드 바 -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-error-404.html">
-                <i class="bi bi-dash-circle"></i>
-                <span>내가 쓴 글</span>
-            </a>
-        </li><!-- End Error 404 Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-blank.html">
-                <i class="bi bi-file-earmark"></i>
-                <span>내가 쓴 댓글</span>
-            </a>
-        </li><!-- End Blank Page Nav -->
-
-        <li class="nav-item" sec:authorize="isAuthenticated()"
-            th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
-            <a class="nav-link collapsed" href="#home" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">
-                <i class="bi bi-gear"></i>
-                <span>퀘스트 설정</span>
-            </a>
-        </li><!-- 퀘스트 설정창 -->
-
-    </ul>
-
-</aside>
+<div th:replace="fragments.html :: sidebar-quest"></div>
 
 <!-- 퀘스트 배너 -->
 <div class="hero">
@@ -116,6 +58,17 @@
         <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
             <div class="card-body">
                 <h5 class="card-title">회원목록</h5>
+                <span>호스트 : </span>
+                <a href="#about" th:href="@{'/profile/' + ${quest.getQuestHost().getNickname()}}">
+              <span>
+                  <img th:if="${#strings.isEmpty(quest.getQuestHost().profileImage)}" src="/assets/img/logo.png" alt="Profile"
+                       class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${!#strings.isEmpty(quest.getQuestHost().profileImage)}" th:src="${quest.getQuestHost().profileImage}" alt="Profile"
+                       class="rounded-circle" style="width: 30px; height: 30px">
+                  <span class="badge bg-danger" th:text="${quest.getQuestHost().nickname}"></span>
+              </span>
+                </a>
+                <p></p>
                 <span>관리자 : </span>
                 <a href="#about" th:each="member: ${quest.questMaster}"
                    th:href="@{'/profile/' + ${member.getNickname()}}">
@@ -130,7 +83,7 @@
                 <p></p>
                 <span>회원 : </span>
                 <a href="#about" th:each="member: ${quest.questMember}"
-                   th:href="@{'/profile/' + ${member.getNickname()}}" th:if="${!quest.questMaster.contains(member)}">
+                   th:href="@{'/profile/' + ${member.getNickname()}}" th:if="${!quest.isHostOrMaster(member)}">
               <span>
                   <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile"
                        class="rounded-circle" style="width: 30px; height: 30px">
@@ -142,7 +95,7 @@
             </div>
         </div>
 
-        <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member)}" class="btn btn-primary">
+        <button sec:authorize="isAuthenticated()" th:if="${quest.getQuestHost().equals(member)}" class="btn btn-primary">
             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
         </button>
 
@@ -187,7 +140,7 @@
                                 </button>
 
                                 <button sec:authorize="isAuthenticated()"
-                                        th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}"
+                                        th:if="${quest.isHostOrMaster(member) && quest.isMember(#authentication.principal)}"
                                         class="btn btn-success mt-3 mb-3">
                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}"
                                        class="btn-quest-view-a">공지사항 포스팅하기</a>
@@ -275,8 +228,9 @@
                                                  th:src="${authpost.postImage}" alt="Profile"
                                                  style="width: 100px; height: 100px">
                                             <p th:text="${authpost.content}">컨텐트</p>
-                                            <button class="btn btn-outline-success" th:if="${!authpost.isConfirm()}">
-                                                <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/' + ${authpost.id} + '/score'}">인증완료</a>
+                                            <p th:if="${authpost.isConfirm()}">인증 완료된 게시물 입니다.</p>
+                                            <button class="btn btn-outline-success" th:if="${!authpost.isConfirm() and quest.isHostOrMaster(member)}">
+                                                <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/' + ${authpost.id} + '/score'}">인증처리</a>
                                             </button>
                                         </a>
                                     </div>
