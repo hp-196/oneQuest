@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head">
+    <title>"myCommentPage"</title>
+</head>
+
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+<main class="main" id="main">
+
+    <!-- 댓글 리스트 -->
+    <section class="portfolio" id="portfolio">
+        <div class="container col-xl-12">
+            <div class="section-title">
+                <h2>자신의 댓글 목록</h2>
+                <p>댓글을 누르면 해당 댓글로 이동합니다.</p>
+            </div>
+
+            <div class="row portfolio-container">
+                <div class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s"
+                     sec:authorize="isAuthenticated()" th:each="comment: ${commentList}">
+                    <div class="portfolio-wrap">
+                        <div class="portfolio-info">
+                            <h4 th:text="${comment.getQuestTitle()}"></h4>
+                            <p th:text="${comment.getPostTitle()}"></p>
+                            <p th:text="${comment.getContent()}"></p>
+                            <p th:text="${comment.getTime()}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+
+</body>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+</html>

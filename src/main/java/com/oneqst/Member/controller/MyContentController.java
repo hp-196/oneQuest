@@ -16,17 +16,17 @@ public class MyContentController {
 
     private final MyContentService myContentService;
 
-    @GetMapping("/myPostList")
+    @GetMapping("/myPosts")
     public String myPostLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("postList", myContentService.myQuestPostLookup(member.getId()));
-        return "/my-post-list";
+        return "my-posts";
     }
 
-    @GetMapping("/myCommentList")
+    @GetMapping("/myComments")
     public String myCommentLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("commentList", myContentService.myCommentLookup(member.getId()));
-        return "/my-comment-list";
+        return "my-comments";
     }
 }

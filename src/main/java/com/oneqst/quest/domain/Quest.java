@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +87,7 @@ public class Quest {
         return this.questMember.contains(memberInfo.getMember()) || this.questMaster.contains(memberInfo.getMember());
     }
 
-    public boolean isJoinable(MemberInfo memberInfo) {
+    public boolean isJoinAble(MemberInfo memberInfo) {
         Member member = memberInfo.getMember();
         return !this.questMember.contains(member);
     }
@@ -101,6 +100,6 @@ public class Quest {
     }
 
     public boolean compareDate() {
-        return (this.questEndTime.isEqual(LocalDate.now()) ? true : this.questEndTime.isAfter(LocalDate.now()) ? true : false);
+        return (this.questEndTime.isEqual(LocalDate.now()) || (this.questEndTime.isAfter(LocalDate.now())));
     }
 }

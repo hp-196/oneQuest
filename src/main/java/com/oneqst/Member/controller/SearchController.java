@@ -6,7 +6,6 @@ import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +36,7 @@ public class SearchController {
     @GetMapping("/search/list")
     public String search(@CurrentUser Member member,
                          @PageableDefault(size = 9) Pageable pageable,
-                         @RequestParam(value="title") String title, Model model) {
+                         @RequestParam(value = "title") String title, Model model) {
         if (member != null) {
             model.addAttribute(member);
         }
