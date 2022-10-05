@@ -41,9 +41,9 @@ public class QuestService {
                 .questImage(questDto.getQuestImage())
                 .questMember(new ArrayList<>())
                 .questMaster(new ArrayList<>())
+                .questHost(member)
                 .build();
         Quest newQuest = questRepository.save(quest);
-        newQuest.addQuestMaster(member);
         newQuest.addQuestMember(member);
         return newQuest;
     }
