@@ -48,8 +48,4 @@ public class Community {
     private LocalDateTime communityEndTime; //커뮤니티 종료 시간
 
 
-
-
-
-
 }

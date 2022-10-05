@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -33,8 +32,8 @@ public class IndexController {
             return "login";
         }
         model.addAttribute("member",member);
-        model.addAttribute("questList", questRepository.my_quests(member.getId()));
-        model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
+        model.addAttribute("questList", questRepository.myQuests(member.getId()));
+        model.addAttribute("notQuestList", questRepository.otherQuests(member.getId()));
         return "index";
     }
 

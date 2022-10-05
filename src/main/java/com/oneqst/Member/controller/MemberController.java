@@ -8,12 +8,12 @@ import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
@@ -29,10 +29,10 @@ public class MemberController {
     /**
      * 로그인 페이지
      */
-     @GetMapping("/login")
-     public String login() {
-         return "login";
-     }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     /**
      * 회원가입 페이지
@@ -104,10 +104,11 @@ public class MemberController {
 
     /**
      * 프로필 수정
+     *
      * @return
      */
     @PostMapping("/profile/update")
-    public String updateProfile(@CurrentUser Member member, @Valid Profile profile,  Errors errors, Model model) {
+    public String updateProfile(@CurrentUser Member member, @Valid Profile profile, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute(member);
             log.info(String.valueOf(errors));

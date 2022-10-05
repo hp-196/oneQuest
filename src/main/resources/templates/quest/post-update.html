@@ -52,7 +52,8 @@
             </a>
         </li><!-- End Blank Page Nav -->
 
-        <li class="nav-item" sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
+        <li class="nav-item" sec:authorize="isAuthenticated()"
+            th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
             <a class="nav-link collapsed" href="#home" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">
                 <i class="bi bi-gear"></i>
                 <span>퀘스트 설정</span>
@@ -84,7 +85,8 @@
                             </div>
 
                             <form class="row g-3 needs-validation"
-                                  th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/update'}" th:object="${questPostUpdateDto}"
+                                  th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/update'}"
+                                  th:object="${questPostUpdateDto}"
                                   method="post" novalidate>
                                 <div class="col-12">
                                     <label for="questTitle" class="form-label">포스팅 제목</label>
@@ -126,6 +128,6 @@
 <script th:replace="fragments.html :: form-validation"></script>
 
 </body>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </html>

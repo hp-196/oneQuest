@@ -16,11 +16,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class QuestPost {
-    
-    @Id @GeneratedValue
+
+    @Id
+    @GeneratedValue
     @Column(name = "QuestPost_id")
     private Long id;
-    
+
     private String title; //포스트 제목
 
     @ManyToOne(fetch = FetchType.LAZY)

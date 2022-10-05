@@ -17,7 +17,8 @@ import java.util.List;
 @Builder
 public class AuthPost {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "AuthPost_id")
     private Long id;
 

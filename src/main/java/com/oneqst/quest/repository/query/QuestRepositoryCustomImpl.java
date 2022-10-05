@@ -13,8 +13,8 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.oneqst.Member.domain.QMember.*;
-import static com.oneqst.quest.domain.QQuest.*;
+import static com.oneqst.Member.domain.QMember.member;
+import static com.oneqst.quest.domain.QQuest.quest;
 
 public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -23,45 +23,48 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
+    public static BooleanExpression title_contains(String title) {
+        return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
+    }
+
     @Override
-    public List<Quest> total_quests() {
+    public List<Quest> totalQuests() {
         return null;
     }
 
-    // TODO 다 긁어온뒤 내 id가 포함된것과 포함되지 않은것을 나누기
     @Override
-    public List<Quest> my_quests(Long member_id) {
+    public List<Quest> myQuests(Long memberId) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
                 .where(
-                        member.id.eq(member_id))
+                        member.id.eq(memberId))
                 .fetch();
     }
 
     @Override
-    public List<Quest> other_quests(Long member_id) {
+    public List<Quest> otherQuests(Long memberId) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
-                .where(member.id.ne(member_id))
+                .where(member.id.ne(memberId))
                 .fetch();
     }
 
     @Override
-    public List<Quest> Search(Long member_id, String title) {
+    public List<Quest> search(Long memberId, String title) {
         return queryFactory
                 .selectFrom(quest)
                 .join(quest.questMember, member).fetchJoin()
                 .where(
-                        member.id.eq(member_id),
+                        member.id.eq(memberId),
                         title_contains(title)
                 )
                 .fetch();
     }
 
     @Override
-    public Page<Quest> search_paging(Member member, String title, Pageable pageable) {
+    public Page<Quest> searchPaging(Member member, String title, Pageable pageable) {
         QueryResults<Quest> result = queryFactory
                 .selectFrom(quest)
                 .where(quest.questTitle.contains(title).and(quest.questMember.contains(member).not()))
@@ -69,9 +72,5 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
-    }
-
-    public static BooleanExpression title_contains(String title) {
-        return StringUtils.hasText(title) ? quest.questTitle.contains(title) : null;
     }
 }

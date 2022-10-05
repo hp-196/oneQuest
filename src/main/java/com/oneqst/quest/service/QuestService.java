@@ -2,12 +2,9 @@ package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
 import com.oneqst.quest.event.InviteNotice;
-import com.oneqst.quest.repository.AuthPostRepository;
-import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -79,8 +75,7 @@ public class QuestService {
                 .postTime(LocalDateTime.now())
                 .build();
 
-        QuestPost newQuestPost = questPostRepository.save(questPost);
-        return newQuestPost;
+        return questPostRepository.save(questPost);
     }
 
     /**
@@ -96,8 +91,7 @@ public class QuestService {
         questPost.setQuest(quest);
         questPost.setPostTime(LocalDateTime.now());
         questPost.setNotice(true);
-        QuestPost newQuestPost = questPostRepository.save(questPost);
-        return newQuestPost;
+        return questPostRepository.save(questPost);
     }
 
     /**

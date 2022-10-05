@@ -52,7 +52,8 @@
             </a>
         </li><!-- End Blank Page Nav -->
 
-        <li class="nav-item" sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
+        <li class="nav-item" sec:authorize="isAuthenticated()"
+            th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
             <a class="nav-link collapsed" href="#home" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">
                 <i class="bi bi-gear"></i>
                 <span>퀘스트 설정</span>
@@ -67,7 +68,7 @@
 
     <div class="card mb-2 text-align">
         <a href="#" th:href="@{'/quest/' + ${quest.questUrl}}">
-        <h4 class="mt-2" th:text="${quest.questTitle}"></h4>
+            <h4 class="mt-2" th:text="${quest.questTitle}"></h4>
         </a>
     </div>
 
@@ -176,8 +177,6 @@
 
 
 </main>
-
-
 
 
 </body>

@@ -55,16 +55,19 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${!questList.hasPrevious()} ? disabled">
-                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${questList.getNumber() - 1}}"  class="page-link">Previous</a>
+                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${questList.getNumber() - 1}}"
+                           class="page-link">Previous</a>
                     </li>
 
                     <li class="page-item" th:classappend="${pageNumber == questList.getNumber()} ? active"
                         th:each="pageNumber : ${#numbers.sequence(0, questList.getTotalPages() - 1)}">
-                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${pageNumber}}" th:text="${pageNumber+1}" class="page-link" href="#">페이징번호</a>
+                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${pageNumber}}"
+                           th:text="${pageNumber+1}" class="page-link" href="#">페이징번호</a>
                     </li>
 
                     <li class="page-item" th:classappend="${!questList.hasNext()} ? disabled">
-                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${questList.getNumber() + 1}}" class="page-link" href="#">Next</a>
+                        <a th:href="@{'/search/list?title=' + ${searchTitle} + '&page=' + ${questList.getNumber() + 1}}"
+                           class="page-link" href="#">Next</a>
                     </li>
                 </ul>
             </nav>

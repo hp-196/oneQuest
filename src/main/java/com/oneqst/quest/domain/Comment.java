@@ -2,7 +2,6 @@ package com.oneqst.quest.domain;
 
 import com.oneqst.Member.domain.Member;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,7 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 public class Comment {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
@@ -33,8 +33,6 @@ public class Comment {
     private String content; //댓글 내용
 
     private LocalDateTime postTime; //댓글 쓴 시간
-
-
 
 
 }

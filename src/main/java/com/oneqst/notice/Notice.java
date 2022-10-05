@@ -1,7 +1,9 @@
 package com.oneqst.notice;
 
 import com.oneqst.Member.domain.Member;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +14,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 public class Notice {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "notice_id")
     private Long id;
 
@@ -33,8 +36,6 @@ public class Notice {
     private boolean checked; //알림 체크 여부
 
     private String url; //알림 주소
-
-
 
 
 }

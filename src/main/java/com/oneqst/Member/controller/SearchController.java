@@ -45,7 +45,7 @@ public class SearchController {
             return "login";
         }
         model.addAttribute("searchTitle", title);
-        model.addAttribute("questList", questRepository.search_paging(member, title, pageable));
+        model.addAttribute("questList", questRepository.searchPaging(member, title, pageable));
 //        model.addAttribute("questList", questRepository.findByQuestTitleContainingAndQuestMemberNotContains(title, member));
         return "search";
     }

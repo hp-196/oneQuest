@@ -57,16 +57,16 @@ public class Quest {
     private List<AuthPost> authPostList = new ArrayList<>();
 
 
-
-
     /*********************** 연관관계 편의 메소드 **********************/
 
     public void deletePost(QuestPost questPost) {
         this.questPostList.remove(questPost);
     }
+
     public void addQuestMaster(Member member) {
         this.questMaster.add(member);
     }
+
     public void addQuestMember(Member member) {
         this.questMember.add(member);
     }

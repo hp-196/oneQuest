@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 
 <head th:replace="fragments.html :: head">
 </head>
@@ -21,14 +21,22 @@
         <p th:unless="${newNoticeCount != 0}" th:text="'새로운 알림이 없습니다'">알림개수</p>
         <ul th:if="${allNotice.size() > 0}">
             <li th:each="notice : ${allNotice}">
-                    <span th:text="${#temporals.format(notice.getNoticeTime(), 'MM-dd')}">알림날짜</span> <a th:href="@{'/notice/' + ${notice.getId()} + '/delete'}"><p style="float:right;">X</p></a>
+                <span th:text="${#temporals.format(notice.getNoticeTime(), 'MM-dd')}">알림날짜</span> <a
+                    th:href="@{'/notice/' + ${notice.getId()} + '/delete'}"><p style="float:right;">X</p></a>
                 <a href="#about" th:href="@{'/notice/read/' + ${notice.id}}">
-                <div class="content">
-                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}" th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()}님의 댓글이 달렸습니다|" th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
-                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_INVITE}" th:text="|${notice.getByMember()}님의 ${notice.getTitle()} 퀘스트 초대를 받았습니다|" th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
-                    <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_AUTH}" th:text="|${notice.getTitle()} 게시글이 인증을 받았습니다|" th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
-                    <p th:classappend="${notice.checked == true} ? 'notice' : ''" th:text="${notice.getContent()}"></p>
-                </div>
+                    <div class="content">
+                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}"
+                            th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()}님의 댓글이 달렸습니다|"
+                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
+                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_INVITE}"
+                            th:text="|${notice.getByMember()}님의 ${notice.getTitle()} 퀘스트 초대를 받았습니다|"
+                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
+                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_AUTH}"
+                            th:text="|${notice.getTitle()} 게시글이 인증을 받았습니다|"
+                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
+                        <p th:classappend="${notice.checked == true} ? 'notice' : ''"
+                           th:text="${notice.getContent()}"></p>
+                    </div>
                 </a>
             </li>
         </ul>

@@ -3,10 +3,8 @@ package com.oneqst.quest.event;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.service.AuthService;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.ApplicationEvent;
 @Getter
 @Setter
 public class ScoreNotice {

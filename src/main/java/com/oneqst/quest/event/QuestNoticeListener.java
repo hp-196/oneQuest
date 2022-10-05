@@ -7,19 +7,15 @@ import com.oneqst.notice.NoticeRepository;
 import com.oneqst.notice.NoticeType;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
-import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Component

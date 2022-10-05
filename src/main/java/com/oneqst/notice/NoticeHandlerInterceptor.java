@@ -26,7 +26,7 @@ public class NoticeHandlerInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (modelAndView != null && authentication != null && authentication.getPrincipal() instanceof MemberInfo) {
-            Member member = ((MemberInfo)authentication.getPrincipal()).getMember();
+            Member member = ((MemberInfo) authentication.getPrincipal()).getMember();
 
             modelAndView.addObject("noticeList", noticeRepository.findByMemberAndCheckedOrderByNoticeTimeDesc(member, false));
             modelAndView.addObject("newNoticeCount", noticeRepository.countByCheckedAndMember(false, member));

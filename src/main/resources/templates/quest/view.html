@@ -3,227 +3,259 @@
       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments.html :: head"></head>
 <body>
-    <div th:replace="fragments.html :: nav"></div>
-    <aside th:fragment="sidebar-quest" id="sidebar-quest" class="sidebar">
+<div th:replace="fragments.html :: nav"></div>
+<aside th:fragment="sidebar-quest" id="sidebar-quest" class="sidebar">
 
-        <ul class="sidebar-nav" id="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav">
 
-            <li class="nav-heading">Pages</li>
+        <li class="nav-heading">Pages</li>
 
-            <li class="nav-item">
-                <a sec:authorize="isAuthenticated()" class="nav-link " th:href="@{'/profile/' + ${member.nickname}}">
-                    <i class="bi bi-person"></i>
-                    <span>마이 프로필</span>
-                </a>
-            </li><!-- 프로필 사이드 바 -->
+        <li class="nav-item">
+            <a sec:authorize="isAuthenticated()" class="nav-link " th:href="@{'/profile/' + ${member.nickname}}">
+                <i class="bi bi-person"></i>
+                <span>마이 프로필</span>
+            </a>
+        </li><!-- 프로필 사이드 바 -->
 
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link collapsed" th:href="@{/sign-up}">
-                    <i class="bi bi-card-list"></i>
-                    <span>회원 가입</span>
-                </a>
-            </li><!-- 회원가입 사이드바 -->
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link collapsed" th:href="@{/sign-up}">
+                <i class="bi bi-card-list"></i>
+                <span>회원 가입</span>
+            </a>
+        </li><!-- 회원가입 사이드바 -->
 
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link collapsed" th:href="@{/login}">
-                    <i class="bi bi-box-arrow-in-right"></i>
-                    <span>Login</span>
-                </a>
-            </li><!-- 로그인 사이드 바 -->
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link collapsed" th:href="@{/login}">
+                <i class="bi bi-box-arrow-in-right"></i>
+                <span>Login</span>
+            </a>
+        </li><!-- 로그인 사이드 바 -->
 
-            <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link collapsed" th:href="@{/new-quest}">
-                    <i class="bi bi-question-square"></i>
-                    <span>퀘스트 생성</span>
-                </a>
-            </li><!-- 퀘스트 생성 사이드 바 -->
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link collapsed" th:href="@{/new-quest}">
+                <i class="bi bi-question-square"></i>
+                <span>퀘스트 생성</span>
+            </a>
+        </li><!-- 퀘스트 생성 사이드 바 -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-error-404.html">
-                    <i class="bi bi-dash-circle"></i>
-                    <span>내가 쓴 글</span>
-                </a>
-            </li><!-- End Error 404 Page Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="pages-error-404.html">
+                <i class="bi bi-dash-circle"></i>
+                <span>내가 쓴 글</span>
+            </a>
+        </li><!-- End Error 404 Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-blank.html">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>내가 쓴 댓글</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="pages-blank.html">
+                <i class="bi bi-file-earmark"></i>
+                <span>내가 쓴 댓글</span>
+            </a>
+        </li><!-- End Blank Page Nav -->
 
-            <li class="nav-item" sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
-                <a class="nav-link collapsed" href="#home" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">
-                    <i class="bi bi-gear"></i>
-                    <span>퀘스트 설정</span>
-                </a>
-            </li><!-- 퀘스트 설정창 -->
+        <li class="nav-item" sec:authorize="isAuthenticated()"
+            th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}">
+            <a class="nav-link collapsed" href="#home" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">
+                <i class="bi bi-gear"></i>
+                <span>퀘스트 설정</span>
+            </a>
+        </li><!-- 퀘스트 설정창 -->
 
-        </ul>
+    </ul>
 
-    </aside>
+</aside>
 
-    <!-- 퀘스트 배너 -->
-    <div class="hero">
-        <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
-        <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">
-        <h3 class="text1" th:text="${quest.questTitle}"></h3>
-        <h3 class="text2"><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span></h3>
-        <a href="#about" th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto" data-bs-toggle="modal" data-bs-target="#memberInvite">멤버 초대</a>
-        <a href="#about" th:if="${!quest.isMember(#authentication.principal)}"
-           th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
-    </div>
+<!-- 퀘스트 배너 -->
+<div class="hero">
+    <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
+    <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">
+    <h3 class="text1" th:text="${quest.questTitle}"></h3>
+    <h3 class="text2"><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span>
+    </h3>
+    <a href="#about" th:if="${quest.isMember(#authentication.principal)}" class="btn-get-started scrollto"
+       data-bs-toggle="modal" data-bs-target="#memberInvite">멤버 초대</a>
+    <a href="#about" th:if="${!quest.isMember(#authentication.principal)}"
+       th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
+</div>
 
-    <!-- 퀘스트 멤버 초대 모달창 -->
-    <div class="modal fade" id="memberInvite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">멤버 초대</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form th:action="@{'/quest/' + ${quest.questUrl} + '/invite'}" th:object="${inviteDto}" method="post" novalidate>
+<!-- 퀘스트 멤버 초대 모달창 -->
+<div class="modal fade" id="memberInvite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">멤버 초대</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{'/quest/' + ${quest.questUrl} + '/invite'}" th:object="${inviteDto}" method="post"
+                  novalidate>
                 <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">주소를 복사해 초대해보세요</label>
-                            <span class="form-control" id="recipient-name">localhost:8080/quest/<span th:text="${quest.questUrl}"></span></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message-text" class="col-form-label">닉네임 혹은 이메일</label>
-                            <input class="form-control" id="message-text" th:field="*{nickNameOrEmail}">
-                            <div class="invalid-feedback">닉네임혹은 이메일을 입력하시오</div>
-                            <small class="form-text text-danger" th:if="${#fields.hasErrors('nickNameOrEmail')}" th:errors="*{nickNameOrEmail}">input Error</small>
-                        </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">주소를 복사해 초대해보세요</label>
+                        <span class="form-control" id="recipient-name">localhost:8080/quest/<span
+                                th:text="${quest.questUrl}"></span></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">닉네임 혹은 이메일</label>
+                        <input class="form-control" id="message-text" th:field="*{nickNameOrEmail}">
+                        <div class="invalid-feedback">닉네임혹은 이메일을 입력하시오</div>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('nickNameOrEmail')}"
+                               th:errors="*{nickNameOrEmail}">input Error</small>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
                     <button type="submit" class="btn btn-primary">초대 발송</button>
                 </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
 
-    <main id="main" class="main">
-     <div>
-         <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
+<main id="main" class="main">
+    <div>
+        <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
             <div class="card-body">
-              <h5 class="card-title">회원목록</h5>
+                <h5 class="card-title">회원목록</h5>
                 <span>관리자 : </span>
-                <a href="#about" th:each="member: ${quest.questMaster}" th:href="@{'/profile/' + ${member.getNickname()}}">
+                <a href="#about" th:each="member: ${quest.questMaster}"
+                   th:href="@{'/profile/' + ${member.getNickname()}}">
               <span>
-                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile"
+                       class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile"
+                       class="rounded-circle" style="width: 30px; height: 30px">
                   <span class="badge bg-success" th:text="${member.nickname}"></span>
               </span>
                 </a>
                 <p></p>
                 <span>회원 : </span>
-                <a href="#about" th:each="member: ${quest.questMember}" th:href="@{'/profile/' + ${member.getNickname()}}" th:if="${!quest.questMaster.contains(member)}">
+                <a href="#about" th:each="member: ${quest.questMember}"
+                   th:href="@{'/profile/' + ${member.getNickname()}}" th:if="${!quest.questMaster.contains(member)}">
               <span>
-                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${#strings.isEmpty(member.profileImage)}" src="/assets/img/logo.png" alt="Profile"
+                       class="rounded-circle" style="width: 30px; height: 30px">
+                  <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}" alt="Profile"
+                       class="rounded-circle" style="width: 30px; height: 30px">
                   <span class="badge bg-primary" th:text="${member.nickname}"></span>
               </span>
                 </a>
             </div>
-         </div>
+        </div>
 
-         <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member)}" class="btn btn-primary">
-             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
-         </button>
+        <button sec:authorize="isAuthenticated()" th:if="${quest.questMaster.contains(member)}" class="btn btn-primary">
+            <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
+        </button>
 
-         <button  sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-danger">
-             <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
-         </button>
+        <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}"
+                class="btn btn-danger">
+            <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
+        </button>
 
-         <div class="row mt-4">
-             <div class="col-xl-12">
-                 <div class="card">
-                     <div class="card-body">
-                         <h5 class="card-title"></h5>
-                         <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
-                             <li class="nav-item flex-fill" role="presentation">
-                                 <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
-                                         data-bs-target="#home-justified" type="button" role="tab" aria-controls="home"
-                                         aria-selected="true">커뮤니티</button>
-                             </li>
-                             <li class="nav-item flex-fill" role="presentation">
-                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
-                                         data-bs-target="#profile-justified" type="button" role="tab"
-                                         aria-controls="profile" aria-selected="false">인증
-                                 </button>
-                             </li>
-                             <li class="nav-item flex-fill" role="presentation">
-                                 <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
-                                         data-bs-target="#contact-justified" type="button" role="tab"
-                                         aria-controls="contact" aria-selected="false">랭킹
-                                 </button>
-                             </li>
-                         </ul>
+        <div class="row mt-4">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                        data-bs-target="#home-justified" type="button" role="tab" aria-controls="home"
+                                        aria-selected="true">커뮤니티
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                        data-bs-target="#profile-justified" type="button" role="tab"
+                                        aria-controls="profile" aria-selected="false">인증
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                        data-bs-target="#contact-justified" type="button" role="tab"
+                                        aria-controls="contact" aria-selected="false">랭킹
+                                </button>
+                            </li>
+                        </ul>
 
-                         <div class="tab-content pt-2" id="myTabjustifiedContent">
-                             <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
-                                 <button sec:authorize="isAuthenticated()"
-                                         th:if="${quest.isMember(#authentication.principal)}"
-                                         class="btn btn-primary mt-3 mb-3">
-                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}" class="btn-quest-view-a">포스팅하기</a>
-                                 </button>
+                        <div class="tab-content pt-2" id="myTabjustifiedContent">
+                            <div class="tab-pane fade show active" id="home-justified" role="tabpanel"
+                                 aria-labelledby="home-tab">
+                                <button sec:authorize="isAuthenticated()"
+                                        th:if="${quest.isMember(#authentication.principal)}"
+                                        class="btn btn-primary mt-3 mb-3">
+                                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}" class="btn-quest-view-a">포스팅하기</a>
+                                </button>
 
-                                 <button sec:authorize="isAuthenticated()"
-                                         th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}"
-                                         class="btn btn-success mt-3 mb-3">
-                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}"
-                                        class="btn-quest-view-a">공지사항 포스팅하기</a>
-                                 </button>
-                                 <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
-                                         <div class="card-header">
+                                <button sec:authorize="isAuthenticated()"
+                                        th:if="${quest.questMaster.contains(member) && quest.isMember(#authentication.principal)}"
+                                        class="btn btn-success mt-3 mb-3">
+                                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}"
+                                       class="btn-quest-view-a">공지사항 포스팅하기</a>
+                                </button>
+                                <div class="card" sec:authorize="isAuthenticated()"
+                                     th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
+                                    <div class="card-header">
                                           <span>
                                               <i class="bi bi-bell fs-5"><span>공지</span></i>
                                           </span>
-                                         </div>
-                                         <div class="card-body">
-                                             <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
-                                             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}">
-                                                 <img th:if="${!#strings.isEmpty(questPost.postImage)}" th:src="${questPost.postImage}" alt="Profile" style="width: 100px; height: 100px">
-                                                 <p th:text="${questPost.content}">컨텐트</p>
-                                             </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
+                                        <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}">
+                                            <img th:if="${!#strings.isEmpty(questPost.postImage)}"
+                                                 th:src="${questPost.postImage}" alt="Profile"
+                                                 style="width: 100px; height: 100px">
+                                            <p th:text="${questPost.content}">컨텐트</p>
+                                        </a>
 
-                                         </div>
-                                         <div class="card-footer">
-                                             <span>작성일:</span> <span class="yearDateTime" th:text="${questPost.postTime}"></span>
-                                         </div>
-                                     </div>
-                                 <div class="card" sec:authorize="isAuthenticated()" th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
-                                         <div class="card-header">
-                                             <a href="#about" th:href="@{'/profile/' + ${questPost.writer.nickname}}">
+                                    </div>
+                                    <div class="card-footer">
+                                        <span>작성일:</span> <span class="yearDateTime"
+                                                                th:text="${questPost.postTime}"></span>
+                                    </div>
+                                </div>
+                                <div class="card" sec:authorize="isAuthenticated()"
+                                     th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
+                                    <div class="card-header">
+                                        <a href="#about" th:href="@{'/profile/' + ${questPost.writer.nickname}}">
                                               <span>
-                                                  <img th:if="${#strings.isEmpty(questPost.writer.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                  <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}" th:src="${questPost.writer.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                  <span class="badge bg-primary" th:text="${questPost.writer.nickname}"></span>
+                                                  <img th:if="${#strings.isEmpty(questPost.writer.profileImage)}"
+                                                       src="/assets/img/logo.png" alt="Profile" class="rounded-circle"
+                                                       style="width: 30px; height: 30px">
+                                                  <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}"
+                                                       th:src="${questPost.writer.profileImage}" alt="Profile"
+                                                       class="rounded-circle" style="width: 30px; height: 30px">
+                                                  <span class="badge bg-primary"
+                                                        th:text="${questPost.writer.nickname}"></span>
                                               </span>
-                                             </a>
-                                         </div>
-                                         <div class="card-body">
-                                             <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
-                                             <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}">
-                                                 <img th:if="${!#strings.isEmpty(questPost.postImage)}" th:src="${questPost.postImage}" alt="Profile" style="width: 100px; height: 100px">
-                                                 <p th:text="${questPost.content}">컨텐트</p>
-                                             </a>
-                                         </div>
-                                     <div class="card-footer">
-                                         <span>작성일:</span> <span class="yearDateTime" th:text="${questPost.postTime}"></span>
-                                     </div>
-                                     </div>
-                             </div>
-                             <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                 <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}" class="btn btn-primary mt-3 mb-3">
-                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post'}" class="btn-quest-view-a">인증하기</a>
-                                 </button>
-                                 <div class="card" sec:authorize="isAuthenticated()" th:each="authpost: ${authPostList}">
-                                     <div class="card-header">
-                                         <a href="#about" th:href="@{'/profile/' + ${authpost.writer.nickname}}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${questPost.title}">타이틀</h5>
+                                        <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id}}">
+                                            <img th:if="${!#strings.isEmpty(questPost.postImage)}"
+                                                 th:src="${questPost.postImage}" alt="Profile"
+                                                 style="width: 100px; height: 100px">
+                                            <p th:text="${questPost.content}">컨텐트</p>
+                                        </a>
+                                    </div>
+                                    <div class="card-footer">
+                                        <span>작성일:</span> <span class="yearDateTime"
+                                                                th:text="${questPost.postTime}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile-justified" role="tabpanel"
+                                 aria-labelledby="profile-tab">
+                                <button sec:authorize="isAuthenticated()"
+                                        th:if="${quest.isMember(#authentication.principal)}"
+                                        class="btn btn-primary mt-3 mb-3">
+                                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post'}"
+                                       class="btn-quest-view-a">인증하기</a>
+                                </button>
+                                <div class="card" sec:authorize="isAuthenticated()" th:each="authpost: ${authPostList}">
+                                    <div class="card-header">
+                                        <a href="#about" th:href="@{'/profile/' + ${authpost.writer.nickname}}">
                                               <span>
                                                   <img th:if="${#strings.isEmpty(authpost.writer.profileImage)}"
                                                        src="/assets/img/logo.png" alt="Profile" class="rounded-circle"
@@ -234,73 +266,81 @@
                                                   <span class="badge bg-primary"
                                                         th:text="${authpost.writer.nickname}"></span>
                                               </span>
-                                         </a>
-                                     </div>
-                                     <div class="card-body">
-                                         <h5 class="card-title" th:text="${authpost.title}">타이틀</h5>
-                                         <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post/' + ${authpost.id}}">
-                                             <img th:if="${!#strings.isEmpty(authpost.postImage)}"
-                                                  th:src="${authpost.postImage}" alt="Profile"
-                                                  style="width: 100px; height: 100px">
-                                             <p th:text="${authpost.content}">컨텐트</p>
-                                             <button class="btn btn-outline-success" th:if="${!authpost.isConfirm()}">
-                                                 <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/' + ${authpost.id} + '/score'}">인증완료</a>
-                                             </button>
-                                         </a>
-                                     </div>
-                                     <div class="card-footer">
-                                         <span>작성일:</span> <span class="yearDateTime" th:text="${authpost.postTime}"></span>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="contact-tab">
-                                 <div class="card">
-                                     <div class="card-body">
-                                         <h5 class="card-title">나의 랭킹은?</h5>
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${authpost.title}">타이틀</h5>
+                                        <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/post/' + ${authpost.id}}">
+                                            <img th:if="${!#strings.isEmpty(authpost.postImage)}"
+                                                 th:src="${authpost.postImage}" alt="Profile"
+                                                 style="width: 100px; height: 100px">
+                                            <p th:text="${authpost.content}">컨텐트</p>
+                                            <button class="btn btn-outline-success" th:if="${!authpost.isConfirm()}">
+                                                <a th:href="@{'/quest/' + ${quest.questUrl} + '/auth/' + ${authpost.id} + '/score'}">인증완료</a>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="card-footer">
+                                        <span>작성일:</span> <span class="yearDateTime"
+                                                                th:text="${authpost.postTime}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="contact-justified" role="tabpanel"
+                                 aria-labelledby="contact-tab">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">나의 랭킹은?</h5>
 
-                                         <!-- Table with stripped rows -->
-                                         <table class="table table-striped">
-                                             <thead>
-                                             <tr>
-                                                 <th scope="col">순위</th>
-                                                 <th scope="col">닉네임</th>
-                                                 <th scope="col">점수</th>
-                                             </tr>
-                                             </thead>
-                                             <tbody>
-                                             <tr th:each="num : ${#numbers.sequence(0,scoreMap.size()-1)}">
-                                                 <th scope="row" th:text="${num+1}">순위</th>
-                                                 <td>
-                                                     <a href="#about" th:href="@{'/profile/' + ${scoreMap[num].key.nickname}}">
+                                        <!-- Table with stripped rows -->
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">순위</th>
+                                                <th scope="col">닉네임</th>
+                                                <th scope="col">점수</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="num : ${#numbers.sequence(0,scoreMap.size()-1)}">
+                                                <th scope="row" th:text="${num+1}">순위</th>
+                                                <td>
+                                                    <a href="#about"
+                                                       th:href="@{'/profile/' + ${scoreMap[num].key.nickname}}">
                                                      <span>
-                                                      <img th:if="${#strings.isEmpty(scoreMap[num].key.profileImage)}" src="/assets/img/logo.png" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                        <img th:if="${!#strings.isEmpty(scoreMap[num].key.profileImage)}" th:src="${scoreMap[num].key.profileImage}" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px">
-                                                      <span th:text="${scoreMap[num].key.nickname}" class="badge bg-primary">차광욱</span>
+                                                      <img th:if="${#strings.isEmpty(scoreMap[num].key.profileImage)}"
+                                                           src="/assets/img/logo.png" alt="Profile"
+                                                           class="rounded-circle" style="width: 30px; height: 30px">
+                                                        <img th:if="${!#strings.isEmpty(scoreMap[num].key.profileImage)}"
+                                                             th:src="${scoreMap[num].key.profileImage}" alt="Profile"
+                                                             class="rounded-circle" style="width: 30px; height: 30px">
+                                                      <span th:text="${scoreMap[num].key.nickname}"
+                                                            class="badge bg-primary">차광욱</span>
                                                      </span>
-                                                     </a>
-                                                 </td>
-                                                 <td th:text="${scoreMap[num].value}">점수</td>
-                                             </tr>
+                                                    </a>
+                                                </td>
+                                                <td th:text="${scoreMap[num].value}">점수</td>
+                                            </tr>
 
-                                             </tbody>
-                                         </table>
-                                         <!-- End Table with stripped rows -->
+                                            </tbody>
+                                        </table>
+                                        <!-- End Table with stripped rows -->
 
-                                     </div>
-                                 </div>
-                                 <div>
-                                     <p>나의 점수는?</p>
-                                     <p>점수</p>
-                                 </div>
-                             </div>
-                         </div><!-- End Default Tabs -->
-                     </div>
-                 </div>
-             </div>
-         </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p>나의 점수는?</p>
+                                    <p>점수</p>
+                                </div>
+                            </div>
+                        </div><!-- End Default Tabs -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
-    </main>
+</main>
 
 </body>
 <script src="/assets/js/main.js"></script>

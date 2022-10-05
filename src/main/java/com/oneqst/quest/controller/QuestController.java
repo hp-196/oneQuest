@@ -82,7 +82,7 @@ public class QuestController {
         model.addAttribute("questPostList", questPostList);
         model.addAttribute("authPostList", authPostList);
         model.addAttribute("scoreList", scoreList);
-        model.addAttribute("scoreMap",score);
+        model.addAttribute("scoreMap", score);
         return "quest/view";
 
     }
@@ -137,7 +137,7 @@ public class QuestController {
      */
     @PostMapping("/quest/{url}/invite")
     public String inviteMember(@CurrentUser Member member, @Valid InviteDto inviteDto,
-                             @PathVariable String url, Errors errors) {
+                               @PathVariable String url, Errors errors) {
         if (errors.hasErrors()) {
             return "redirect:/quest/" + url;
         }
@@ -266,7 +266,7 @@ public class QuestController {
      */
     @PostMapping("/quest/{url}/post/notice")
     public String questNoticePost(@CurrentUser Member member, @PathVariable String url,
-                                   @Valid QuestPostDto questPostDto, Errors errors) {
+                                  @Valid QuestPostDto questPostDto, Errors errors) {
         Quest quest = questRepository.findByQuestUrl(url);
         if (errors.hasErrors()) {
             log.info("퀘스트 포스팅 실패");
@@ -275,9 +275,6 @@ public class QuestController {
         QuestPost questPost = questService.questNoticePost(questPostDto, quest, member);
         return "redirect:/quest/" + quest.getQuestUrl() + "/post/" + questPost.getId();
     }
-
-
-
 
 
 }

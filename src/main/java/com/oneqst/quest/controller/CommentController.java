@@ -10,13 +10,11 @@ import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.service.CommentService;
-import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -48,6 +46,7 @@ public class CommentController {
         commentService.commentPost(member, questPost, commentDto);
         return "redirect:/quest/" + url + "/post/" + id;
     }
+
     /**
      * 인증 게시판 댓글
      */
@@ -81,7 +80,7 @@ public class CommentController {
      */
     @DeleteMapping("/quest/{url}/auth/post/{id}/comment/delete/{commentId}")
     public String deleteAuthComment(@CurrentUser Member member, @PathVariable String url,
-                                @PathVariable Long id, @PathVariable Long commentId) {
+                                    @PathVariable Long id, @PathVariable Long commentId) {
         Comment comment = questCommentRepository.getById(commentId);
         commentService.deleteAuthComment(comment);
         return "redirect:/quest/" + url + "/auth/post/" + id;

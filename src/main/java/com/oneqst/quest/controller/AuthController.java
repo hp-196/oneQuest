@@ -9,8 +9,6 @@ import com.oneqst.quest.dto.AuthPostDto;
 import com.oneqst.quest.dto.AuthPostUpdateDto;
 import com.oneqst.quest.dto.CommentDto;
 import com.oneqst.quest.repository.AuthPostRepository;
-import com.oneqst.quest.repository.CommentRepository;
-import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
 import com.oneqst.quest.service.AuthService;
 import com.oneqst.quest.service.CommentService;
@@ -18,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,7 +97,8 @@ public class AuthController {
                                     @Valid AuthPostUpdateDto authPostUpdateDto) {
         AuthPost authPost = authPostRepository.getById(id);
         if (member.equals(authPost.getWriter())) {
-            authService.updateAuthPost(authPost, authPostUpdateDto);;
+            authService.updateAuthPost(authPost, authPostUpdateDto);
+            ;
         }
         return "redirect:/quest/" + url + "/auth/post/" + id;
     }
