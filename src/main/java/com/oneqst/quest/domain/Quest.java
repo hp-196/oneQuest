@@ -31,6 +31,9 @@ public class Quest {
     @ManyToMany
     private List<Member> questMember = new ArrayList<>(); //퀘스트 맴버
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Member questHost;
+
     private String questTitle; //퀘스트 제목
 
     @Column(unique = true)
@@ -67,6 +70,10 @@ public class Quest {
         this.questMaster.add(member);
     }
 
+    public void removeQuestMaster(Member member) {
+        this.questMaster.remove(member);
+    }
+
     public void addQuestMember(Member member) {
         this.questMember.add(member);
     }
@@ -79,12 +86,15 @@ public class Quest {
     }
 
 
-    public boolean isMaster(Member member) {
-        return this.questMaster.contains(member);
+    /**
+     * 퀘스트 호스트,마스터 여부
+     */
+    public boolean isHostOrMaster(Member member) {
+        return this.questMaster.contains(member) || this.questHost.equals(member);
     }
 
     public boolean isMember(MemberInfo memberInfo) {
-        return this.questMember.contains(memberInfo.getMember()) || this.questMaster.contains(memberInfo.getMember());
+        return this.questMember.contains(memberInfo.getMember()) || this.questMaster.contains(memberInfo.getMember()) || this.questHost.equals(memberInfo.getMember());
     }
 
     public boolean isJoinAble(MemberInfo memberInfo) {
