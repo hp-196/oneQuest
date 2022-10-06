@@ -6,6 +6,7 @@ import com.oneqst.notice.Notice;
 import com.oneqst.notice.NoticeRepository;
 import com.oneqst.notice.NoticeType;
 import com.oneqst.quest.domain.Comment;
+import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.repository.QuestPostRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -72,15 +75,17 @@ public class QuestNoticeListener {
      */
     @EventListener
     public void scoreEvent(ScoreNotice scoreNotice) {
+        Member member = memberRepository.findById(scoreNotice.getMember().getId()).get();
         Notice notice = new Notice();
         notice.setNoticeTime(LocalDateTime.now());
         notice.setMember(scoreNotice.getAuthPost().getWriter());
         notice.setChecked(false);
         notice.setTitle(scoreNotice.getAuthPost().getTitle());
         notice.setContent("링크를 클릭하면 해당 게시글로 이동합니다.");
-        notice.setByMember(scoreNotice.getMember().getNickname());
+        notice.setByMember(member.getNickname());
         notice.setUrl("/quest/"+scoreNotice.getQuest().getQuestUrl()+"/auth/post/"+scoreNotice.getAuthPost().getId());
         notice.setNoticeType(NoticeType.QUEST_AUTH);
         noticeRepository.save(notice);
     }
+    
 }

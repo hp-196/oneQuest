@@ -19,7 +19,7 @@ public class QuestPost {
 
     @Id
     @GeneratedValue
-    @Column(name = "QuestPost_id")
+    @Column(name = "QUESTPOST_ID")
     private Long id;
 
     private String title; //포스트 제목

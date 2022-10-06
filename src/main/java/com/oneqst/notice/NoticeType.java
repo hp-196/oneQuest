@@ -8,5 +8,5 @@ public enum NoticeType {
      * 3.퀘스트 포스팅에 댓글이 달릴경우
      */
 
-    QUEST_INVITE, QUEST_AUTH, POST_COMMENT
+    QUEST_INVITE, QUEST_AUTH, POST_COMMENT, NOTICE_POSTING
 }

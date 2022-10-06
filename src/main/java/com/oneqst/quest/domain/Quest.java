@@ -22,7 +22,7 @@ public class Quest {
 
     @Id
     @GeneratedValue
-    @Column(name = "Quest_id")
+    @Column(name = "QUEST_ID")
     private Long id;
 
     @ManyToMany

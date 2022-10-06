@@ -1,6 +1,9 @@
 package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.notice.Notice;
+import com.oneqst.notice.NoticeRepository;
+import com.oneqst.notice.NoticeType;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
@@ -26,6 +29,7 @@ public class QuestService {
     private final QuestRepository questRepository;
     private final QuestPostRepository questPostRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final NoticeRepository noticeRepository;
 
     /**
      * 퀘스트 생성
@@ -92,8 +96,31 @@ public class QuestService {
         questPost.setQuest(quest);
         questPost.setPostTime(LocalDateTime.now());
         questPost.setNotice(true);
-        return questPostRepository.save(questPost);
+        QuestPost newQuestPost = questPostRepository.save(questPost);
+//        eventPublisher.publishEvent(new NoticePosting(newQuestPost, quest, member));
+        noticeEvent(newQuestPost,quest,member);
+        return newQuestPost;
+
     }
+
+    public void noticeEvent(QuestPost newQuestPost, Quest quest, Member member) {
+        List<Member> memberListExcludeWriter = quest.getQuestMember();
+        for (Member m : memberListExcludeWriter) {
+            if (!m.equals(newQuestPost.getWriter())) {
+                Notice notice = new Notice();
+                notice.setTitle(quest.getQuestTitle());
+                notice.setContent("링크를 클릭하면 해당 공지사항으로 이동합니다.");
+                notice.setByMember(member.getNickname());
+                notice.setMember(m);
+                notice.setNoticeType(NoticeType.NOTICE_POSTING);
+                notice.setNoticeTime(LocalDateTime.now());
+                notice.setChecked(false);
+                notice.setUrl("/quest/" + quest.getQuestUrl() + "/post/" + newQuestPost.getId());
+                noticeRepository.save(notice);
+            }
+        }
+    }
+
 
     /**
      * 퀘스트 포스팅 수정

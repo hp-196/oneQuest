@@ -34,6 +34,9 @@
                         <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).QUEST_AUTH}"
                             th:text="|${notice.getTitle()} 게시글이 인증을 받았습니다|"
                             th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
+                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).NOTICE_POSTING}"
+                            th:text="|${notice.getTitle()} 퀘스트에 새로운 공지사항이 등록되었습니다.|"
+                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
                         <p th:classappend="${notice.checked == true} ? 'notice' : ''"
                            th:text="${notice.getContent()}"></p>
                     </div>

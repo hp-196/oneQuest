@@ -22,7 +22,7 @@ import java.util.UUID;
 public class Member {
 
     @Id @GeneratedValue
-    @Column(name = "Member_id")
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     @Column(unique = true)
