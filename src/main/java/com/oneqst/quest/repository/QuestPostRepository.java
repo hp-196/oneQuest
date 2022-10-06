@@ -14,4 +14,6 @@ public interface QuestPostRepository extends JpaRepository<QuestPost, Long>, Que
     List<QuestPost> findByQuest(Quest quest);
 
     List<QuestPost> findByWriter(Member member);
+
+    List<QuestPost> findByQuestOrderByPostTimeDesc(Quest quest);
 }

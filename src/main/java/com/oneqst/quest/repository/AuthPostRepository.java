@@ -10,4 +10,6 @@ import java.util.List;
 @Transactional
 public interface AuthPostRepository extends JpaRepository<AuthPost, Long> {
     List<AuthPost> findByQuest(Quest quest);
+
+    List<AuthPost> findByQuestOrderByPostTimeDesc(Quest quest);
 }

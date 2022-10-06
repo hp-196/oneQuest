@@ -71,8 +71,8 @@ public class QuestController {
         if (quest == null) {
             return "redirect:/";
         }
-        List<QuestPost> questPostList = questPostRepository.findByQuest(quest);
-        List<AuthPost> authPostList = authPostRepository.findByQuest(quest);
+        List<QuestPost> questPostList = questPostRepository.findByQuestOrderByPostTimeDesc(quest);
+        List<AuthPost> authPostList = authPostRepository.findByQuestOrderByPostTimeDesc(quest);
         List<Score> scoreList = scoreRepository.findByQuest(quest);
         List<Member> memberList = quest.getQuestMember();
         List<Map.Entry<Member, Integer>> score = authService.countScore(scoreList, memberList);
