@@ -57,12 +57,6 @@
 
                             <li class="nav-item">
                                 <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab"
-                                        data-bs-target="#profile-settings">설정
-                                </button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab"
                                         data-bs-target="#profile-change-password">비밀번호 변경
                                 </button>
                             </li>
@@ -189,50 +183,6 @@
                                         <button type="submit" class="btn btn-primary">프로필 수정</button>
                                     </div>
 
-                                </form>
-
-                            </div>
-
-                            <!-- 알람 세팅 폼 -->
-                            <div th:if="${isOwner}" class="tab-pane fade pt-3" id="profile-settings">
-                                <form>
-                                    <div class="row mb-3">
-                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email
-                                            Notifications</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="changesMade"
-                                                       checked>
-                                                <label class="form-check-label" for="changesMade">
-                                                    웹에서 알림받기
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="newProducts"
-                                                       checked>
-                                                <label class="form-check-label" for="newProducts">
-                                                    스마트폰 알림받기
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="proOffers">
-                                                <label class="form-check-label" for="proOffers">
-                                                    실험용1
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="securityNotify"
-                                                       checked disabled>
-                                                <label class="form-check-label" for="securityNotify">
-                                                    실험용2
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">설정 변경</button>
-                                    </div>
                                 </form>
 
                             </div>

@@ -18,6 +18,7 @@
                 <p>퀘스트를 추가하려면 퀘스트 생성페이지로 이동하세요</p>
             </div>
 
+            <!-- 퀘스트 필터링 -->
             <div class="row">
                 <div th:if="${questList.size > 0}" class="col-lg-12">
                     <ul id="portfolio-flters">
@@ -28,7 +29,7 @@
                 </div>
             </div>
 
-
+            <!-- 퀘스트 리스트 -->
             <div class="row portfolio-container">
                 <div sec:authorize="isAuthenticated()" th:each="quest: ${questList}"
                      th:classappend="${quest.compareDate()} ? 'filter-go' : 'filter-end'"
@@ -38,10 +39,9 @@
                             <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
                             <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
                                  alt="Profile">
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
-                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="Preview"><i class="bx bx-plus"></i></a>
-                            <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                               title="퀘스트 입장"><i class="bx bx-plus"></i></a>
+                            <a class="link-details" title="회원 초대" data-bs-toggle="modal" data-bs-target="#memberInvite"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
@@ -50,15 +50,52 @@
                             <p th:text="${quest.questIntroduce}"></p>
                         </div>
                     </div>
+
+                    <!-- 퀘스트 멤버 초대 모달창 -->
+                    <div class="modal fade" id="memberInvite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">멤버 초대</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form th:action="@{'/quest/' + ${quest.questUrl} + '/invite'}" th:object="${inviteDto}" method="post"
+                                      novalidate>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="recipient-name" class="col-form-label">주소를 복사해 초대해보세요</label>
+                                            <span class="form-control" id="recipient-name">localhost:8080/quest/<span
+                                                    th:text="${quest.questUrl}"></span></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message-text" class="col-form-label">닉네임 혹은 이메일</label>
+                                            <input class="form-control" id="message-text" th:field="*{nickNameOrEmail}">
+                                            <div class="invalid-feedback">닉네임혹은 이메일을 입력하시오</div>
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('nickNameOrEmail')}"
+                                                   th:errors="*{nickNameOrEmail}">input Error</small>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                                        <button type="submit" class="btn btn-primary">초대 발송</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <div th:if="${!#strings.isEmpty(questList)}" class="section-title mt-5 mb-5">
+
+
+            <!-- 퀘스트 추천 -->
+            <div th:if="${notQuestList.size() > 0}" class="section-title mt-5 mb-5">
                 <h2>이런 퀘스트는 어떠세요?</h2>
                 <p>아래의 카드를 눌러 이동해보세요</p>
             </div>
 
-            <div th:if="${!#strings.isEmpty(questList)}" class="row portfolio-container">
+            <div th:if="${notQuestList.size() > 0}" class="row portfolio-container">
                 <div sec:authorize="isAuthenticated()" th:each="quest: ${notQuestList}"
                      class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
@@ -68,9 +105,9 @@
                                  alt="Profile">
                             <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
                                class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="Preview"><i
+                               title="퀘스트 입장"><i
                                     class="bx bx-plus"></i></a>
-                            <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                            <a class="link-details" title="상세 정보" data-bs-toggle="modal" data-bs-target="#questInfo"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
@@ -79,6 +116,37 @@
                             <p th:text="${quest.questIntroduce}"></p>
                         </div>
                     </div>
+
+                    <!-- 퀘스트 상세 정보 모달창 -->
+                    <div class="modal fade" id="questInfo" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">퀘스트 정보</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="recipient-name" class="col-form-label">제목</label>
+                                            <span class="form-control" th:text="${quest.getQuestTitle()}">제목</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message-text" class="col-form-label">소개</label>
+                                            <span class="form-control" th:text="${quest.getQuestExplain()}">퀘스트 소개</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message-text" class="col-form-label">기한</label>
+                                            <span class="form-control" th:text="|${quest.getQuestStartTime()} 부터 ${quest.getQuestEndTime()}|">기한</span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                                        <a th:href="@{'/quest/' + ${quest.questUrl}}" class="btn btn-primary">들어가기</a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

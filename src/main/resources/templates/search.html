@@ -17,6 +17,7 @@
                 <span th:unless="${(searchTitle.isEmpty())}" th:text="|${searchTitle}에 대한 검색결과입니다. (${questList.getTotalElements()}개)|"></span>
             </div>
 
+            <!-- 퀘스트 리스트 -->
             <div class="row portfolio-container">
                 <div sec:authorize="isAuthenticated()" th:each="quest: ${questList.getContent()}"
                      class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
@@ -25,10 +26,9 @@
                             <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
                             <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
                                  alt="Profile">
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
-                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="Preview"><i class="bx bx-plus"></i></a>
-                            <a href="portfolio-details.html" class="link-details" title="More Details"><i
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                               title="퀘스트 입장"><i class="bx bx-plus"></i></a>
+                            <a href="portfolio-details.html" class="link-details" title="상세 정보" data-bs-toggle="modal" data-bs-target="#questInfo"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
@@ -37,6 +37,42 @@
                             <p th:text="${quest.questIntroduce}"></p>
                         </div>
                     </div>
+
+                    <!-- 퀘스트 상세 정보 모달창 -->
+                    <div class="modal fade" id="questInfo" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">퀘스트 정보</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="col-form-label">제목</label>
+                                        <span class="form-control" th:text="${quest.getQuestTitle()}">퀘스트 제목</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">소개</label>
+                                        <span class="form-control" th:text="${quest.getQuestExplain()}">퀘스트 소개</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">기한</label>
+                                        <span class="form-control" th:text="|${quest.getQuestStartTime()} 부터 ${quest.getQuestEndTime()}|">기한</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">모집 상태</label>
+                                        <span class="form-control" th:if="${quest.questRecruitEnd == true}">모집중</span>
+                                        <span class="form-control" th:if="${quest.questRecruitEnd == false}">모집 마감</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                                    <a th:href="@{'/quest/' + ${quest.questUrl}}" class="btn btn-primary">들어가기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
