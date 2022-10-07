@@ -28,7 +28,7 @@
                                  alt="Profile">
                             <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i class="bx bx-plus"></i></a>
-                            <a href="portfolio-details.html" class="link-details" title="상세 정보" data-bs-toggle="modal" data-bs-target="#questInfo"><i
+                            <a href="portfolio-details.html" class="link-details" title="상세 정보" data-bs-toggle="modal" th:attr="data-bs-target='#questInfo'+${quest.id}"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
@@ -39,7 +39,7 @@
                     </div>
 
                     <!-- 퀘스트 상세 정보 모달창 -->
-                    <div class="modal fade" id="questInfo" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:id="'questInfo' + ${quest.id}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">

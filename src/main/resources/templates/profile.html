@@ -30,7 +30,7 @@
                              th:src="${profileMember.profileImage}" alt="Profile">
                         <h2 th:text="${profileMember.nickname}"></h2>
                         <div class="social-links mt-2">
-                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                            <a th:href="@{${profileMember.url}}" class="instagram" target="_blank"><i class="bi bi-instagram"></i></a>
                         </div>
                     </div>
                 </div>
@@ -86,23 +86,22 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">주소</div>
-                                    <div th:text="${profileMember.address}" class="col-lg-9 col-md-8">A108 Adam Street,
-                                        New York, NY 535022
+                                    <div th:text="${profileMember.address}" class="col-lg-9 col-md-8">주소
                                     </div>
                                 </div>
 
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">이메일</div>
-                                    <div th:text="${profileMember.email}" class="col-lg-9 col-md-8">
-                                        k.anderson@example.com
+                                    <div th:text="${profileMember.email}" class="col-lg-9 col-md-8">이메일 주소
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">가입날짜</div>
-                                    <div th:text="${#temporals.format(member.signUpTime, 'yyyy-MM-dd')}"
-                                         class="col-lg-9 col-md-8">Web Designer
+                                    <div th:if="${profileMember.emailAuth == true}" th:text="${#temporals.format(profileMember.signUpTime, 'yyyy-MM-dd')}" class="col-lg-9 col-md-8">가입날짜
+                                    </div>
+                                    <div th:if="${profileMember.emailAuth == false}" class="col-lg-9 col-md-8">이메일 미인증 유저
                                     </div>
                                 </div>
 

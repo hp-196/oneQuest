@@ -41,7 +41,7 @@
                                  alt="Profile">
                             <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i class="bx bx-plus"></i></a>
-                            <a class="link-details" title="회원 초대" data-bs-toggle="modal" data-bs-target="#memberInvite"><i
+                            <a class="link-details" title="회원 초대" data-bs-toggle="modal" th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
@@ -52,7 +52,7 @@
                     </div>
 
                     <!-- 퀘스트 멤버 초대 모달창 -->
-                    <div class="modal fade" id="memberInvite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -107,7 +107,7 @@
                                class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i
                                     class="bx bx-plus"></i></a>
-                            <a class="link-details" title="상세 정보" data-bs-toggle="modal" data-bs-target="#questInfo"><i
+                            <a class="link-details" title="상세 정보" data-bs-toggle="modal" th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
@@ -118,7 +118,7 @@
                     </div>
 
                     <!-- 퀘스트 상세 정보 모달창 -->
-                    <div class="modal fade" id="questInfo" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
