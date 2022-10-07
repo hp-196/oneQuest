@@ -4,6 +4,7 @@ import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.repository.query.QuestRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,4 +27,10 @@ public interface QuestRepository extends JpaRepository<Quest, Long>, QuestReposi
 
     //제목 검색
     List<Quest> findByQuestTitleContainingAndQuestMemberNotContains(String title, Member member);
+
+    //무작위 9개 추출. db성능 부하 있을시 교체할것
+    @Query(value = "select * from Quest order by rand() limit 9", nativeQuery = true)
+    List<Quest> findRandom();
+
+    List<Quest> findFirst9ByQuestRecruitEndAndQuestMemberNotContaining(boolean b, Member member);
 }
