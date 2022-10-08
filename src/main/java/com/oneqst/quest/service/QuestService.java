@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,12 +152,16 @@ public class QuestService {
     /**
      * 퀘스트 탈퇴
      */
-    public void questWithdraw(Quest quest, Member member) {
+    public boolean questWithdraw(Quest quest, Member member) {
+        if (quest.getQuestHost().equals(member)) {
+            return false;
+        }
         deleteAllQuestPost(member);
         quest.questWithdraw(member);
         if (quest.getQuestMaster().size() + quest.getQuestMember().size() == 0) {
             deleteQuest(quest);
         }
+        return true;
     }
 
     private void deleteAllQuestPost(Member member) {

@@ -99,7 +99,7 @@
             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
         </button>
 
-        <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)}"
+        <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)} and ${!member.equals(quest.questHost)}"
                 class="btn btn-danger">
             <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
         </button>
