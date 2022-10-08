@@ -2,6 +2,7 @@ package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
+import com.oneqst.quest.repository.QuestRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SettingService {
 
+    private final QuestRepository questRepository;
 
     /**
      * 멤버 -> 매니저 승격
@@ -46,5 +48,16 @@ public class SettingService {
         quest.setQuestHost(manager);
         quest.removeQuestMaster(manager);
         quest.addQuestMaster(host);
+    }
+
+    /**
+     * 호스트 전용 퀘스트 삭제
+     */
+    public boolean deleteQuest(Quest quest) {
+        if (!(quest.getQuestMaster().isEmpty() && quest.getQuestMember().size()==1)) {
+            return false;
+        }
+        questRepository.delete(quest);
+        return true;
     }
 }

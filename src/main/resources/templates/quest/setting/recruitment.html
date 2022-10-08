@@ -47,9 +47,38 @@
                                 </div>
                             </div>
 
+                            <div th:if="${quest.questHost.equals(member)}">
+                            <h5 class="card-title">퀘스트 삭제</h5>
+                            <p class="small fst-italic">호스트를 제외한 인원이 아무도 없을경우에만 가능합니다.</p>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label mb-2">삭제하기 :</div>
+                                <div class="col-lg-9 col-md-8 mb-2">
+                                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/recruitment'}" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target='#delete'>삭제</a>
+                                </div>
+                            </div>
+                            </div>
+
 
                         </div>
                     </div>
+
+                    <!-- 퀘스트 삭제 모달창 -->
+                    <div class="modal fade" id="delete" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">퀘스트 삭제</h5>
+                                </div>
+                                <div class="modal-body">정말로 삭제하시겠습니까?</div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                                    <a th:href="@{'/quest/' + ${quest.questUrl} + '/delete'}" class="btn btn-primary">예</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

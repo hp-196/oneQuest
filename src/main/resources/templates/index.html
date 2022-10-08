@@ -56,7 +56,7 @@
                     </div>
 
                     <!-- 퀘스트 멤버 초대 모달창 -->
-                    <div class="modal fade" th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:if="${quest.questRecruitEnd == true}" th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">

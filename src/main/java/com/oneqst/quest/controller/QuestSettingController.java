@@ -124,6 +124,19 @@ public class QuestSettingController {
         return "redirect:/quest/"+ url + "/setting/auth";
     }
 
+    /**
+     * 호스트 전용 퀘스트 삭제
+     */
+    @GetMapping("/quest/{url}/delete")
+    public String deleteQuest(@CurrentUser Member member, @PathVariable String url) {
+        Quest quest = questRepository.findByQuestUrl(url);
+        if (!quest.getQuestHost().equals(member)) {
+            return "redirect:/quest/"+ url;
+        }
+        settingService.deleteQuest(quest);
+        return "redirect:/";
+    }
+
 
 
 
