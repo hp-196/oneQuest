@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +55,14 @@ public class QuestController {
      * 퀘스트 생성 POST
      */
     @PostMapping("/new-quest")
-    public String newQuestPost(@CurrentUser Member member, @Valid QuestDto questDto, Errors errors) {
+    public String newQuestPost(@CurrentUser Member member, @Valid QuestDto questDto, Errors errors) throws UnsupportedEncodingException {
         if (errors.hasErrors()) {
             log.info(String.valueOf(errors));
             return "new-quest";
         }
         Quest newQuest = questService.newQuest(questDto, member);
-        return "redirect:/quest/" + newQuest.getQuestUrl();
+        String encodedUrl = URLEncoder.encode(newQuest.getQuestUrl(), "UTF-8");
+        return "redirect:/quest/" + encodedUrl;
     }
 
     /**
@@ -107,7 +110,7 @@ public class QuestController {
      * 퀘스트 수정 POST
      */
     @PostMapping("/quest/{url}/update")
-    public String questUpdatePost(@CurrentUser Member member, @PathVariable String url, @Valid QuestUpdateDto questUpdateDto, Errors errors, Model model) {
+    public String questUpdatePost(@CurrentUser Member member, @PathVariable String url, @Valid QuestUpdateDto questUpdateDto, Errors errors, Model model) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (errors.hasErrors()) {
             model.addAttribute(member);
@@ -116,8 +119,8 @@ public class QuestController {
             return "quest-update";
         }
         questService.questUpdate(quest, questUpdateDto);
-        log.info("퀘스트 수정 완료");
-        return "redirect:/quest/" + quest.getQuestUrl();
+        String encodedUrl = URLEncoder.encode(questUpdateDto.getQuestUrl(), "UTF-8");
+        return "redirect:/quest/" + encodedUrl;
     }
 
     /**
