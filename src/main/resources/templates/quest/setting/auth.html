@@ -67,9 +67,27 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                             <li><a class="dropdown-item" th:href="@{'/quest/' + ${quest.questUrl} + '/relegation/member/' + ${manager.nickname}}">회원으로 강등</a></li>
                                             <li><a class="dropdown-item" th:href="@{'/quest/' + ${quest.questUrl} + '/exile/' + ${manager.nickname}}">추방</a></li>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal" th:attr="data-bs-target='#host'+${manager.id}">호스트로 임명</button></li>
                                         </ul>
                                     </div>
                                 </div>
+
+                                <!-- 호스트 임명 모달창 -->
+                                <div class="modal fade" th:id="'host' + ${manager.id}" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">호스트 위임</h5>
+                                            </div>
+                                            <div class="modal-body" th:text="|${quest.questHost.nickname} 에서 ${manager.nickname} 으로 호스트 위임이 맞으시면 '확인' 버튼을 누르세요. 기존 호스트는 매니저로 강등됩니다.|"></div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                                                <a th:href="@{'/quest/' + ${quest.questUrl} + '/assign/' + ${manager.nickname}}" class="btn btn-primary">확인</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <!-- 회원 리스트 -->

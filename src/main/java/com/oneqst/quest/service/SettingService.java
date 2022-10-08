@@ -38,4 +38,13 @@ public class SettingService {
             quest.setQuestRecruitEnd(false);
         } else quest.setQuestRecruitEnd(true);
     }
+
+    /**
+     * 호스트 임명
+     */
+    public void assignHost(Quest quest, Member host, Member manager) {
+        quest.setQuestHost(manager);
+        quest.removeQuestMaster(manager);
+        quest.addQuestMaster(host);
+    }
 }

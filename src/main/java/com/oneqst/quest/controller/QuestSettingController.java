@@ -96,6 +96,20 @@ public class QuestSettingController {
     }
 
     /**
+     * 호스트 임명
+     */
+    @GetMapping("/quest/{url}/assign/{nickname}")
+    public String assignHost(@CurrentUser Member host, @PathVariable String url, @PathVariable String nickname) {
+        Quest quest = questRepository.findByQuestUrl(url);
+        if (!quest.getQuestHost().equals(host)) {
+            return "redirect:/quest/"+ url;
+        }
+        Member manager = memberRepository.findByNickname(nickname);
+        settingService.assignHost(quest,host,manager);
+        return "redirect:/quest/"+ url + "/setting/auth";
+    }
+
+    /**
      * 회원 추방
      */
     @GetMapping("/quest/{url}/exile/{nickname}")
