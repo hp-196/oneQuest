@@ -33,4 +33,6 @@ public interface QuestRepository extends JpaRepository<Quest, Long>, QuestReposi
     List<Quest> findRandom();
 
     List<Quest> findFirst9ByQuestRecruitEndAndQuestMemberNotContaining(boolean b, Member member);
+
+    boolean existsByQuestUrl(String url);
 }

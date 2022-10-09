@@ -17,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -38,8 +40,19 @@ public class QuestController {
     private final QuestPostRepository questPostRepository;
     private final AuthPostRepository authPostRepository;
     private final ScoreRepository scoreRepository;
-    private final MemberRepository memberRepository;
     private final AuthService authService;
+    private final QuestValidator questValidator;
+    private final UpdateValidator updateValidator;
+
+    @InitBinder("questDto")
+    public void initNewQuestBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(questValidator);
+    }
+
+    @InitBinder("questUpdateDto")
+    public void updateQuestBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(updateValidator);
+    }
 
     /**
      * 퀘스트 생성 페이지

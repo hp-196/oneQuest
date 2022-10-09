@@ -32,6 +32,8 @@ public class QuestUpdateDto {
     @Pattern(regexp = "[0-9a-zA-Z가-힣]{2,50}", message = "지원하지않는 형식입니다.")
     private String questUrl; //퀘스트 주소
 
+    private String currentUrl; //현재 퀘스트 주소
+
     private String questImage; //퀘스트 대표 이미지
 
     public QuestUpdateDto(Quest quest) {
@@ -41,6 +43,7 @@ public class QuestUpdateDto {
         this.questStartTime = quest.getQuestStartTime();
         this.questEndTime = quest.getQuestEndTime();
         this.questUrl = quest.getQuestUrl();
+        this.currentUrl = quest.getQuestUrl();
         this.questImage = quest.getQuestImage();
     }
 }
