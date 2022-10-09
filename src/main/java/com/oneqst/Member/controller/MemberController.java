@@ -49,7 +49,6 @@ public class MemberController {
     @PostMapping("/sign-up")
     public String signUpPost(@Valid MemberDto memberDto, Errors errors) {
         if (errors.hasErrors()) {
-            log.info(String.valueOf(errors));
             return "sign-up";
         }
         if (memberRepository.existsByEmail(memberDto.getEmail())) {

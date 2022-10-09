@@ -55,9 +55,9 @@ public class QuestController {
      * 퀘스트 생성 POST
      */
     @PostMapping("/new-quest")
-    public String newQuestPost(@CurrentUser Member member, @Valid QuestDto questDto, Errors errors) throws UnsupportedEncodingException {
+    public String newQuestPost(@CurrentUser Member member, @Valid QuestDto questDto, Errors errors, Model model) throws UnsupportedEncodingException {
         if (errors.hasErrors()) {
-            log.info(String.valueOf(errors));
+            model.addAttribute(member);
             return "new-quest";
         }
         Quest newQuest = questService.newQuest(questDto, member);
@@ -115,7 +115,6 @@ public class QuestController {
         if (errors.hasErrors()) {
             model.addAttribute(member);
             model.addAttribute(quest);
-            log.info("퀘스트 수정 에러");
             return "quest-update";
         }
         questService.questUpdate(quest, questUpdateDto);

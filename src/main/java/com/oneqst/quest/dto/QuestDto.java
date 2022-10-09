@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data
@@ -31,6 +32,7 @@ public class QuestDto {
 
     @NotBlank
     @Length(min = 2, max = 50)
+    @Pattern(regexp = "[0-9a-zA-Z가-힣]{2,50}", message = "지원하지않는 형식입니다.")
     private String questUrl; //퀘스트 주소
 
 }
