@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,6 +26,12 @@ public class MemberController {
 
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final MemberValidator memberValidator;
+
+    @InitBinder("memberDto")
+    public void validatorBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(memberValidator);
+    }
 
 
     /**
@@ -51,18 +59,8 @@ public class MemberController {
         if (errors.hasErrors()) {
             return "sign-up";
         }
-        if (memberRepository.existsByEmail(memberDto.getEmail())) {
-            log.info("이미 있는 이메일");
-            return "sign-up";
-        }
-        if (memberRepository.existsByNickname(memberDto.getNickname())) {
-            log.info("이미 있는 닉네임");
-            return "sign-up";
-        }
-
         Member newMember = memberService.newMember(memberDto);
         memberService.sendMail(newMember);
-
         return "login";
     }
 
