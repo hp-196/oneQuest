@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @Controller
@@ -55,7 +56,7 @@ public class MemberController {
      * 회원가입 포스트
      */
     @PostMapping("/sign-up")
-    public String signUpPost(@Valid MemberDto memberDto, Errors errors) {
+    public String signUpPost(@Valid MemberDto memberDto, Errors errors) throws MessagingException {
         if (errors.hasErrors()) {
             return "sign-up";
         }
@@ -69,9 +70,9 @@ public class MemberController {
      * 이메일 인증
      */
     @GetMapping("/email-auth")
-    public String emailAuth(String email, String token, Model model) {
+    public String emailAuth(@CurrentUser Member loginMember, String email, String token, Model model) {
         Member member = memberRepository.findByEmail(email);
-        if (member == null || !member.getEmailToken().equals(token)) {
+        if (!loginMember.equals(member) || member == null || !member.getEmailToken().equals(token)) {
             model.addAttribute("error", "wrong.email");
             return "email-auth";
         }

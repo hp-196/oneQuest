@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,15 +44,16 @@ public class MemberService implements UserDetailsService {
 
     /**
      * 이메일 전송
-     * https://velog.io/@jjangchen/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EB%A9%94%EC%9D%BC%EB%B0%9C%EC%86%A1 참고
+     * https://kimvampa.tistory.com/93
      */
-    public void sendMail(Member newMember) {
+    public void sendMail(Member newMember) throws MessagingException {
         newMember.EmailTokenCreate();
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(newMember.getEmail());
-        simpleMailMessage.setSubject("원퀘스트 메일");
-        simpleMailMessage.setText("/email-auth?token="+ newMember.getEmailToken() + "&email=" + newMember.getEmail());
-        javaMailSender.send(simpleMailMessage);
+        MimeMessage mail = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+        helper.setTo(newMember.getEmail());
+        helper.setSubject("[원퀘스트] 회원가입 이메일 인증");
+        helper.setText("<html> <body><h1><a href=\"http://localhost:8080/email-auth?token=" + newMember.getEmailToken() + "&email=" + newMember.getEmail()+"\">메일인증</a></h1> </body></html>", true);
+        javaMailSender.send(mail);
     }
 
     /**

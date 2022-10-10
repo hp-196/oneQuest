@@ -7,16 +7,18 @@
     <p class="lead">원퀘스트 이메일 확인</p>
     <div class="alert alert-danger" role="alert">
         이메일 확인 링크가 아닙니다.
+        <a class="btn" th:href="@{'/'}">메인으로</a>
     </div>
 </div>
 
 <div class="py-5 text-center" th:if="${error == null}">
-    <img src="/assets/images/logo_sm.png" width="160" height="160">
+    <img src="/assets/img/logo.png" width="160" height="160">
     <p></p>
     <p class="lead">안녕하세요 원퀘스트 입니다</p>
     <h2>
-        <span th:text="${nickname}">회원</span>님 이메일 인증이 완료되었습니다.
+        <span th:text="${nickname}">회원</span>님. 이메일 인증이 완료되었습니다.
     </h2>
+    <a class="btn" th:href="@{'/'}">메인으로</a>
 </div>
 
 <div class="fragments.html :: footer"></div>
