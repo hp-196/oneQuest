@@ -1,11 +1,14 @@
 package com.oneqst.Member.controller;
 
+import com.oneqst.Member.controller.validate.MemberValidator;
+import com.oneqst.Member.controller.validate.ProfileValidator;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.Member.domain.Password;
 import com.oneqst.Member.domain.Profile;
 import com.oneqst.Member.dto.MemberDto;
 import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.Member.service.MemberService;
+import com.oneqst.config.AlertMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -28,10 +32,16 @@ public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final MemberValidator memberValidator;
+    private final ProfileValidator profileValidator;
 
     @InitBinder("memberDto")
-    public void validatorBinder(WebDataBinder webDataBinder) {
+    public void memberDtoBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(memberValidator);
+    }
+
+    @InitBinder("profile")
+    public void profileBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(profileValidator);
     }
 
 
@@ -102,18 +112,19 @@ public class MemberController {
 
     /**
      * 프로필 수정
-     *
-     * @return
      */
     @PostMapping("/profile/update")
-    public String updateProfile(@CurrentUser Member member, @Valid Profile profile, Errors errors, Model model) {
+    ModelAndView updateProfile(@CurrentUser Member member, @Valid Profile profile, Errors errors, ModelAndView mav) {
         if (errors.hasErrors()) {
-            model.addAttribute(member);
-            log.info(String.valueOf(errors));
-            return "redirect:/profile/" + member.getNickname();
+            String message = errors.getFieldError().getCode();
+            mav.addObject("data", new AlertMessage(message, "/profile/"+member.getNickname()));
+            mav.setViewName("alertMessage");
+            return mav;
         }
         memberService.updateProfile(member, profile);
-        return "redirect:/profile/" + member.getNickname();
+        mav.addObject("data", new AlertMessage("프로필 수정이 완료되었습니다.", "/profile/"+member.getNickname()));
+        mav.setViewName("alertMessage");
+        return mav;
     }
 
 
@@ -121,17 +132,20 @@ public class MemberController {
      * 패스워드 업데이트
      */
     @PostMapping("/profile/update/password")
-    public String updatePassword(@CurrentUser Member member, @Valid Password password, Errors errors, Model model) {
+    public ModelAndView updatePassword(@CurrentUser Member member, @Valid Password password, Errors errors, ModelAndView mav) {
         if (errors.hasErrors()) {
-            model.addAttribute(member);
-            log.info(String.valueOf(errors));
-            return "redirect:/profile/" + member.getNickname();
+            String message = errors.getFieldError().getDefaultMessage();
+            mav.addObject("data", new AlertMessage(message, "/profile/"+member.getNickname()));
+            mav.setViewName("alertMessage");
+            return mav;
         }
         if (memberService.updatePassword(member, password)) {
-            log.info("비밀번호 변경 성공");
-            return "redirect:/profile/" + member.getNickname();
+            mav.addObject("data", new AlertMessage("비밀번호 수정이 완료되었습니다.", "/profile/"+member.getNickname()));
+        } else {
+            mav.addObject("data", new AlertMessage("비밀번호 수정이 실패하였습니다.", "/profile/"+member.getNickname()));
         }
-        return "redirect:/profile/" + member.getNickname();
+        mav.setViewName("alertMessage");
+        return mav;
     }
 
 

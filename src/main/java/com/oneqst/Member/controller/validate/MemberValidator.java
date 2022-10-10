@@ -1,4 +1,4 @@
-package com.oneqst.Member.controller;
+package com.oneqst.Member.controller.validate;
 
 import com.oneqst.Member.dto.MemberDto;
 import com.oneqst.Member.repository.MemberRepository;

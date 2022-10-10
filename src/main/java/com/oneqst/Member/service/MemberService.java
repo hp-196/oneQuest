@@ -109,7 +109,7 @@ public class MemberService implements UserDetailsService {
     }
 
     /**
-     * 프로필 업데이트, 06-06 기준 이메일 닉네임 백엔드 검증, 수정시 알림메시지 출력 미완성
+     * 프로필 수정
      */
     public void updateProfile(Member member, Profile profile) {
 

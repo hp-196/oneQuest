@@ -127,7 +127,9 @@
                                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">닉네임</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input th:field="*{nickname}" name="fullName" type="text"
-                                                   class="form-control" id="fullName"></input>
+                                                   class="form-control" id="fullName">
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}"
+                                                   th:errors="*{nickname}">닉네임 중복 에러</small>
                                         </div>
                                     </div>
 
@@ -159,7 +161,9 @@
                                         <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input th:field="*{email}" name="email" type="email" class="form-control"
-                                                   id="Email"></input>
+                                                   id="Email">
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}"
+                                                   th:errors="*{email}">이메일 중복 에러</small>
                                         </div>
                                     </div>
 
@@ -174,6 +178,10 @@
 
                                     <div class="form-group">
                                         <input id="profileImage" type="hidden" th:field="*{profileImage}"
+                                               class="form-control"/>
+                                        <input id="currentNickname" type="hidden" th:field="*{currentNickname}"
+                                               class="form-control"/>
+                                        <input id="currentEmail" type="hidden" th:field="*{currentEmail}"
                                                class="form-control"/>
                                     </div>
 
