@@ -159,4 +159,15 @@ public class MemberController {
         memberService.updateProfileImage(profile);
         return "redirect:/profile/" + member.getNickname();
     }
+
+    /**
+     * 이메일 재전송
+     */
+    @GetMapping("/email/resend")
+    public ModelAndView resendEmail(@CurrentUser Member member, ModelAndView mav) throws MessagingException {
+        memberService.sendMail(member);
+        mav.addObject("data", new AlertMessage("이메일 재전송이 완료되었습니다.", "/"));
+        mav.setViewName("alertMessage");
+        return mav;
+    }
 }

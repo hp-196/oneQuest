@@ -25,15 +25,14 @@ public class IndexController {
 
     @GetMapping("/")
     public String home(@CurrentUser Member member, Model model) {
-        if (member != null) {
-            model.addAttribute(member);
-        }
         if (member == null) {
             return "login";
         }
         model.addAttribute("member",member);
+        log.info(String.valueOf(member.isEmailAuth()));
         model.addAttribute("questList", questRepository.myQuests(member.getId()));
-        model.addAttribute("notQuestList", questRepository.findFirst9ByQuestRecruitEndAndQuestMemberNotContaining(true, member));
+//        model.addAttribute("notQuestList", questRepository.findFirst9ByQuestRecruitEndAndQuestMemberNotContaining(true, member));
+        model.addAttribute("notQuestList", questRepository.findRandom());
         model.addAttribute(new InviteDto());
         return "index";
     }

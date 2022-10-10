@@ -1,5 +1,6 @@
 package com.oneqst.Member.domain;
 
+import com.oneqst.Member.controller.MemberInfo;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
@@ -67,27 +68,18 @@ public class Member {
 
 
     /*********************** 연관관계 편의 메소드 **********************/
-    public void addPost(QuestPost questPost) {
-        this.postList.add(questPost);
-    }
 
     public void removePost(QuestPost questPost) {
         this.postList.remove(questPost);
-    }
-    public void removeComment(Comment comment) {
-        this.commentList.remove(comment);
-    }
-
-    public void addCommentList(Comment comment) {
-        this.commentList.add(comment);
     }
 
     public void EmailTokenCreate() {
         this.emailToken = UUID.randomUUID().toString();
     }
 
-    public void updateProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+    public boolean isEmailChecked(MemberInfo memberInfo) {
+        return memberInfo.getMember().isEmailAuth();
     }
+
 
 }

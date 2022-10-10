@@ -1,13 +1,16 @@
 package com.oneqst.Member.domain;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Profile {
 

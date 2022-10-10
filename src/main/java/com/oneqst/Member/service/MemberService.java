@@ -47,7 +47,9 @@ public class MemberService implements UserDetailsService {
      * https://kimvampa.tistory.com/93
      */
     public void sendMail(Member newMember) throws MessagingException {
-        newMember.EmailTokenCreate();
+        if (newMember.getEmailToken() == null) {
+            newMember.EmailTokenCreate();
+        }
         MimeMessage mail = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
         helper.setTo(newMember.getEmail());
