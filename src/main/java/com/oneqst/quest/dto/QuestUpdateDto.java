@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
@@ -34,6 +35,7 @@ public class QuestUpdateDto {
 
     private String currentUrl; //현재 퀘스트 주소
 
+    @Lob
     private String questImage; //퀘스트 대표 이미지
 
     public QuestUpdateDto(Quest quest) {

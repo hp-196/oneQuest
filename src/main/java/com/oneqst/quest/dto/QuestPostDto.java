@@ -3,6 +3,7 @@ package com.oneqst.quest.dto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public class QuestPostDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime postTime;
 
+    @Lob
     private String postImage;
 
 }

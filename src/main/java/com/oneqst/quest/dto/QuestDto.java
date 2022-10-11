@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class QuestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate questEndTime;
 
+    @Lob
     private String questImage; //퀘스트 대표 이미지
 
     @NotBlank
