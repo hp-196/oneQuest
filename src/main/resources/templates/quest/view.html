@@ -56,6 +56,7 @@
 <main id="main" class="main">
     <div>
         <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
+            <!-- 회원 목록 -->
             <div class="card-body">
                 <h5 class="card-title">회원목록</h5>
                 <span>호스트 : </span>
@@ -95,10 +96,12 @@
             </div>
         </div>
 
+        <!-- 퀘스트 수정 버튼 -->
         <button sec:authorize="isAuthenticated()" th:if="${quest.getQuestHost().equals(member)}" class="btn btn-primary">
             <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
         </button>
 
+        <!-- 퀘스트 탈퇴 버튼 -->
         <button sec:authorize="isAuthenticated()" th:if="${quest.isMember(#authentication.principal)} and ${!member.equals(quest.questHost)}"
                 class="btn btn-danger">
             <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
@@ -109,6 +112,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"></h5>
+
+                        <!-- 탭 리스트 -->
                         <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
@@ -130,21 +135,26 @@
                             </li>
                         </ul>
 
+                        <!-- 탭 내용 -->
                         <div class="tab-content pt-2" id="myTabjustifiedContent">
+                            <!-- 커뮤니티 탭 -->
                             <div class="tab-pane fade show active" id="home-justified" role="tabpanel"
                                  aria-labelledby="home-tab">
+                                <!-- 포스팅 버튼 -->
                                 <button sec:authorize="isAuthenticated()"
                                         th:if="${quest.isMember(#authentication.principal)}"
                                         class="btn btn-primary mt-3 mb-3">
                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/post'}" class="btn-quest-view-a">포스팅하기</a>
                                 </button>
 
+                                <!-- 공지사항 버튼 -->
                                 <button sec:authorize="isAuthenticated()"
                                         th:if="${quest.isHostOrMaster(member) && quest.isMember(#authentication.principal)}"
                                         class="btn btn-success mt-3 mb-3">
                                     <a th:href="@{'/quest/' + ${quest.questUrl} + '/post/notice'}"
                                        class="btn-quest-view-a">공지사항 포스팅하기</a>
                                 </button>
+                                <!-- 공지사항 게시글 -->
                                 <div class="card" sec:authorize="isAuthenticated()"
                                      th:each="questPost: ${questPostList}" th:if="${questPost.notice} == true">
                                     <div class="card-header">
@@ -167,6 +177,7 @@
                                                                 th:text="${questPost.postTime}"></span>
                                     </div>
                                 </div>
+                                <!-- 포스팅 게시글 -->
                                 <div class="card" sec:authorize="isAuthenticated()"
                                      th:each="questPost: ${questPostList}" th:if="${questPost.notice} == false">
                                     <div class="card-header">
@@ -198,6 +209,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- 인증 탭 -->
                             <div class="tab-pane fade" id="profile-justified" role="tabpanel"
                                  aria-labelledby="profile-tab">
                                 <button sec:authorize="isAuthenticated()"
@@ -240,14 +253,100 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- 랭킹 탭 -->
                             <div class="tab-pane fade" id="contact-justified" role="tabpanel"
                                  aria-labelledby="contact-tab">
-                                <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">나의 랭킹은?</h5>
 
-                                        <!-- Table with stripped rows -->
-                                        <table class="table table-striped">
+                                        <!-- 1~3등 -->
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="leaderboard-card">
+                                                    <div class="leaderboard-card__top">
+                                                        <h3 class="text-center">🥈</h3>
+                                                    </div>
+                                                    <div class="leaderboard-card__body">
+                                                        <div class="text-center" th:if="${scoreMap.size() > 1}">
+                                                            <a th:href="@{'/profile/' + ${scoreMap[1].key.getNickname()}}">
+                                                            <img th:if="${#strings.isEmpty(scoreMap[1].key.profileImage)}"
+                                                                 src="/assets/img/logo.png" alt="Profile"
+                                                                 class="circle-img mb-2">
+                                                            <img th:if="${!#strings.isEmpty(scoreMap[1].key.profileImage)}"
+                                                                 th:src="${scoreMap[1].key.profileImage}" alt="Profile"
+                                                                 class="circle-img mb-2">
+                                                                <h5 class="mb-0"  th:text="${scoreMap[1].key.getNickname()}">2등 유저</h5></a>
+                                                            <p class="text-muted mb-0" th:text="|${scoreMap[1].value}점|">점수</p>
+                                                            <hr>
+                                                        </div>
+                                                        <div class="text-center" th:unless="${scoreMap.size() > 1}">
+                                                            <img src="/assets/img/logo.png" alt="Profile" class="circle-img mb-2">
+                                                            <h5 class="mb-0">공석</h5></a>
+                                                            <p class="text-muted mb-0">&nbsp;</p>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="leaderboard-card leaderboard-card--first">
+                                                    <div class="leaderboard-card__top">
+                                                        <h3 class="text-center">🥇</h3>
+                                                    </div>
+                                                    <div class="leaderboard-card__body">
+                                                        <div class="text-center" th:if="${scoreMap.size() > 0}">
+                                                            <a th:href="@{'/profile/' + ${scoreMap[0].key.getNickname()}}">
+                                                                <img th:if="${#strings.isEmpty(scoreMap[0].key.profileImage)}"
+                                                                     src="/assets/img/logo.png" alt="Profile"
+                                                                     class="circle-img mb-2">
+                                                                <img th:if="${!#strings.isEmpty(scoreMap[0].key.profileImage)}"
+                                                                     th:src="${scoreMap[0].key.profileImage}" alt="Profile"
+                                                                     class="circle-img mb-2">
+                                                                <h5 class="mb-0"  th:text="${scoreMap[0].key.getNickname()}">1등 유저</h5></a>
+                                                            <p class="text-muted mb-0" th:text="|${scoreMap[0].value}점|">점수</p>
+                                                            <hr>
+                                                        </div>
+                                                        <div class="text-center" th:unless="${scoreMap.size() > 0}">
+                                                            <img src="/assets/img/logo.png" alt="Profile" class="circle-img mb-2">
+                                                            <h5 class="mb-0">공석</h5></a>
+                                                            <p class="text-muted mb-0">&nbsp;</p>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="leaderboard-card">
+                                                    <div class="leaderboard-card__top">
+                                                        <h3 class="text-center">🥉</h3>
+                                                    </div>
+                                                    <div class="leaderboard-card__body">
+                                                        <div class="text-center" th:if="${scoreMap.size() > 2}">
+                                                            <a th:href="@{'/profile/' + ${scoreMap[2].key.getNickname()}}">
+                                                                <img th:if="${#strings.isEmpty(scoreMap[2].key.profileImage)}"
+                                                                     src="/assets/img/logo.png" alt="Profile"
+                                                                     class="circle-img mb-2">
+                                                                <img th:if="${!#strings.isEmpty(scoreMap[2].key.profileImage)}"
+                                                                     th:src="${scoreMap[2].key.profileImage}" alt="Profile"
+                                                                     class="circle-img mb-2">
+                                                                <h5 class="mb-0"  th:text="${scoreMap[2].key.getNickname()}">3등 유저</h5></a>
+                                                            <p class="text-muted mb-0" th:text="|${scoreMap[2].value}점|">점수</p>
+                                                            <hr>
+                                                        </div>
+                                                        <div class="text-center" th:unless="${scoreMap.size() > 2}">
+                                                            <img src="/assets/img/logo.png" alt="Profile" class="circle-img mb-2">
+                                                            <h5 class="mb-0">공석</h5></a>
+                                                            <p class="text-muted mb-0">&nbsp;</p>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 4등부터 전체유저 -->
+                                        <table class="table table-striped" th:if="${scoreMap.size() >= 4}">
                                             <thead>
                                             <tr>
                                                 <th scope="col">순위</th>
@@ -256,7 +355,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="num : ${#numbers.sequence(0,scoreMap.size()-1)}">
+                                            <tr th:each="num : ${#numbers.sequence(3,scoreMap.size()-1)}">
                                                 <th scope="row" th:text="${num+1}">순위</th>
                                                 <td>
                                                     <a href="#about"
@@ -278,16 +377,10 @@
 
                                             </tbody>
                                         </table>
-                                        <!-- End Table with stripped rows -->
 
                                     </div>
-                                </div>
-                                <div>
-                                    <p>나의 점수는?</p>
-                                    <p>점수</p>
-                                </div>
                             </div>
-                        </div><!-- End Default Tabs -->
+                        </div>
                     </div>
                 </div>
             </div>

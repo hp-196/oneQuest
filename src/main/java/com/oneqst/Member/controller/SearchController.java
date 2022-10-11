@@ -17,21 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class SearchController {
     private final QuestRepository questRepository;
-    private final QuestService questService;
-
-//    @GetMapping("/search/list")
-//    public String search(@RequestParam(value="title") String query, @CurrentUser Member member, Model model) {
-//        if (member != null) {
-//            model.addAttribute(member);
-//        }
-//        if (member == null) {
-//            log.info("멤버가 없어서 로그인페이지 리다이렉트");
-//            return "login";
-//        }
-//        model.addAttribute("questList", questRepository.Search(member.getId(), query));
-////        model.addAttribute("notQuestList", questRepository.other_quests(member.getId()));
-//        return "search";
-//    }
 
     @GetMapping("/search/list")
     public String search(@CurrentUser Member member,

@@ -26,11 +26,11 @@
 
             <!-- 퀘스트 필터링 -->
             <div class="row">
-                <div th:if="${questList.size > 0}" class="col-lg-12">
+                <div th:if="${questList.size > 0}" class="col-sm-12">
                     <ul id="portfolio-flters">
                         <li data-filter="*" class="filter-active">All</li>
-                        <li data-filter=".filter-go">진행중인 퀘스트</li>
-                        <li data-filter=".filter-end">종료된 퀘스트</li>
+                        <li data-filter=".filter-go">진행중</li>
+                        <li data-filter=".filter-end">종료</li>
                     </ul>
                 </div>
             </div>
