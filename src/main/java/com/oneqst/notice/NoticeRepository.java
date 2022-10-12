@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface NoticeRepository extends JpaRepository<Notice, Long> {
+public interface NoticeRepository extends JpaRepository<Notice, Long>, NoticeRepositoryCustom {
 
     List<Notice> findByMemberAndCheckedOrderByNoticeTimeDesc(Member member, boolean checked);
 

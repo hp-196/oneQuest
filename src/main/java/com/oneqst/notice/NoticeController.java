@@ -35,6 +35,12 @@ public class NoticeController {
         return "redirect:/notice";
     }
 
+    @GetMapping("/notice/delete")
+    public String deleteAllNotice(@CurrentUser Member member) {
+        noticeService.deleteTotalNotice(member.getId());
+        return "redirect:/notice";
+    }
+
     @GetMapping("/notice/read/{id}")
     public String readOneNotice(@PathVariable Long id) {
         Notice notice = noticeRepository.getById(id);
