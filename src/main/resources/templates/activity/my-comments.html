@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head">
+    <title>"myCommentPage"</title>
+</head>
+
+<body>
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar"></div>
+
+<main class="main" id="main">
+    <div class="page-title">
+        <div class="col text-center">
+            <h1>나의 댓글</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <button th:onclick="'location.href=\''+ @{'/activity/quests'} + '\''" type="button"
+                        class="btn btn-outline-primary">퀘스트
+                </button>
+                <button th:onclick="'location.href=\''+ @{'/activity/posts'} + '\''" type="button"
+                        class="btn btn-outline-primary">게시물
+                </button>
+                <button th:onclick="'location.href=\''+ @{'/activity/quest/auths'} + '\''" type="button"
+                        class="btn btn-outline-primary">인증
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="timeline">
+        <p th:if="${commentList.size() != 0}" th:text="|${commentList.size()}개의 댓글 활동이 있습니다.|">댓글 개수</p>
+        <p th:unless="${commentList.size() != 0}" th:text="'작성하신 댓글이 없습니다'">댓글 개수</p>
+        <ul th:if="${commentList.size() > 0}">
+            <li th:each="comment : ${commentList}">
+                <span th:text="${#temporals.format(comment.getTime(), 'yyyy-MM-dd HH:mm')}">댓글 작성 날짜</span>
+                <a href="#about" th:href="@{'/quest/' + ${comment.questUrl} + '/post/' + ${comment.postId}}">
+                    <div class="content">
+                        <br>
+                        <h3 th:text="${comment.getContent()}">댓글</h3>
+                        <small th:text="|${comment.questTitle} - ${comment.postTitle}|">퀘스트, 게시물 제목</small>
+                        <hr>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+
+</body>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+</html>

@@ -20,9 +20,6 @@
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <button th:onclick="'location.href=\''+ @{'/activity/quests'} + '\''" type="button"
-                        class="btn btn-outline-primary">퀘스트
-                </button>
                 <button th:onclick="'location.href=\''+ @{'/activity/posts'} + '\''" type="button"
                         class="btn btn-outline-primary">게시물
                 </button>
@@ -38,16 +35,16 @@
     <hr>
 
     <div class="timeline">
-        <p th:if="${commentList.size() != 0}" th:text="|${commentList.size()}개의 댓글 활동이 있습니다.|">댓글 개수</p>
-        <p th:unless="${commentList.size() != 0}" th:text="'작성하신 댓글이 없습니다'">댓글 개수</p>
-        <ul th:if="${commentList.size() > 0}">
-            <li th:each="comment : ${commentList}">
-                <span th:text="${#temporals.format(comment.getTime(), 'yyyy-MM-dd HH:mm')}">댓글 작성 날짜</span>
-                <a href="#about" th:href="@{'/quest/' + ${comment.questUrl} + '/post/' + ${comment.postId}}">
+        <p th:if="${questList.size() != 0}" th:text="|${questList.size()}개의 퀘스트 활동이 있습니다.|">댓글 개수</p>
+        <p th:unless="${questList.size() != 0}" th:text="'활동중인 퀘스트가 없습니다'">퀘스트 개수</p>
+        <ul th:if="${questList.size() > 0}">
+            <li th:each="quest : ${questList}">
+                <span th:text="${#temporals.format(quest.getStartTime(), 'yyyy-MM-dd HH:mm')}">퀘스트 활성 기간</span>
+                <a href="#about" th:href="@{'/quest/' + ${quest.getUrl()}}">
                     <div class="content">
                         <br>
-                        <h3 th:text="${comment.getContent()}">댓글</h3>
-                        <small th:text="|${comment.questTitle} - ${comment.postTitle}|">퀘스트, 게시물 제목</small>
+                        <h3 th:text="${quest.getContent()()}">댓글</h3>
+                        <small th:text="|${quest.getTitle()}|">퀘스트 제목</small>
                         <hr>
                     </div>
                 </a>

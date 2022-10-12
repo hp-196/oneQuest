@@ -6,21 +6,20 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class MyQuestPostDto {
+public class MyAuthDto {
     private String questUrl;
     private String questTitle;
-    private Long postId;
-    private String postTitle;
+    private Long authId;
+    private String authTitle;
     private String content;
     private LocalDateTime time;
 
     @QueryProjection
-
-    public MyQuestPostDto(String questUrl, String questTitle, Long postId, String postTitle, String content, LocalDateTime time) {
+    public MyAuthDto(String questUrl, String questTitle, Long authId, String authTitle, String content, LocalDateTime time) {
         this.questUrl = questUrl;
         this.questTitle = questTitle;
-        this.postId = postId;
-        this.postTitle = postTitle;
+        this.authId = authId;
+        this.authTitle = authTitle;
         this.content = content;
         this.time = time;
     }

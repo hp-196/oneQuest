@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -82,30 +85,28 @@ public class AuthService {
                 .build();
         Score newScore = scoreRepository.save(score);
         authPost.setConfirm(true);
-        eventPublisher.publishEvent(new ScoreNotice(member,authPost,quest,sc));
+        eventPublisher.publishEvent(new ScoreNotice(member, authPost, quest, sc));
         return newScore;
     }
 
     /**
      * 랭킹 뷰 점수 계산
      */
-    public List<Map.Entry<Member, Integer>> countScore(List<Score> scoreList , List<Member> memberList) {
+    public List<Map.Entry<Member, Integer>> countScore(List<Score> scoreList, List<Member> memberList) {
 
-        Map<Member,Integer> rating = new HashMap<>();
+        Map<Member, Integer> rating = new HashMap<>();
         for (Member member : memberList) {
-            int i=0;
+            int i = 0;
             for (Score score : scoreList) {
                 if (member.equals(score.getMember())) {
-                    i+=5;
+                    i += 5;
                 }
             }
-            rating.put(member,i);
+            rating.put(member, i);
         }
-        List<Map.Entry<Member,Integer>> list = new ArrayList<>(rating.entrySet());
+        List<Map.Entry<Member, Integer>> list = new ArrayList<>(rating.entrySet());
         list.sort(((o1, o2) -> rating.get(o2.getKey()) - rating.get(o1.getKey())));
 
         return list;
     }
-
-
 }

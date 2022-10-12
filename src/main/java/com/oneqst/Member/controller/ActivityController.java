@@ -17,16 +17,30 @@ public class ActivityController {
     private final MyContentService myContentService;
 
     @GetMapping("/activity/posts")
-    public String myPostLookup(@CurrentUser Member member, Model model) {
+    public String myActivityPostLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
-        model.addAttribute("postList", myContentService.myQuestPostLookup(member.getId()));
-        return "my-posts";
+        model.addAttribute("postList", myContentService.myActivityQuestPostLookup(member.getId()));
+        return "/activity/my-posts";
     }
 
     @GetMapping("/activity/comments")
-    public String myCommentLookup(@CurrentUser Member member, Model model) {
+    public String myActivityCommentLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
-        model.addAttribute("commentList", myContentService.myCommentLookup(member.getId()));
-        return "my-comments";
+        model.addAttribute("commentList", myContentService.myActivityCommentLookup(member.getId()));
+        return "/activity/my-comments";
+    }
+
+    @GetMapping("/activity/quests")
+    public String myActivityQuestLookup(@CurrentUser Member member, Model model) {
+        model.addAttribute(member);
+        model.addAttribute("questList", myContentService.myActivityQuestLookup(member.getId()));
+        return "/activity/my-quests";
+    }
+
+    @GetMapping("/activity/quest/auths")
+    public String myActivityAuthPostLookup(@CurrentUser Member member, Model model) {
+        model.addAttribute(member);
+        model.addAttribute("authPostList", myContentService.myActivityAuthPostLookup(member.getId()));
+        return "/activity/my-auths";
     }
 }

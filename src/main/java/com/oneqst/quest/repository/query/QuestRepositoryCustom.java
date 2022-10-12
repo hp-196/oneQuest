@@ -2,6 +2,7 @@ package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
+import com.oneqst.quest.dto.MyQuestDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -34,4 +35,6 @@ public interface QuestRepositoryCustom {
 
     //페이징 검색
     Page<Quest> searchPaging(Member member, String title, Pageable pageable);
+
+    List<MyQuestDto> myActivityQuestLookup(Long memberId);
 }

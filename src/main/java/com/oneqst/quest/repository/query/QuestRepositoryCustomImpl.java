@@ -2,6 +2,8 @@ package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.Quest;
+import com.oneqst.quest.dto.MyQuestDto;
+import com.oneqst.quest.dto.QMyQuestDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -85,5 +87,27 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+    }
+
+    /**
+     * 나의 퀘스트 활동 목록 조회
+     * @param memberId  유저의 Id
+     * @return  해당 유저의 퀘스트 활동 리스트
+     */
+    @Override
+    public List<MyQuestDto> myActivityQuestLookup(Long memberId) {
+        return queryFactory
+                .select(new QMyQuestDto(
+                        quest.questUrl,
+                        quest.questTitle,
+                        quest.questIntroduce,
+                        quest.questStartTime,
+                        quest.questEndTime
+                ))
+                .from(quest)
+                .join(quest.questMember, member).fetchJoin()
+                .where(member.id.eq(memberId))
+                .orderBy(quest.questStartTime.desc())
+                .fetch();
     }
 }

@@ -23,7 +23,9 @@ public class QuestPostRepositoryCustomImpl implements QuestPostRepositoryCustom 
     public List<MyQuestPostDto> myQuestPostLookup(Long memberId) {
         return queryFactory
                 .select(new QMyQuestPostDto(
+                        quest.questUrl,
                         quest.questTitle,
+                        questPost.id,
                         questPost.title,
                         questPost.content,
                         questPost.postTime
