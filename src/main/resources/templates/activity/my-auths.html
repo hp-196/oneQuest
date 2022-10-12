@@ -19,14 +19,17 @@
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <button th:onclick="'location.href=\''+ @{'/activity/quests'} + '\''" type="button"
-                        class="btn btn-outline-primary">퀘스트
-                </button>
+<!--                <button th:onclick="'location.href=\''+ @{'/activity/quests'} + '\''" type="button"-->
+<!--                        class="btn btn-outline-primary">퀘스트-->
+<!--                </button>-->
                 <button th:onclick="'location.href=\''+ @{'/activity/posts'} + '\''" type="button"
                         class="btn btn-outline-primary">게시물
                 </button>
                 <button th:onclick="'location.href=\''+ @{'/activity/comments'} + '\''" type="button"
                         class="btn btn-outline-primary">댓글
+                </button>
+                <button th:onclick="'location.href=\''+ @{'/activity/quest/auths'} + '\''" type="button"
+                        class="btn btn-outline-primary">인증
                 </button>
             </div>
         </div>

@@ -8,11 +8,12 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.oneqst.Member.domain.QMember.member;
+import static com.oneqst.quest.domain.QAuthPost.authPost;
 import static com.oneqst.quest.domain.QComment.comment;
 import static com.oneqst.quest.domain.QQuest.quest;
 import static com.oneqst.quest.domain.QQuestPost.questPost;
 
-public class CommentRepositoryCustomImpl implements CommentRepositoryCustom{
+public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     public CommentRepositoryCustomImpl(EntityManager em) {
@@ -31,9 +32,10 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom{
                         comment.postTime
                 ))
                 .distinct()
-                .from(quest, questPost, comment)
+                .from(quest, questPost, authPost, comment)
                 .join(quest.questMember, member)
                 .join(questPost.quest, quest)
+                .join(authPost.quest, quest)
                 .join(comment.post, questPost)
                 .where(comment.writer.id.eq(memberId))
                 .orderBy(comment.postTime.desc())

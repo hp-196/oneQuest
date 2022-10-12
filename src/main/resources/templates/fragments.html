@@ -156,7 +156,7 @@
         <li class="nav-item">
             <a sec:authorize="isAuthenticated()" class="nav-link " th:href="@{'/profile/' + ${member.nickname}}">
                 <i class="bi bi-person"></i>
-                <span>My Profile</span>
+                <span>마이 프로필</span>
             </a>
         </li><!-- 프로필 사이드 바 -->
 
@@ -260,6 +260,13 @@
         <!--                <span>내가 쓴 댓글</span>-->
         <!--            </a>-->
         <!--        </li>&lt;!&ndash; End Blank Page Nav &ndash;&gt;-->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" th:href="@{/activity/comments}">
+                <i class="bi bi-file-earmark"></i>
+                <span>나의 활동</span>
+            </a>
+        </li><!-- 댓글 조회 사이드 바 -->
 
         <li class="nav-item" sec:authorize="isAuthenticated()"
             th:if="${quest.isHostOrMaster(member) && quest.isMember(#authentication.principal)}">

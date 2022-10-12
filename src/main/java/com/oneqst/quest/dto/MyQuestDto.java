@@ -15,7 +15,7 @@ public class MyQuestDto {
 
     @QueryProjection
     public MyQuestDto(String url, String title, String content, LocalDate startTime, LocalDate endTime) {
-        Url = url;
+        this.Url = url;
         this.title = title;
         this.content = content;
         this.startTime = startTime;

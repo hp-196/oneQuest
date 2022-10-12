@@ -105,7 +105,7 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                         quest.questEndTime
                 ))
                 .from(quest)
-                .join(quest.questMember, member).fetchJoin()
+                .join(quest.questMember, member)
                 .where(member.id.eq(memberId))
                 .orderBy(quest.questStartTime.desc())
                 .fetch();
