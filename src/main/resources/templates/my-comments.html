@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+      xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head">
     <title>"myCommentPage"</title>
 </head>
@@ -10,49 +10,24 @@
 <div th:replace="fragments.html :: sidebar"></div>
 
 <main class="main" id="main">
-
-<!--    &lt;!&ndash; 댓글 리스트 &ndash;&gt;-->
-<!--    <section class="portfolio" id="portfolio">-->
-<!--        <div class="container col-xl-12">-->
-<!--            <div class="section-title">-->
-<!--                <h2>자신의 댓글 목록</h2>-->
-<!--                <p>댓글을 누르면 해당 댓글로 이동합니다.</p>-->
-<!--            </div>-->
-
-<!--            <div class="row portfolio-container">-->
-<!--                <div class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s"-->
-<!--                     sec:authorize="isAuthenticated()" th:each="comment: ${commentList}">-->
-<!--                    <div class="portfolio-wrap">-->
-<!--                        <div class="portfolio-info">-->
-<!--                            <h4 th:text="${comment.getQuestTitle()}"></h4>-->
-<!--                            <p th:text="${comment.getPostTitle()}"></p>-->
-<!--                            <p th:text="${comment.getContent()}"></p>-->
-<!--                            <p th:text="${comment.getTime()}"></p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
-
-    <div class="pagetitle">
+    <div class="page-title">
         <h1>나의 댓글</h1>
     </div>
 
+<!--    버튼 추가 예정-->
+
     <div class="timeline">
-        <p th:if="${commentList.size() != 0}" th:text="|${commentList.size()}개의 댓글 활동이 있었습니다.|">댓글 개수</p>
+        <p th:if="${commentList.size() != 0}" th:text="|${commentList.size()}개의 댓글 활동이 있습니다.|">댓글 개수</p>
         <p th:unless="${commentList.size() != 0}" th:text="'작성하신 댓글이 없습니다'">댓글 개수</p>
         <ul th:if="${commentList.size() > 0}">
             <li th:each="comment : ${commentList}">
                 <span th:text="${#temporals.format(comment.getTime(), 'yyyy-MM-dd HH:mm')}">댓글 작성 날짜</span>
                 <a href="#about" th:href="@{'/quest/' + ${comment.questUrl} + '/post/' + ${comment.postId}}">
                     <div class="content">
-                        <h3 th:text="${comment.questTitle}">퀘스트 제목</h3>
-                        <h3 th:text="${comment.postTitle}">게시글 제목</h3>
-                        <p th:text="${comment.getContent()}">댓글</p>
-<!--                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).POST_COMMENT}"-->
-<!--                            th:text="|${notice.getTitle()} 게시글에 ${notice.getByMember()}님의 댓글이 달렸습니다|"-->
-<!--                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>-->
+                        <br>
+                        <h3 th:text="${comment.getContent()}">댓글</h3>
+                        <small th:text="|${comment.questTitle} - ${comment.postTitle}|">퀘스트, 게시물 제목</small>
+                        <hr>
                     </div>
                 </a>
             </li>
