@@ -28,11 +28,20 @@ public class QuestSettingController {
     private final MemberRepository memberRepository;
 
     /**
+     * 불건전한 퀘스트 접근 예외
+     */
+    private void extracted(Member member, Quest quest) {
+        if (!quest.isHostOrMaster(member)) {
+            throw new IllegalArgumentException(member.getNickname()+"가 "+ quest +"로 불건전한 접근 시행");
+        }
+    }
+    /**
      * 퀘스트 멤버 설정
      */
     @GetMapping("/quest/{url}/setting/auth")
     public String questSetting(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
+        extracted(member, quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute("masterList",quest.getQuestMaster());
@@ -46,6 +55,7 @@ public class QuestSettingController {
     @GetMapping("/quest/{url}/setting/recruitment")
     public String questRecruitment(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
+        extracted(member, quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         return "quest/setting/recruitment";

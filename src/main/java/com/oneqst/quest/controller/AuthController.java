@@ -34,15 +34,20 @@ public class AuthController {
     private final CommentService commentService;
 
     /**
+     * 불건전한 접근 예외
+     */
+    private void extracted(Member member, Quest quest) {
+        if (!quest.getQuestMember().contains(member)) {
+            throw new IllegalArgumentException(member.getNickname()+"가 "+ quest +"로 불건전한 인증 접근");
+        }
+    }
+    /**
      * 퀘스트 인증 포스팅 GET
      */
     @GetMapping("/quest/{url}/auth/post")
     public String questAuth(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
-        if (quest == null) {
-            throw new IllegalArgumentException("스터디 없음");
-        }
-
+        extracted(member, quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute(new AuthPostDto());
@@ -66,7 +71,9 @@ public class AuthController {
     @GetMapping("/quest/{url}/auth/post/{id}")
     public String getAuthPost(@CurrentUser Member member, @PathVariable String url,
                               @PathVariable Long id, Model model) {
-        AuthPost authPost = authPostRepository.getOne(id);
+        Quest quest = questRepository.findByQuestUrl(url);
+        extracted(member, quest);
+        AuthPost authPost = authPostRepository.getById(id);
         List<Comment> commentList = commentService.findCommentAuth(authPost);
         model.addAttribute(questRepository.findByQuestUrl(url));
         model.addAttribute("commentList", commentList);
@@ -81,7 +88,9 @@ public class AuthController {
      */
     @GetMapping("/quest/{url}/auth/post/{id}/update")
     public String updateAuthPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id, Model model) {
-        AuthPost authPost = authPostRepository.getOne(id);
+        Quest quest = questRepository.findByQuestUrl(url);
+        extracted(member, quest);
+        AuthPost authPost = authPostRepository.getById(id);
         model.addAttribute(member);
         model.addAttribute(questRepository.findByQuestUrl(url));
         model.addAttribute(authPost);
@@ -98,7 +107,6 @@ public class AuthController {
         AuthPost authPost = authPostRepository.getById(id);
         if (member.equals(authPost.getWriter())) {
             authService.updateAuthPost(authPost, authPostUpdateDto);
-            ;
         }
         return "redirect:/quest/" + url + "/auth/post/" + id;
     }

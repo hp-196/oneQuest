@@ -55,6 +55,18 @@ public class QuestController {
     }
 
     /**
+     * 불건전한 퀘스트 접근 예외
+     */
+    private void extracted(Member member, Quest quest) {
+        if (!quest.getQuestMember().contains(member)) {
+            throw new IllegalArgumentException(member.getNickname()+"가 "+quest+"로 불건전한 접근 시행");
+        }
+        if (quest == null) {
+            throw new IllegalArgumentException(member.getNickname()+"가 null인 퀘스트로 접근");
+        }
+    }
+
+    /**
      * 퀘스트 생성 페이지
      */
     @GetMapping("/new-quest")
@@ -109,15 +121,14 @@ public class QuestController {
     @GetMapping("/quest/{url}/update")
     public String questUpdate(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
-        if (quest == null) {
-            throw new IllegalArgumentException("스터디 없음");
-        }
+        extracted(member, quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute(new QuestUpdateDto(quest));
 
         return "quest-update";
     }
+
 
     /**
      * 퀘스트 수정 POST
@@ -141,6 +152,9 @@ public class QuestController {
     @GetMapping("/quest/{url}/join")
     public String joinQuest(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
+        if (quest.isQuestRecruitEnd() == false) {
+            throw new IllegalArgumentException(member.getNickname()+"가 불건전한 참여 시도. 퀘스트 모집중이 아님");
+        }
         model.addAttribute(member);
         model.addAttribute(quest);
         questService.addQuestMember(quest, member);
@@ -177,9 +191,7 @@ public class QuestController {
     @GetMapping("/quest/{url}/post")
     public String questPosting(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
-        if (quest == null) {
-            throw new IllegalArgumentException("스터디 없음");
-        }
+        extracted(member, quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute(new QuestPostDto());
@@ -208,6 +220,8 @@ public class QuestController {
     @GetMapping("/quest/{url}/post/{id}")
     public String getQuestPost(@CurrentUser Member member, @PathVariable String url,
                                @PathVariable Long id, Model model) {
+        Quest quest = questRepository.findByQuestUrl(url);
+        extracted(member, quest);
         QuestPost questPost = questPostRepository.getById(id);
         List<Comment> commentList = commentService.findCommentAll(id);
         model.addAttribute(member);
@@ -226,7 +240,8 @@ public class QuestController {
     public String updateQuestPost(@CurrentUser Member member, @PathVariable String url,
                                   @PathVariable Long id, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
-        QuestPost questPost = questPostRepository.getOne(id);
+        extracted(member, quest);
+        QuestPost questPost = questPostRepository.getById(id);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute(questPost);
@@ -240,11 +255,11 @@ public class QuestController {
     @PostMapping("/quest/{url}/post/{id}/update")
     public String updateQuestPosting(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id,
                                      @Valid QuestPostUpdateDto questPostUpdateDto, Errors errors) {
-        QuestPost questPost = questPostRepository.getOne(id);
+        QuestPost questPost = questPostRepository.getById(id);
         if (errors.hasErrors()) {
             return "redirect:/quest/" + url + "/post/" + id;
         }
-        if (questPost.getWriter().getNickname().equals(member.getNickname())) {
+        if (questPost.getWriter().equals(member)) {
             questService.updateQuestPost(questPost, questPostUpdateDto);
             return "redirect:/quest/" + url + "/post/" + id;
         }
@@ -257,6 +272,9 @@ public class QuestController {
     @GetMapping("/quest/{url}/post/{id}/delete")
     public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
         QuestPost questPost = questPostRepository.getById(id);
+        if (!questPost.getWriter().equals(member)) {
+            throw new IllegalArgumentException(member.getNickname()+"가 "+questPost+"로 불건전한 삭제 접근 시행");
+        }
         questService.deleteQuestPost(questPost);
         return "redirect:/quest/" + url;
     }
@@ -267,9 +285,7 @@ public class QuestController {
     @GetMapping("/quest/{url}/post/notice")
     public String questNotice(@CurrentUser Member member, @PathVariable String url, Model model) {
         Quest quest = questRepository.findByQuestUrl(url);
-        if (quest == null) {
-            throw new IllegalArgumentException("스터디 없음");
-        }
+        extracted(member, quest);
         model.addAttribute(member);
         model.addAttribute(quest);
         model.addAttribute(new QuestPostDto());

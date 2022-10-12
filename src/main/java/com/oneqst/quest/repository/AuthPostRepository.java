@@ -1,5 +1,6 @@
 package com.oneqst.quest.repository;
 
+import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Quest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ public interface AuthPostRepository extends JpaRepository<AuthPost, Long> {
     List<AuthPost> findByQuest(Quest quest);
 
     List<AuthPost> findByQuestOrderByPostTimeDesc(Quest quest);
+
+    List<AuthPost> findByWriter(Member member);
 }

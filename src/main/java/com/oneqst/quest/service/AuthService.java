@@ -63,6 +63,14 @@ public class AuthService {
     }
 
     /**
+     * 인증 포스팅 전체 삭제
+     */
+    public void deleteAllPost(Member member) {
+        List<AuthPost> authPostList = authPostRepository.findByWriter(member);
+        authPostRepository.deleteAll(authPostList);
+    }
+
+    /**
      * 인증 포스팅 점수 추가
      */
     public Score plusScore(Member member, AuthPost authPost, Quest quest, int sc) {

@@ -31,6 +31,7 @@ public class QuestService {
     private final QuestPostRepository questPostRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final NoticeRepository noticeRepository;
+    private final AuthService authService;
 
     /**
      * 퀘스트 생성
@@ -98,7 +99,6 @@ public class QuestService {
         questPost.setPostTime(LocalDateTime.now());
         questPost.setNotice(true);
         QuestPost newQuestPost = questPostRepository.save(questPost);
-//        eventPublisher.publishEvent(new NoticePosting(newQuestPost, quest, member));
         noticeEvent(newQuestPost,quest,member);
         return newQuestPost;
 
@@ -157,6 +157,7 @@ public class QuestService {
             return false;
         }
         deleteAllQuestPost(member);
+        authService.deleteAllPost(member);
         quest.questWithdraw(member);
         if (quest.getQuestMaster().size() + quest.getQuestMember().size() == 0) {
             deleteQuest(quest);
