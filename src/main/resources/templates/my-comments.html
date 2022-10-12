@@ -11,10 +11,31 @@
 
 <main class="main" id="main">
     <div class="page-title">
-        <h1>나의 댓글</h1>
+        <div class="col text-center">
+            <h1>나의 댓글</h1>
+        </div>
     </div>
 
-<!--    버튼 추가 예정-->
+    <!--    버튼 추가 예정-->
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <button th:onclick="'location.href=\''+ @{'/activity/quests'} + '\''" type="button"
+                        class="btn btn-outline-primary">퀘스트
+                </button>
+                <button th:onclick="'location.href=\''+ @{'/activity/posts'} + '\''" type="button"
+                        class="btn btn-outline-primary">게시물
+                </button>
+                <button th:onclick="'location.href=\''+ @{'/activity/comments'} + '\''" type="button"
+                        class="btn btn-outline-primary">댓글
+                </button>
+                <button th:onclick="'location.href=\''+ @{'/activity/quest/auths'} + '\''" type="button"
+                        class="btn btn-outline-primary">인증
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
 
     <div class="timeline">
         <p th:if="${commentList.size() != 0}" th:text="|${commentList.size()}개의 댓글 활동이 있습니다.|">댓글 개수</p>
