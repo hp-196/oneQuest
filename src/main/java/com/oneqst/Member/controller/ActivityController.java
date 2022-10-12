@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 @RequiredArgsConstructor
-public class MyContentController {
+public class ActivityController {
 
     private final MyContentService myContentService;
 
-    @GetMapping("/myPosts")
+    @GetMapping("/activity/posts")
     public String myPostLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("postList", myContentService.myQuestPostLookup(member.getId()));
         return "my-posts";
     }
 
-    @GetMapping("/myComments")
+    @GetMapping("/activity/comments")
     public String myCommentLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("commentList", myContentService.myCommentLookup(member.getId()));

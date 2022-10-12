@@ -23,7 +23,9 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom{
     public List<MyCommentDto> myCommentLookup(Long memberId) {
         return queryFactory
                 .select(new QMyCommentDto(
+                        quest.questUrl,
                         quest.questTitle,
+                        questPost.id,
                         questPost.title,
                         comment.content,
                         comment.postTime
@@ -34,6 +36,7 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom{
                 .join(questPost.quest, quest)
                 .join(comment.post, questPost)
                 .where(comment.writer.id.eq(memberId))
+                .orderBy(comment.postTime.desc())
                 .fetch();
     }
 }
