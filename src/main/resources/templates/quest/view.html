@@ -189,8 +189,10 @@
                                                   <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}"
                                                        th:src="${questPost.writer.profileImage}" alt="Profile"
                                                        class="rounded-circle" style="width: 30px; height: 30px">
-                                                  <span class="badge bg-primary"
-                                                        th:text="${questPost.writer.nickname}"></span>
+                                                  <span class="badge"
+                                                        th:text="${questPost.writer.nickname}"
+                                                        th:classappend="|${questPost.writer.equals(quest.questHost) ? 'bg-danger' : ''} ${quest.questMaster.contains(questPost.writer) ? 'bg-success' : 'bg-primary'}|">
+                                                  </span>
                                               </span>
                                         </a>
                                     </div>
@@ -229,8 +231,10 @@
                                                   <img th:if="${!#strings.isEmpty(authpost.writer.profileImage)}"
                                                        th:src="${authpost.writer.profileImage}" alt="Profile"
                                                        class="rounded-circle" style="width: 30px; height: 30px">
-                                                  <span class="badge bg-primary"
-                                                        th:text="${authpost.writer.nickname}"></span>
+                                                  <span class="badge"
+                                                        th:text="${authpost.writer.nickname}"
+                                                        th:classappend="|${authpost.writer.equals(quest.questHost) ? 'bg-danger' : ''} ${quest.questMaster.contains(authpost.writer) ? 'bg-success' : 'bg-primary'}|">
+                                                  </span>
                                               </span>
                                         </a>
                                     </div>
@@ -346,7 +350,7 @@
                                         </div>
 
                                         <!-- 4등부터 전체유저 -->
-                                        <table class="table table-striped" th:if="${scoreMap.size() >= 4}">
+                                        <table class="table table-striped ranking-table" th:if="${scoreMap.size() >= 4}">
                                             <thead>
                                             <tr>
                                                 <th scope="col">순위</th>
@@ -368,7 +372,8 @@
                                                              th:src="${scoreMap[num].key.profileImage}" alt="Profile"
                                                              class="rounded-circle" style="width: 30px; height: 30px">
                                                       <span th:text="${scoreMap[num].key.nickname}"
-                                                            class="badge bg-primary">차광욱</span>
+                                                            th:classappend="|${scoreMap[num].key.equals(quest.questHost) ? 'bg-danger' : ''} ${quest.questMaster.contains(scoreMap[num].key) ? 'bg-success' : 'bg-primary'}|"
+                                                            class="badge">차광욱</span>
                                                      </span>
                                                     </a>
                                                 </td>

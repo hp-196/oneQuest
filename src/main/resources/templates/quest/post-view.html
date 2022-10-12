@@ -81,8 +81,10 @@
                          alt="Profile" class="rounded-circle profile-image">
                     <img th:if="${!#strings.isEmpty(questPost.writer.profileImage)}"
                          th:src="${questPost.writer.profileImage}" alt="Profile"
-                         class="rounded-circle profile-image"> <span class="badge bg-primary"
-                                                                     th:text="${questPost.writer.nickname}"></span>
+                         class="rounded-circle profile-image">
+                    <span class="badge" th:text="${questPost.writer.nickname}"
+                          th:classappend="|${questPost.writer.equals(quest.questHost) ? 'bg-danger' : ''} ${quest.questMaster.contains(questPost.writer) ? 'bg-success' : 'bg-primary'}|">
+                    </span>
                 </span>
             </a>
         </div>
@@ -130,7 +132,9 @@
                                 <img th:if="${!#strings.isEmpty(comment.writer.profileImage)}"
                                      th:src="${comment.writer.profileImage}"
                                      alt="Profile" class="rounded-circle profile-image">
-                                <span class="badge bg-primary" th:text="${comment.writer.nickname}"></span>
+                                <span class="badge" th:text="${comment.writer.nickname}"
+                                      th:classappend="|${comment.writer.equals(quest.questHost) ? 'bg-danger' : ''} ${quest.questMaster.contains(comment.writer) ? 'bg-success' : 'bg-primary'}|">
+                                </span>
                             </span>
                         </a>
                     </td>
@@ -161,7 +165,9 @@
                                      alt="Profile" class="rounded-circle profile-image">
                                 <img th:if="${!#strings.isEmpty(member.profileImage)}" th:src="${member.profileImage}"
                                      alt="Profile" class="rounded-circle profile-image">
-                                <span class="badge bg-primary" th:text="${member.nickname}"></span>
+                                <span class="badge" th:text="${member.nickname}"
+                                      th:classappend="|${member.equals(quest.questHost) ? 'bg-danger' : ''} ${quest.questMaster.contains(member) ? 'bg-success' : 'bg-primary'}|">
+                                </span>
                             </span>
                     </div>
                     <form th:action="@{'/quest/' + ${quest.questUrl} + '/post/' + ${questPost.id} + '/comment'}"
