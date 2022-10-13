@@ -1,11 +1,14 @@
 package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.quest.domain.QQuest;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.MyQuestDto;
 import com.oneqst.quest.dto.QMyQuestDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.oneqst.Member.domain.QMember.member;
@@ -20,9 +24,10 @@ import static com.oneqst.quest.domain.QQuest.quest;
 
 public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-
+    private final EntityManager entityManager;
     public QuestRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+        this.entityManager = em;
     }
 
     public static BooleanExpression titleContains(String title) {
@@ -90,6 +95,26 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     }
 
     /**
+     * 참여중 X, 회원 모집중, 진행중인
+     * 무작위 퀘스트 9개 추출
+     * https://stackoverflow.com/questions/15869279/does-querydsl-not-support-rand
+     */
+    @Override
+    public List<Quest> findRandom9(Member member) {
+        JPAQuery<Quest> query = new JPAQuery<>(entityManager, MySqlJpaTemplates.DEFAULT);
+        QQuest qQuest = new QQuest("quest");
+        List<Quest> questList = query.from(qQuest)
+                .where(qQuest.questMember.contains(member).not()
+                        .and(qQuest.questRecruitEnd.eq(true))
+                        .and(qQuest.questStartTime.before(LocalDate.now()))
+                        .and(qQuest.questEndTime.after(LocalDate.now())))
+                .orderBy(NumberExpression.random().asc())
+                .limit(9)
+                .fetch();
+        return questList;
+    }
+
+    /**
      * 나의 퀘스트 활동 목록 조회
      * @param memberId  유저의 Id
      * @return  해당 유저의 퀘스트 활동 리스트
@@ -110,4 +135,6 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .orderBy(quest.questStartTime.desc())
                 .fetch();
     }
+
+
 }

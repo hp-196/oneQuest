@@ -37,4 +37,6 @@ public interface QuestRepositoryCustom {
     Page<Quest> searchPaging(Member member, String title, Pageable pageable);
 
     List<MyQuestDto> myActivityQuestLookup(Long memberId);
+
+    List<Quest> findRandom9(Member member);
 }

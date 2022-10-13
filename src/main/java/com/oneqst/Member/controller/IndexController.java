@@ -7,6 +7,8 @@ import com.oneqst.quest.repository.QuestRepository;
 import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +33,7 @@ public class IndexController {
         model.addAttribute("member", member);
         log.info(String.valueOf(member.getNickname())+"이 메인화면 접근");
         model.addAttribute("questList", questRepository.myQuests(member.getId()));
-        model.addAttribute("notQuestList", questRepository.findFirst9ByQuestRecruitEndAndQuestMemberNotContaining(true, member));
-//        model.addAttribute("notQuestList", questRepository.findRandom());
+        model.addAttribute("notQuestList", questRepository.findRandom9(member));
         model.addAttribute(new InviteDto());
         return "index";
     }

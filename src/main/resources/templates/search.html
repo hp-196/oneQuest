@@ -23,9 +23,9 @@
                      class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
+                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile" class="mainPage-card-img">
                             <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
-                                 alt="Profile">
+                                 alt="Profile" class="mainPage-card-img">
                             <div th:if="${!quest.compareDate()}" th:classappend="${!quest.compareDate()} ? 'quest-end'">
                                 <p></p>
                                 <p>기한 마감</p>
