@@ -29,7 +29,7 @@ public class IndexController {
             return "login";
         }
         model.addAttribute("member", member);
-        log.info(String.valueOf(member.isEmailAuth()));
+        log.info(String.valueOf(member.getNickname())+"이 메인화면 접근");
         model.addAttribute("questList", questRepository.myQuests(member.getId()));
         model.addAttribute("notQuestList", questRepository.findFirst9ByQuestRecruitEndAndQuestMemberNotContaining(true, member));
 //        model.addAttribute("notQuestList", questRepository.findRandom());

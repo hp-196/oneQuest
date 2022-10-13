@@ -20,27 +20,27 @@ public class ActivityController {
     public String myActivityPostLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("postList", myContentService.myActivityQuestPostLookup(member.getId()));
-        return "/activity/my-posts";
+        return "activity/my-posts";
     }
 
     @GetMapping("/activity/comments")
     public String myActivityCommentLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("commentList", myContentService.myActivityCommentLookup(member.getId()));
-        return "/activity/my-comments";
+        return "activity/my-comments";
     }
 
     @GetMapping("/activity/quests")
     public String myActivityQuestLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("questList", myContentService.myActivityQuestLookup(member.getId()));
-        return "/activity/my-quests";
+        return "activity/my-quests";
     }
 
     @GetMapping("/activity/quest/auths")
     public String myActivityAuthPostLookup(@CurrentUser Member member, Model model) {
         model.addAttribute(member);
         model.addAttribute("authPostList", myContentService.myActivityAuthPostLookup(member.getId()));
-        return "/activity/my-auths";
+        return "activity/my-auths";
     }
 }
