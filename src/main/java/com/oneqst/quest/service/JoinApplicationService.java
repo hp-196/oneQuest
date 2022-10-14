@@ -1,4 +1,4 @@
-package com.oneqst.quest.event;
+package com.oneqst.quest.service;
 
 import com.oneqst.Member.domain.Member;
 import com.oneqst.Member.repository.MemberRepository;
@@ -6,11 +6,14 @@ import com.oneqst.config.AlertMessage;
 import com.oneqst.quest.domain.JoinApplication;
 import com.oneqst.quest.domain.JoinType;
 import com.oneqst.quest.domain.Quest;
+import com.oneqst.quest.event.CancelAcceptNotice;
+import com.oneqst.quest.event.JoinAcceptNotice;
 import com.oneqst.quest.repository.JoinApplicationRepository;
 import com.oneqst.quest.repository.QuestRepository;
 import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -28,6 +31,7 @@ public class JoinApplicationService {
     private final QuestRepository questRepository;
     private final MemberRepository memberRepository;
     private final QuestService questService;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 새로운 신청
@@ -73,6 +77,7 @@ public class JoinApplicationService {
             for (JoinApplication app : applicationList) {
                 questService.addQuestMember(app.getQuest(), app.getMember());
                 joinApplicationRepository.delete(app);
+                eventPublisher.publishEvent(new JoinAcceptNotice(quest, app.getMember()));
             }
         }
     }
@@ -109,6 +114,7 @@ public class JoinApplicationService {
         JoinApplication joinApplication = joinApplicationRepository.findByQuestAndMember(quest, joinMember);
         questService.addQuestMember(quest, joinMember);
         joinApplicationRepository.delete(joinApplication);
+        eventPublisher.publishEvent(new JoinAcceptNotice(quest, joinMember));
     }
 
     /**
@@ -122,5 +128,6 @@ public class JoinApplicationService {
         Member joinMember = memberRepository.findByNickname(nickname);
         JoinApplication joinApplication = joinApplicationRepository.findByQuestAndMember(quest,joinMember);
         joinApplicationRepository.delete(joinApplication);
+        eventPublisher.publishEvent(new CancelAcceptNotice(quest, joinMember));
     }
 }

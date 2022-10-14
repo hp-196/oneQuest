@@ -3,11 +3,7 @@ package com.oneqst.quest.controller;
 import com.oneqst.Member.controller.CurrentUser;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.Member.repository.MemberRepository;
-import com.oneqst.config.AlertMessage;
-import com.oneqst.quest.domain.JoinApplication;
-import com.oneqst.quest.domain.JoinType;
-import com.oneqst.quest.domain.Quest;
-import com.oneqst.quest.event.JoinApplicationService;
+import com.oneqst.quest.service.JoinApplicationService;
 import com.oneqst.quest.repository.JoinApplicationRepository;
 import com.oneqst.quest.repository.QuestRepository;
 import com.oneqst.quest.service.QuestService;
@@ -17,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 @Slf4j
 @Controller
