@@ -15,7 +15,8 @@
     </h3>
     <a th:if="${quest.isMember(#authentication.principal) and quest.questRecruitEnd == true}" class="btn-get-started" data-bs-toggle="modal" data-bs-target="#memberInvite">멤버 초대</a>
     <a th:if="${quest.isMember(#authentication.principal) and quest.questRecruitEnd == false}" class="btn-get-started">모집 마감</a>
-    <a th:if="${!quest.isMember(#authentication.principal) and quest.questRecruitEnd == true}" th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
+    <a th:if="${!quest.isMember(#authentication.principal) && quest.questRecruitEnd == true && quest.joinType == T(com.oneqst.quest.domain.JoinType).NORMAL}" th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
+    <a th:if="${!quest.isMember(#authentication.principal) && quest.questRecruitEnd == true && quest.joinType == T(com.oneqst.quest.domain.JoinType).WAITING}" th:href="@{'/quest/' + ${quest.questUrl} + '/join/application/' + ${member.getNickname()}}" class="btn-get-started scrollto">퀘스트 가입</a>
     <a th:if="${!quest.isMember(#authentication.principal) and quest.questRecruitEnd == false}" class="btn-get-started">모집 마감</a>
 </div>
 
@@ -51,7 +52,6 @@
         </div>
     </div>
 </div>
-
 
 <main id="main" class="main">
     <div>
