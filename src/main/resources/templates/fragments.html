@@ -87,6 +87,10 @@
                                     th:text="|${notice.getTitle()} 게시글이 인증을 받았습니다|"></h4>
                                 <h4 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).NOTICE_POSTING}"
                                     th:text="|${notice.getTitle()} 퀘스트에 새로운 공지사항이 등록되었습니다.|"></h4>
+                                <h4 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).JOIN_WAITING}"
+                                    th:text="|${notice.getTitle()} 퀘스트 가입 신청이 승인되었습니다.|"></h4>
+                                <h4 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).JOIN_CANCEL}"
+                                    th:text="|${notice.getTitle()} 퀘스트 가입 신청이 거절되었습니다.|"></h4>
                                 <p th:text="${notice.getContent()}"></p>
                                 <p class="fromNow" th:text="${notice.getNoticeTime()}">시간</p>
                             </a>

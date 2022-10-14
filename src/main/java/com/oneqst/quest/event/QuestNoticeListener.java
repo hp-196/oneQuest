@@ -87,5 +87,41 @@ public class QuestNoticeListener {
         notice.setNoticeType(NoticeType.QUEST_AUTH);
         noticeRepository.save(notice);
     }
-    
+
+    /**
+     * 퀘스트 가입 신청 후 승인 알림
+     */
+    @EventListener
+    public void acceptEvent(JoinAcceptNotice acceptNotice) {
+        Quest quest = acceptNotice.getQuest();
+        Member member = acceptNotice.getMember();
+        Notice notice = new Notice();
+        notice.setTitle(quest.getQuestTitle()); //퀘스트 제목
+        notice.setContent("링크를 클릭하면 해당 퀘스트로 이동합니다.");
+        notice.setMember(member);
+        notice.setNoticeType(NoticeType.JOIN_WAITING);
+        notice.setNoticeTime(LocalDateTime.now());
+        notice.setChecked(false);
+        notice.setUrl("/quest/" + quest.getQuestUrl());
+        noticeRepository.save(notice);
+    }
+
+    /**
+     * 퀘스트 가입 취소 후 승인 알림
+     */
+    @EventListener
+    public void cancelEvent(CancelAcceptNotice acceptNotice) {
+        Quest quest = acceptNotice.getQuest();
+        Member member = acceptNotice.getMember();
+        Notice notice = new Notice();
+        notice.setTitle(quest.getQuestTitle()); //퀘스트 제목
+        notice.setContent("링크를 클릭하면 해당 퀘스트로 이동합니다.");
+        notice.setMember(member);
+        notice.setNoticeType(NoticeType.JOIN_CANCEL);
+        notice.setNoticeTime(LocalDateTime.now());
+        notice.setChecked(false);
+        notice.setUrl("/quest/" + quest.getQuestUrl());
+        noticeRepository.save(notice);
+    }
+
 }

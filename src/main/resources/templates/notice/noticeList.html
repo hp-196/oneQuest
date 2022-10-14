@@ -53,6 +53,12 @@
                         <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).NOTICE_POSTING}"
                             th:text="|${notice.getTitle()} 퀘스트에 새로운 공지사항이 등록되었습니다.|"
                             th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
+                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).JOIN_WAITING}"
+                            th:text="|${notice.getTitle()} 퀘스트 가입 신청이 승인되었습니다.|"
+                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
+                        <h3 th:if="${notice.getNoticeType() == T(com.oneqst.notice.NoticeType).JOIN_CANCEL}"
+                            th:text="|${notice.getTitle()} 퀘스트 가입 신청이 거절되었습니다.|"
+                            th:classappend="${notice.checked == true} ? 'notice' : ''"></h3>
                         <p th:classappend="${notice.checked == true} ? 'notice' : ''"
                            th:text="${notice.getContent()}"></p>
                         <hr>

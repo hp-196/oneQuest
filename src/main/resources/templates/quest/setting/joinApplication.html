@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments.html :: head">
+</head>
+<body>
+
+<div th:replace="fragments.html :: nav"></div>
+<div th:replace="fragments.html :: sidebar-quest"></div>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <a href="#" th:href="@{'/quest/' + ${quest.questUrl}}">
+            <h1 th:text="${quest.questTitle}">퀘스트 제목</h1>
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body pt-3">
+
+                    <!-- 보드 탭 -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/auth'}">회원관리</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/recruitment'}">모집설정</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{'/quest/' + ${quest.questUrl} + '/setting/join/application'}">신청관리</a>
+                        </li>
+                    </ul>
+
+                    <!-- 신청 관리 탭 -->
+                    <div class="tab-content pt-2">
+                        <div>
+                            <h5 class="card-title">신청 방식</h5>
+                            <p class="small fst-italic">호스트만 퀘스트 회원 모집 방식을 설정할 수 있습니다.</p>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label mb-2" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).NORMAL}">현재상태: public</div>
+                                <div class="col-lg-3 col-md-4 label mb-2" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).WAITING}">현재상태: 신청 후 대기</div>
+                                <div class="col-lg-9 col-md-8 mb-2">
+                                    <div class="dropdown" th:if="${quest.getQuestHost().equals(member)}">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).WAITING}" th:href="@{'/quest/' + ${quest.questUrl} + '/application/setting/state/change'}">public 으로 변경</a></li>
+                                            <li><a class="dropdown-item" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).NORMAL}" th:href="@{'/quest/' + ${quest.questUrl} + '/application/setting/state/change'}">신청 후 대기로 변경</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${quest.isHostOrMaster(member) && applicationList.size() > 0}">
+                                <h5 class="card-title">신청 현황</h5>
+                                <p class="small fst-italic">호스트를 제외한 인원이 아무도 없을경우에만 가능합니다.</p>
+                                <table class="table table-striped ranking-table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">이름</th>
+                                        <th scope="col">직업</th>
+                                        <th scope="col">신청시간</th>
+                                        <th scope="col">취소</th>
+                                        <th scope="col">설정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="num : ${#numbers.sequence(0,applicationList.size()-1)}">
+                                        <th scope="row" th:text="${num+1}">순위</th>
+                                        <td>
+                                            <a th:href="@{'/profile/' + ${applicationList[num].getMember().getNickname()}}">
+                                                <span>
+                                                    <img th:if="${#strings.isEmpty(applicationList[num].getMember().getProfileImage())}"
+                                                         src="/assets/img/logo.png" alt="Profile"
+                                                         class="rounded-circle" style="width: 30px; height: 30px">
+                                                    <img th:if="${!#strings.isEmpty((applicationList[num].getMember().getProfileImage()))}"
+                                                         th:src="${(applicationList[num].getMember().getProfileImage())}" alt="Profile"
+                                                         class="rounded-circle" style="width: 30px; height: 30px">
+                                                    <span th:text="${applicationList[num].getMember().getNickname()}" class="badge border-primary border-1 text-primary">신청자 이름</span></span>
+                                            </a>
+                                        </td>
+                                        <td th:text="${applicationList[num].getMember().getJob()}">직업</td>
+                                        <td th:text="${applicationList[num].getTime()}" class="time">신청시간</td>
+                                        <td th:if="${applicationList[num].isAccepted() == false}">
+                                            <a th:href="@{'/quest/' + ${quest.getQuestUrl()} + '/join/application/cancel/' + ${applicationList[num].getMember().getNickname()}}">취소</a>
+                                        </td>
+                                        <td th:if="${applicationList[num].isAccepted() == false}">
+                                            <a th:href="@{'/quest/' + ${quest.getQuestUrl()} + '/join/application/accept/' + ${applicationList[num].getMember().getNickname()}}">승인</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragments.html :: footer"></div>
+<script th:replace="fragments.html :: timeFormat"></script>
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

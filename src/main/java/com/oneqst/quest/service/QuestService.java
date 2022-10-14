@@ -4,6 +4,7 @@ import com.oneqst.Member.domain.Member;
 import com.oneqst.notice.Notice;
 import com.oneqst.notice.NoticeRepository;
 import com.oneqst.notice.NoticeType;
+import com.oneqst.quest.domain.JoinType;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.*;
@@ -49,6 +50,7 @@ public class QuestService {
                 .questMember(new ArrayList<>())
                 .questMaster(new ArrayList<>())
                 .questHost(member)
+                .joinType(JoinType.NORMAL)
                 .build();
         Quest newQuest = questRepository.save(quest);
         newQuest.addQuestMember(member);
