@@ -73,7 +73,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="num : ${#numbers.sequence(0,applicationList.size()-1)}">
-                                        <th scope="row" th:text="num+1">순위</th>
+                                        <th scope="row" th:text="${num+1}">순위</th>
                                         <td>
                                             <a th:href="@{'/profile/' + ${applicationList[num].getMember().getNickname()}}">
                                                 <span>

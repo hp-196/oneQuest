@@ -53,6 +53,10 @@ public class JoinApplicationController {
         if (quest.isQuestRecruitEnd() == false) {
             throw new IllegalArgumentException(member.getNickname()+"가 "+ quest +"로 불건전한 접근 시행");
         }
+        if (joinApplicationRepository.findByQuestAndMember(quest,member) != null) {
+            model.addAttribute("data", new AlertMessage("신청 대기중입니다. 신청이 완료되면 알림을 보내드립니다.", "/quest/"+url));
+            return "alertMessage";
+        }
         Member joinMember = memberRepository.findByNickname(nickname);
         applicationService.newWaitingMember(quest, joinMember);
         model.addAttribute("data", new AlertMessage("가입 신청이 완료되었습니다. 수락이 완료되면 알림을 보내드립니다.", "/quest/"+url));

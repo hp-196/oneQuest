@@ -20,6 +20,9 @@ public class JoinApplicationService {
 
     private final JoinApplicationRepository joinApplicationRepository;
 
+    /**
+     * 새로운 신청
+     */
     public void newWaitingMember(Quest quest, Member joinMember) {
         JoinApplication joinApplication = JoinApplication.builder()
                 .quest(quest)
@@ -30,6 +33,9 @@ public class JoinApplicationService {
         joinApplicationRepository.save(joinApplication);
     }
 
+    /**
+     * 퀘스트 가입 상태 변경 일반<->신청후대기
+     */
     public void changeState(Quest quest) {
         if (quest.getJoinType() == JoinType.NORMAL) {
             quest.setJoinType(JoinType.WAITING);

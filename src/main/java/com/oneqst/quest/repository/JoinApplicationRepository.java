@@ -1,5 +1,6 @@
 package com.oneqst.quest.repository;
 
+import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.domain.JoinApplication;
 import com.oneqst.quest.domain.Quest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 public interface JoinApplicationRepository extends JpaRepository<JoinApplication, Long> {
 
     List<JoinApplication> findByQuest(Quest quest);
+
+    List<JoinApplication> findByQuestAndMember(Quest quest, Member member);
 }
