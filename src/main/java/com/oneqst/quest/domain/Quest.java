@@ -2,6 +2,7 @@ package com.oneqst.quest.domain;
 
 import com.oneqst.Member.controller.MemberInfo;
 import com.oneqst.Member.domain.Member;
+import com.oneqst.notice.NoticeType;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,38 +54,58 @@ public class Quest {
 
     private boolean questRecruitEnd; //멤버 모집 여부
 
-    @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
-    private List<QuestPost> questPostList = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private JoinType joinType; //회원 모집 신청 타입
 
     @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
-    private List<AuthPost> authPostList = new ArrayList<>();
+    private List<QuestPost> questPostList = new ArrayList<>(); //퀘스트 포스팅 리스트
+
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
+    private List<AuthPost> authPostList = new ArrayList<>(); //퀘스트 인증 포스팅 리스트
+
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.REMOVE)
+    private List<JoinApplication> applicationList = new ArrayList<>(); //참가 신청 리스트
 
 
     /*********************** 연관관계 편의 메소드 **********************/
 
+    /**
+     * 퀘스트 포스팅 삭제
+     */
     public void deletePost(QuestPost questPost) {
         this.questPostList.remove(questPost);
     }
 
+    /**
+     * 회원을 퀘스트 마스터에 추가
+     */
     public void addQuestMaster(Member member) {
         this.questMaster.add(member);
     }
 
+    /**
+     * 회원을 퀘스트 마스터에서 삭제
+     */
     public void removeQuestMaster(Member member) {
         this.questMaster.remove(member);
     }
 
+    /**
+     * 퀘스트에 회원 추가
+     */
     public void addQuestMember(Member member) {
         this.questMember.add(member);
     }
 
+    /**
+     * 퀘스트 탈퇴
+     */
     public void questWithdraw(Member member) {
         if (this.questMaster.contains(member)) {
             this.getQuestMaster().remove(member);
         }
         this.getQuestMember().remove(member);
     }
-
 
     /**
      * 퀘스트 호스트,마스터 여부
@@ -93,22 +114,16 @@ public class Quest {
         return this.questMaster.contains(member) || this.questHost.equals(member);
     }
 
+    /**
+     * 퀘스트 회원 여부 확인
+     */
     public boolean isMember(MemberInfo memberInfo) {
         return this.questMember.contains(memberInfo.getMember()) || this.questMaster.contains(memberInfo.getMember()) || this.questHost.equals(memberInfo.getMember());
     }
 
-    public boolean isJoinAble(MemberInfo memberInfo) {
-        Member member = memberInfo.getMember();
-        return !this.questMember.contains(member);
-    }
-
-    public List<Member> allList() {
-        List<Member> memberList = new ArrayList<>();
-        memberList.addAll(this.questMaster);
-        memberList.addAll(this.questMember);
-        return memberList;
-    }
-
+    /**
+     * 퀘스트 진행중 확인
+     */
     public boolean compareDate() {
         return (this.questEndTime.isEqual(LocalDate.now()) || (this.questEndTime.isAfter(LocalDate.now())));
     }
