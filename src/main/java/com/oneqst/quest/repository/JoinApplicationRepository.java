@@ -12,5 +12,5 @@ public interface JoinApplicationRepository extends JpaRepository<JoinApplication
 
     List<JoinApplication> findByQuest(Quest quest);
 
-    List<JoinApplication> findByQuestAndMember(Quest quest, Member member);
+    JoinApplication findByQuestAndMember(Quest quest, Member member);
 }

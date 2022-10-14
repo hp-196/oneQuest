@@ -41,13 +41,13 @@
                     <div class="tab-content pt-2">
                         <div>
                             <h5 class="card-title">신청 방식</h5>
-                            <p class="small fst-italic">퀘스트 회원 모집 방식을 설정할 수 있습니다.</p>
+                            <p class="small fst-italic">호스트만 퀘스트 회원 모집 방식을 설정할 수 있습니다.</p>
 
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 label mb-2" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).NORMAL}">현재상태: public</div>
                                 <div class="col-lg-3 col-md-4 label mb-2" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).WAITING}">현재상태: 신청 후 대기</div>
                                 <div class="col-lg-9 col-md-8 mb-2">
-                                    <div class="dropdown" th:if="${quest.isHostOrMaster(member)}">
+                                    <div class="dropdown" th:if="${quest.getQuestHost().equals(member)}">
                                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li><a class="dropdown-item" th:if="${quest.joinType == T(com.oneqst.quest.domain.JoinType).WAITING}" th:href="@{'/quest/' + ${quest.questUrl} + '/application/setting/state/change'}">public 으로 변경</a></li>
@@ -67,7 +67,7 @@
                                         <th scope="col">이름</th>
                                         <th scope="col">직업</th>
                                         <th scope="col">신청시간</th>
-                                        <th scope="col">상태</th>
+                                        <th scope="col">취소</th>
                                         <th scope="col">설정</th>
                                     </tr>
                                     </thead>
@@ -88,10 +88,12 @@
                                         </td>
                                         <td th:text="${applicationList[num].getMember().getJob()}">직업</td>
                                         <td th:text="${applicationList[num].getTime()}" class="time">신청시간</td>
-                                        <td th:if="${applicationList[num].isAccepted() == true}">신청완료</td>
-                                        <td th:if="${applicationList[num].isAccepted() == false}">대기중</td>
-                                        <td th:if="${applicationList[num].isAccepted() == true}">취소</td>
-                                        <td th:if="${applicationList[num].isAccepted() == false}">승인</td>
+                                        <td th:if="${applicationList[num].isAccepted() == false}">
+                                            <a th:href="@{'/quest/' + ${quest.getQuestUrl()} + '/join/application/cancel/' + ${applicationList[num].getMember().getNickname()}}">취소</a>
+                                        </td>
+                                        <td th:if="${applicationList[num].isAccepted() == false}">
+                                            <a th:href="@{'/quest/' + ${quest.getQuestUrl()} + '/join/application/accept/' + ${applicationList[num].getMember().getNickname()}}">승인</a>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
