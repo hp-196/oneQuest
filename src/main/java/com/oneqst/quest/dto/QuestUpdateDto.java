@@ -2,6 +2,7 @@ package com.oneqst.quest.dto;
 
 
 import com.oneqst.quest.domain.Quest;
+import com.oneqst.tag.Tag;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Lob;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +40,8 @@ public class QuestUpdateDto {
     @Lob
     private String questImage; //퀘스트 대표 이미지
 
+    private String tag; //태그 이름
+
     public QuestUpdateDto(Quest quest) {
         this.questTitle = quest.getQuestTitle();
         this.questIntroduce = quest.getQuestIntroduce();
@@ -47,5 +51,6 @@ public class QuestUpdateDto {
         this.questUrl = quest.getQuestUrl();
         this.currentUrl = quest.getQuestUrl();
         this.questImage = quest.getQuestImage();
+        this.tag = quest.returnTags();
     }
 }

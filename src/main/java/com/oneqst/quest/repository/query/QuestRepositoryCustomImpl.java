@@ -87,7 +87,9 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     public Page<Quest> searchPaging(Member member, String title, Pageable pageable) {
         QueryResults<Quest> result = queryFactory
                 .selectFrom(quest)
-                .where(quest.questTitle.contains(title).and(quest.questMember.contains(member).not()))
+                .where(quest.questTitle.contains(title)
+                        .or(quest.tags.any().title.contains(title))
+                        .and(quest.questMember.contains(member).not()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

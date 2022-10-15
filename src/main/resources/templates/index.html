@@ -57,7 +57,7 @@
 
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
-                            <p th:text="${quest.questIntroduce}"></p>
+                            <p th:text="${quest.returnTags()}"></p>
                         </div>
                     </div>
 
@@ -123,7 +123,7 @@
 
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
-                            <p th:text="${quest.questIntroduce}"></p>
+                            <p th:text="${quest.returnTags()}"></p>
                         </div>
                     </div>
 
@@ -147,6 +147,10 @@
                                         <div class="mb-3">
                                             <label for="message-text" class="col-form-label">기한</label>
                                             <span class="form-control" th:text="|${quest.getQuestStartTime()} 부터 ${quest.getQuestEndTime()}|">기한</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message-text" class="col-form-label">해시태그</label>
+                                            <span class="form-control" th:text="${quest.returnTags()}">퀘스트 태그</span>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

@@ -11,6 +11,8 @@ import com.oneqst.quest.dto.*;
 import com.oneqst.quest.event.InviteNotice;
 import com.oneqst.quest.repository.QuestPostRepository;
 import com.oneqst.quest.repository.QuestRepository;
+import com.oneqst.quest.repository.TagRepository;
+import com.oneqst.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,7 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -33,6 +38,7 @@ public class QuestService {
     private final ApplicationEventPublisher eventPublisher;
     private final NoticeRepository noticeRepository;
     private final AuthService authService;
+    private final TagRepository tagRepository;
 
     /**
      * 퀘스트 생성
@@ -49,12 +55,35 @@ public class QuestService {
                 .questRecruitEnd(true)
                 .questMember(new ArrayList<>())
                 .questMaster(new ArrayList<>())
+                .tags(new HashSet<>())
                 .questHost(member)
                 .joinType(JoinType.NORMAL)
                 .build();
         Quest newQuest = questRepository.save(quest);
+        tagParsing(questDto.getTag(), newQuest);
         newQuest.addQuestMember(member);
         return newQuest;
+    }
+
+    /**
+     * 태그 파싱
+     */
+    public void tagParsing(String tags, Quest quest) {
+        Pattern pattern = Pattern.compile("(#[\\d|A-Z|a-z|가-힣|가-힣]*)");
+        Matcher mat = pattern.matcher(tags);
+        while (mat.find()) {
+            String title = mat.group(0);
+            if (!title.equals("#")) {
+                Tag tag = tagRepository.findByTitle(title);
+                if (tag == null) {
+                    tag = new Tag();
+                    tag.setTitle(title);
+                    tagRepository.save(tag);
+                }
+                quest.addTag(tag);
+                System.out.println(title);
+            }
+        }
     }
 
     /**
@@ -69,6 +98,8 @@ public class QuestService {
         quest.setQuestUrl(questUpdateDto.getQuestUrl());
         quest.setQuestImage(questUpdateDto.getQuestImage());
         questRepository.save(quest);
+        quest.deleteTagAll();
+        tagParsing(questUpdateDto.getTag(), quest);
     }
 
     /**

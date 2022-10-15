@@ -102,6 +102,15 @@
                                                th:errors="*{questUrl}">questUrl Error</small>
                                     </div>
 
+                                    <div class="col-12">
+                                        <label for="questUrl" class="form-label">해시태그</label>
+                                        <input type="text" name="questExplain" class="form-control" id="questTag"
+                                               th:field="*{tag}" required placeholder="예) #공부 #운동 #토익">
+                                        <div class="invalid-feedback">해시태그</div>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('tag')}"
+                                               th:errors="*{tag}">questTag Error</small>
+                                    </div>
+
                                     <div>
                                         <input id="profileImage" type="hidden" th:field="*{questImage}"
                                                class="form-control"/>
