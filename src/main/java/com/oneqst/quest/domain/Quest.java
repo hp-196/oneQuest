@@ -3,13 +3,16 @@ package com.oneqst.quest.domain;
 import com.oneqst.Member.controller.MemberInfo;
 import com.oneqst.Member.domain.Member;
 import com.oneqst.notice.NoticeType;
+import com.oneqst.tag.Tag;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -33,7 +36,10 @@ public class Quest {
     private List<Member> questMember = new ArrayList<>(); //퀘스트 맴버
 
     @OneToOne(fetch = FetchType.LAZY)
-    private Member questHost;
+    private Member questHost; //퀘스트 호스트
+
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>(); //태그 리스트
 
     private String questTitle; //퀘스트 제목
 
@@ -126,5 +132,30 @@ public class Quest {
      */
     public boolean compareDate() {
         return (this.questEndTime.isEqual(LocalDate.now()) || (this.questEndTime.isAfter(LocalDate.now())));
+    }
+
+    /**
+     * 태그 추가
+     */
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    /**
+     * 태그 전체 삭제
+     */
+    public void deleteTagAll() {
+        tags.removeAll(this.tags);
+    }
+    /**
+     * 태그 출력
+     */
+    public String returnTags() {
+        StringBuilder sb = new StringBuilder();
+        for (Tag tag : tags) {
+            sb.append(tag.getTitle());
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 }
