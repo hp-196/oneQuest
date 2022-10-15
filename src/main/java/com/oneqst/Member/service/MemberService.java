@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,9 +47,11 @@ public class MemberService implements UserDetailsService {
      * 이메일 전송
      * https://kimvampa.tistory.com/93
      */
+    @Async
     public void sendMail(Member newMember) throws MessagingException {
         if (newMember.getEmailToken() == null) {
             newMember.EmailTokenCreate();
+            memberRepository.save(newMember);
         }
         MimeMessage mail = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
@@ -69,6 +72,8 @@ public class MemberService implements UserDetailsService {
                 .address(memberDto.getAddress())
                 .emailAlarm(true)
                 .webAlarm(true)
+                .emailAuth(false)
+                .signUpTime(LocalDateTime.now())
                 .build();
 
         Member newMember = memberRepository.save(member);

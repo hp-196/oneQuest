@@ -88,8 +88,8 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
         QueryResults<Quest> result = queryFactory
                 .selectFrom(quest)
                 .where(quest.questTitle.contains(title)
-                        .and(quest.questMember.contains(member).not())
-                        .or(quest.tags.any().title.contains(title)))
+                        .or(quest.tags.any().title.contains(title))
+                        .and(quest.questMember.contains(member).not()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

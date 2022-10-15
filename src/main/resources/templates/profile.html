@@ -99,9 +99,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">가입날짜</div>
-                                    <div th:if="${profileMember.emailAuth == true}" th:text="${#temporals.format(profileMember.signUpTime, 'yyyy-MM-dd')}" class="col-lg-9 col-md-8">가입날짜
-                                    </div>
-                                    <div th:if="${profileMember.emailAuth == false}" class="col-lg-9 col-md-8">이메일 미인증 유저
+                                    <div th:text="${#temporals.format(profileMember.signUpTime, 'yyyy-MM-dd')}" class="col-lg-9 col-md-8">가입날짜
                                     </div>
                                 </div>
                             </div>
