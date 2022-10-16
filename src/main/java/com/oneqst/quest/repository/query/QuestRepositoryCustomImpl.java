@@ -1,30 +1,44 @@
 package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.QQuest;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.MyQuestDto;
 import com.oneqst.quest.dto.QMyQuestDto;
+import com.oneqst.tag.QTag;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.oneqst.Member.domain.QMember.member;
 import static com.oneqst.quest.domain.QQuest.quest;
+import static com.oneqst.tag.QTag.tag;
 
 public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private final EntityManager entityManager;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     public QuestRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
         this.entityManager = em;
@@ -93,6 +107,17 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(quest.count())
+                .from(quest)
+                .where(quest.questTitle.contains(title)
+                        .or(quest.tags.any().title.contains(title))
+                        .and(quest.questMember.contains(member).not()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+//        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
@@ -105,7 +130,7 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     public List<Quest> findRandom9(Member member) {
         JPAQuery<Quest> query = new JPAQuery<>(entityManager, MySqlJpaTemplates.DEFAULT);
         QQuest qQuest = new QQuest("quest");
-        List<Quest> questList = query.from(qQuest)
+        return query.from(qQuest)
                 .where(qQuest.questMember.contains(member).not()
                         .and(qQuest.questRecruitEnd.eq(true))
                         .and(qQuest.questStartTime.before(LocalDate.now()))
@@ -113,13 +138,13 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .orderBy(NumberExpression.random().asc())
                 .limit(9)
                 .fetch();
-        return questList;
     }
 
     /**
      * 나의 퀘스트 활동 목록 조회
-     * @param memberId  유저의 Id
-     * @return  해당 유저의 퀘스트 활동 리스트
+     *
+     * @param memberId 유저의 Id
+     * @return 해당 유저의 퀘스트 활동 리스트
      */
     @Override
     public List<MyQuestDto> myActivityQuestLookup(Long memberId) {
@@ -138,5 +163,125 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public Page<Quest> totalSearchPaging(Member member, Pageable pageable, String query) {
+        String[] queryArr = query.split(" ");
+        List<String> titleList = new ArrayList<>();
+        List<String> memberList = new ArrayList<>();
+        List<String> tagList = new ArrayList<>();
+        for (String s : queryArr) {
+            String type = searchType(s);
+            if (type.equals("title")) {
+                titleList.add(s);
+            } else if (type.equals("member")) {
+                memberList.add(s.replace("@", ""));
+            } else {
+                tagList.add(s.replace("#", ""));
+            }
+        }
 
+        Logger.getLogger("for 문 정상작동");
+
+        List<Quest> result = queryFactory
+                .select(quest)
+                .from(quest, tag)
+                .leftJoin(quest.tags, tag)
+//                .from(quest, QMember.member, tag)
+//                .leftJoin(quest.questMember, QMember.member)
+                .where(
+                        containTitle(titleList).and(quest.questMember.contains(member).not()),
+//                        eqMember(memberList),
+                        eqTag(tagList).and(quest.questMember.contains(member).not())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(NumberExpression.random().asc())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(quest.count())
+                .from(quest, tag)
+                .leftJoin(quest.tags, tag)
+//                .from(quest, QMember.member, tag)
+//                .leftJoin(quest.questMember, QMember.member)
+                .where(
+                        containTitle(titleList).and(quest.questMember.contains(member).not()),
+//                        eqMember(memberList),
+                        eqTag(tagList).and(quest.questMember.contains(member).not())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+    }
+
+    /**
+     * 검색 타입 확인기
+     *
+     * @param s 검색 문자
+     * @return 검색 타입
+     */
+    public String searchType(String s) {
+        Matcher tagMatcher = Pattern.compile("(#[A-Za-z가-힣]*)").matcher(s);
+        Matcher memberMatcher = Pattern.compile("(@[0-9a-zA-Z가-힣]{2,50})").matcher(s);
+        if (tagMatcher.find()) {
+            return "tag";
+        } else if (memberMatcher.find()) {
+            return "member";
+        } else {
+            return "title";
+        }
+    }
+
+    /**
+     * 제목 포함 검색 조건
+     *
+     * @param titles 제목 목록
+     * @return 제목 검색 조건
+     */
+    public BooleanBuilder containTitle(List<String> titles) {
+        if (titles.isEmpty()) return null;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        for (String title : titles) {
+            builder.or(quest.questTitle.contains(title));
+        }
+        return builder;
+    }
+
+    /**
+     * 태그 검색 조건
+     *
+     * @param tags 태그 목록
+     * @return 태그 검색 조건
+     */
+    public BooleanBuilder eqTag(List<String> tags) {
+        if (tags.isEmpty()) return null;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        for (String tag : tags) {
+            builder.and(QTag.tag.title.eq(tag));
+        }
+        return builder;
+    }
+
+    /**
+     * 멤버 검색 조건
+     *
+     * @param members 멤버 목록
+     * @return 멤버 검색 조건
+     */
+    public BooleanBuilder eqMember(List<String> members) {
+        if (members.size() == 0) {
+            return null;
+        }
+
+        BooleanBuilder builder = new BooleanBuilder();
+        for (String member : members) {
+            builder.or(quest.questMember.contains(memberRepository.findByNickname(member)));
+        }
+        return builder;
+    }
 }

@@ -2,7 +2,6 @@ package com.oneqst.Member.controller;
 
 import com.oneqst.Member.domain.Member;
 import com.oneqst.quest.repository.QuestRepository;
-import com.oneqst.quest.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +30,7 @@ public class SearchController {
         }
         model.addAttribute("searchTitle", title);
         model.addAttribute("questList", questRepository.searchPaging(member, title, pageable));
+//        model.addAttribute("questList", questRepository.totalSearchPaging(member, pageable, title));
         return "search";
     }
 }

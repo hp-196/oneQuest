@@ -39,4 +39,6 @@ public interface QuestRepositoryCustom {
     List<MyQuestDto> myActivityQuestLookup(Long memberId);
 
     List<Quest> findRandom9(Member member);
+
+    Page<Quest> totalSearchPaging(Member member, Pageable pageable, String search);
 }

@@ -19,7 +19,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -81,7 +80,7 @@ public class QuestService {
                     tagRepository.save(tag);
                 }
                 quest.addTag(tag);
-                System.out.println(title);
+//                System.out.println(title);
             }
         }
     }
