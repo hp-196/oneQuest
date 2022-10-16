@@ -57,7 +57,10 @@
                                 <div class="col-12">
                                     <label for="password" class="form-label">비밀번호 재입력</label>
                                     <label for="rePassword"></label>
-                                    <input type="password" name="rePassword" class="form-control" id="rePassword">
+                                    <input type="password" name="rePassword" class="form-control" id="rePassword"
+                                           required>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}"
+                                           th:errors="*{password}">Password Error</small>
                                 </div>
 
                                 <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
@@ -69,21 +72,26 @@
                                         $("#alert-danger").hide();
                                         $("#ture_button").hide();
                                         $("input").keyup(function () {
-                                            var pwd1 = $("#password").val();
-                                            var pwd2 = $("#rePassword").val();
-                                            if (pwd1 !== "" || pwd2 !== "") {
-                                                if (pwd1 === pwd2) {
-                                                    $("#alert-success").show();
-                                                    $("#alert-danger").hide();
-                                                    $("#ture_button").show();
-                                                    $("#false_button").hide();
-                                                    $("#submit").removeAttr("disabled");
-                                                } else {
-                                                    $("#alert-success").hide();
-                                                    $("#alert-danger").show();
-                                                    $("#ture_button").hide();
-                                                    $("#false_button").show();
-                                                    $("#submit").attr("disabled", "disabled");
+                                            let name = $("#nickname").val();
+                                            let email = $("#email").val();
+                                            let pwd1 = $("#password").val();
+                                            let pwd2 = $("#rePassword").val();
+                                            let address = $("#address").val();
+                                            if (name !== "" && email !== "" && address !== "") {
+                                                if (pwd1 !== "" || pwd2 !== "") {
+                                                    if (pwd1 === pwd2) {
+                                                        $("#alert-success").show();
+                                                        $("#alert-danger").hide();
+                                                        $("#ture_button").show();
+                                                        $("#false_button").hide();
+                                                        $("#submit").removeAttr("disabled");
+                                                    } else {
+                                                        $("#alert-success").hide();
+                                                        $("#alert-danger").show();
+                                                        $("#ture_button").hide();
+                                                        $("#false_button").show();
+                                                        $("#submit").attr("disabled", "disabled");
+                                                    }
                                                 }
                                             }
                                         });
