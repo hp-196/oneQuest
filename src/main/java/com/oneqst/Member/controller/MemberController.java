@@ -82,11 +82,11 @@ public class MemberController {
     @GetMapping("/email-auth")
     public String emailAuth(@CurrentUser Member loginMember, String email, String token, Model model) {
         Member member = memberRepository.findByEmail(email);
-        if (!loginMember.equals(member) || member == null || !member.getEmailToken().equals(token)) {
+        if (!loginMember.equals(member) || !member.getEmailToken().equals(token)) {
             model.addAttribute("error", "wrong.email");
             return "email-auth";
         }
-        memberService.setEmailAuthAndTime(member);
+        memberService.changeEmailAuth(member);
         model.addAttribute("nickname", member.getNickname());
         return "email-auth";
     }
@@ -97,6 +97,7 @@ public class MemberController {
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Member member) {
         Member profileMember = memberRepository.findByNickname(nickname);
+        Member lookMember = memberRepository.findById(member.getId()).get();
         if (profileMember == null) {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
         }
@@ -105,7 +106,7 @@ public class MemberController {
             model.addAttribute(new Password());
             model.addAttribute("isOwner", profileMember);
         }
-        model.addAttribute("member", member);
+        model.addAttribute("member", lookMember);
         model.addAttribute("profileMember", profileMember);
         return "profile";
     }
@@ -115,14 +116,15 @@ public class MemberController {
      */
     @PostMapping("/profile/update")
     ModelAndView updateProfile(@CurrentUser Member member, @Valid Profile profile, Errors errors, ModelAndView mav) {
+        Member findMember = memberRepository.findById(member.getId()).get();
         if (errors.hasErrors()) {
             String message = errors.getFieldError().getCode();
             mav.addObject("data", new AlertMessage(message, "/profile/"+member.getNickname()));
             mav.setViewName("alertMessage");
             return mav;
         }
-        memberService.updateProfile(member, profile);
-        mav.addObject("data", new AlertMessage("프로필 수정이 완료되었습니다.", "/profile/"+member.getNickname()));
+        memberService.updateProfile(findMember, profile);
+        mav.addObject("data", new AlertMessage("프로필 수정이 완료되었습니다.", "/profile/"+findMember.getNickname()));
         mav.setViewName("alertMessage");
         return mav;
     }
@@ -139,10 +141,11 @@ public class MemberController {
             mav.setViewName("alertMessage");
             return mav;
         }
-        if (memberService.updatePassword(member, password)) {
-            mav.addObject("data", new AlertMessage("비밀번호 수정이 완료되었습니다.", "/profile/"+member.getNickname()));
+        Member findMember = memberRepository.findById(member.getId()).get();
+        if (memberService.updatePassword(findMember, password)) {
+            mav.addObject("data", new AlertMessage("비밀번호 수정이 완료되었습니다.", "/profile/"+findMember.getNickname()));
         } else {
-            mav.addObject("data", new AlertMessage("비밀번호 수정이 실패하였습니다.", "/profile/"+member.getNickname()));
+            mav.addObject("data", new AlertMessage("비밀번호 수정이 실패하였습니다.", "/profile/"+findMember.getNickname()));
         }
         mav.setViewName("alertMessage");
         return mav;
@@ -165,7 +168,13 @@ public class MemberController {
      */
     @GetMapping("/email/resend")
     public ModelAndView resendEmail(@CurrentUser Member member, ModelAndView mav) throws MessagingException {
-        memberService.sendMail(member);
+        Member findMember = memberRepository.findById(member.getId()).get();
+        if (findMember.isEmailAuth() == true) {
+            mav.addObject("data", new AlertMessage("이미 인증된 회원입니다.", "/"));
+            mav.setViewName("alertMessage");
+            return mav;
+        }
+        memberService.sendMail(findMember);
         mav.addObject("data", new AlertMessage("이메일 재전송이 완료되었습니다.", "/"));
         mav.setViewName("alertMessage");
         return mav;

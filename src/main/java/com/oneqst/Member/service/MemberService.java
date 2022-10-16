@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -49,10 +50,6 @@ public class MemberService implements UserDetailsService {
      */
     @Async
     public void sendMail(Member newMember) throws MessagingException {
-        if (newMember.getEmailToken() == null) {
-            newMember.EmailTokenCreate();
-            memberRepository.save(newMember);
-        }
         MimeMessage mail = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
         helper.setTo(newMember.getEmail());
@@ -73,6 +70,7 @@ public class MemberService implements UserDetailsService {
                 .emailAlarm(true)
                 .webAlarm(true)
                 .emailAuth(false)
+                .emailToken(UUID.randomUUID().toString())
                 .signUpTime(LocalDateTime.now())
                 .build();
 
@@ -108,18 +106,16 @@ public class MemberService implements UserDetailsService {
     }
 
     /**
-     * @Transactional 이슈발생으로 인하여 생성 (@Transactional범위 안에 없으면 DB에 반영이 안됨)
+     * 더티체킹 반영
      */
-    public void setEmailAuthAndTime(Member member) {
+    public void changeEmailAuth(Member member) {
         member.setEmailAuth(true);
-        member.setSignUpTime(LocalDateTime.now());
     }
 
     /**
      * 프로필 수정
      */
     public void updateProfile(Member member, Profile profile) {
-
         member.setEmail(profile.getEmail());
         member.setNickname(profile.getNickname());
         member.setAddress(profile.getAddress());
@@ -127,16 +123,13 @@ public class MemberService implements UserDetailsService {
         member.setJob(profile.getJob());
         member.setUrl(profile.getUrl());
         member.setProfileImage(profile.getProfileImage());
-        memberRepository.save(member);
-
     }
 
     /**
      * 비밀번호 수정
      */
     public boolean updatePassword(Member member, Password password) {
-        Member findMember = memberRepository.findByNickname(member.getNickname());
-        if(!passwordEncoder.matches(password.getCurrentPassword(), findMember.getPassword())) {
+        if(!passwordEncoder.matches(password.getCurrentPassword(), member.getPassword())) {
             log.info("현재 비밀번호 매치 실패");
             return false;
         }

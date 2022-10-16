@@ -1,5 +1,8 @@
 package com.oneqst.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -11,6 +14,7 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AsyncConfig extends AsyncConfigurerSupport {
 
+    private static Logger logger = LoggerFactory.getLogger(RuntimeException.class);
     /**
      * https://velog.io/@gillog/Spring-Async-Annotation%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%A9%94%EC%86%8C%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
      * 참고
@@ -24,6 +28,13 @@ public class AsyncConfig extends AsyncConfigurerSupport {
         executor.setThreadNamePrefix("ON-ASYNC");
         executor.initialize();
         return executor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return (ex, method, params) ->
+                logger.error("Exception handler for async method '" + method.toGenericString()
+                        + "' threw unexpected exception itself", ex);
     }
 
 }

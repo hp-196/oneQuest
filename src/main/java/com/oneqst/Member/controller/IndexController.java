@@ -1,6 +1,7 @@
 package com.oneqst.Member.controller;
 
 import com.oneqst.Member.domain.Member;
+import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.InviteDto;
 import com.oneqst.quest.repository.QuestRepository;
@@ -23,15 +24,16 @@ import java.util.Random;
 public class IndexController {
 
     private final QuestRepository questRepository;
-    private final QuestService questService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/")
     public String home(@CurrentUser Member member, Model model) {
         if (member == null) {
             return "login";
         }
-        model.addAttribute("member", member);
-        log.info(String.valueOf(member.getNickname())+"이 메인화면 접근");
+        Member findMember = memberRepository.findById(member.getId()).get();
+        model.addAttribute("member", findMember);
+        log.info(String.valueOf(findMember.getNickname())+"이 메인화면 접근");
         model.addAttribute("questList", questRepository.myQuests(member.getId()));
         model.addAttribute("notQuestList", questRepository.findRandom9(member));
         model.addAttribute(new InviteDto());
