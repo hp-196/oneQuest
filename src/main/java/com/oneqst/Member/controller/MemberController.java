@@ -82,11 +82,11 @@ public class MemberController {
     @GetMapping("/email-auth")
     public String emailAuth(@CurrentUser Member loginMember, String email, String token, Model model) {
         Member member = memberRepository.findByEmail(email);
-        if (!loginMember.equals(member) || member == null || !member.getEmailToken().equals(token)) {
+        if (!loginMember.equals(member) || !member.getEmailToken().equals(token)) {
             model.addAttribute("error", "wrong.email");
             return "email-auth";
         }
-        memberService.setEmailAuthAndTime(member);
+        memberService.setEmailAuth(member);
         model.addAttribute("nickname", member.getNickname());
         return "email-auth";
     }
@@ -165,6 +165,11 @@ public class MemberController {
      */
     @GetMapping("/email/resend")
     public ModelAndView resendEmail(@CurrentUser Member member, ModelAndView mav) throws MessagingException {
+        if (member.isEmailAuth()) {
+            mav.addObject("data", new AlertMessage("인증이 완료된 회원입니다.", "/"));
+            mav.setViewName("alertMessage");
+            return mav;
+        }
         memberService.sendMail(member);
         mav.addObject("data", new AlertMessage("이메일 재전송이 완료되었습니다.", "/"));
         mav.setViewName("alertMessage");

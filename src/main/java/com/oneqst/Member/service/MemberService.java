@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -49,10 +50,6 @@ public class MemberService implements UserDetailsService {
      */
     @Async
     public void sendMail(Member newMember) throws MessagingException {
-        if (newMember.getEmailToken() == null) {
-            newMember.EmailTokenCreate();
-            memberRepository.save(newMember);
-        }
         MimeMessage mail = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
         helper.setTo(newMember.getEmail());
@@ -74,6 +71,7 @@ public class MemberService implements UserDetailsService {
                 .webAlarm(true)
                 .emailAuth(false)
                 .signUpTime(LocalDateTime.now())
+                .emailToken(UUID.randomUUID().toString())
                 .build();
 
         Member newMember = memberRepository.save(member);
@@ -110,16 +108,16 @@ public class MemberService implements UserDetailsService {
     /**
      * @Transactional 이슈발생으로 인하여 생성 (@Transactional범위 안에 없으면 DB에 반영이 안됨)
      */
-    public void setEmailAuthAndTime(Member member) {
+    public void setEmailAuth(Member member) {
         member.setEmailAuth(true);
-        member.setSignUpTime(LocalDateTime.now());
+        memberRepository.save(member);
+        login(member);
     }
 
     /**
      * 프로필 수정
      */
     public void updateProfile(Member member, Profile profile) {
-
         member.setEmail(profile.getEmail());
         member.setNickname(profile.getNickname());
         member.setAddress(profile.getAddress());
@@ -128,7 +126,6 @@ public class MemberService implements UserDetailsService {
         member.setUrl(profile.getUrl());
         member.setProfileImage(profile.getProfileImage());
         memberRepository.save(member);
-
     }
 
     /**
