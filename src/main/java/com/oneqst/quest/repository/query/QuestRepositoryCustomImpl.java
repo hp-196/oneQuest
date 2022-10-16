@@ -6,16 +6,13 @@ import com.oneqst.quest.domain.QQuest;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.MyQuestDto;
 import com.oneqst.quest.dto.QMyQuestDto;
-import com.oneqst.tag.QTag;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
@@ -30,7 +27,6 @@ import java.util.regex.Pattern;
 
 import static com.oneqst.Member.domain.QMember.member;
 import static com.oneqst.quest.domain.QQuest.quest;
-import static com.oneqst.tag.QTag.tag;
 
 public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -99,14 +95,14 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
 
     @Override
     public Page<Quest> searchPaging(Member member, String title, Pageable pageable) {
-        QueryResults<Quest> result = queryFactory
+        List<Quest> result = queryFactory
                 .selectFrom(quest)
                 .where(quest.questTitle.contains(title)
                         .or(quest.tags.any().title.contains(title))
                         .and(quest.questMember.contains(member).not()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
+                .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(quest.count())
@@ -117,8 +113,8 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-//        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+//        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
     /**
@@ -167,8 +163,11 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     public Page<Quest> totalSearchPaging(Member member, Pageable pageable, String query) {
         String[] queryArr = query.split(" ");
         List<String> titleList = new ArrayList<>();
+        titleList.add("");
         List<String> memberList = new ArrayList<>();
+        memberList.add("");
         List<String> tagList = new ArrayList<>();
+        tagList.add("");
         for (String s : queryArr) {
             String type = searchType(s);
             if (type.equals("title")) {
@@ -176,21 +175,17 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
             } else if (type.equals("member")) {
                 memberList.add(s.replace("@", ""));
             } else {
-                tagList.add(s.replace("#", ""));
+                tagList.add(s);
             }
         }
 
         Logger.getLogger("for 문 정상작동");
 
-        List<Quest> result = queryFactory
+        List<Quest> content = queryFactory
                 .select(quest)
-                .from(quest, tag)
-                .leftJoin(quest.tags, tag)
-//                .from(quest, QMember.member, tag)
-//                .leftJoin(quest.questMember, QMember.member)
+                .from(quest)
                 .where(
                         containTitle(titleList).and(quest.questMember.contains(member).not()),
-//                        eqMember(memberList),
                         eqTag(tagList).and(quest.questMember.contains(member).not())
                 )
                 .offset(pageable.getOffset())
@@ -200,19 +195,15 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(quest.count())
-                .from(quest, tag)
-                .leftJoin(quest.tags, tag)
-//                .from(quest, QMember.member, tag)
-//                .leftJoin(quest.questMember, QMember.member)
+                .from(quest)
                 .where(
                         containTitle(titleList).and(quest.questMember.contains(member).not()),
-//                        eqMember(memberList),
                         eqTag(tagList).and(quest.questMember.contains(member).not())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
     /**
@@ -247,6 +238,7 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
         for (String title : titles) {
             builder.or(quest.questTitle.contains(title));
         }
+
         return builder;
     }
 
@@ -262,7 +254,7 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
 
         for (String tag : tags) {
-            builder.and(QTag.tag.title.eq(tag));
+            builder.and(quest.tags.any().title.eq(tag));
         }
         return builder;
     }
@@ -274,14 +266,20 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
      * @return 멤버 검색 조건
      */
     public BooleanBuilder eqMember(List<String> members) {
-        if (members.size() == 0) {
-            return null;
-        }
+        if (members.isEmpty()) return null;
 
         BooleanBuilder builder = new BooleanBuilder();
         for (String member : members) {
             builder.or(quest.questMember.contains(memberRepository.findByNickname(member)));
         }
         return builder;
+    }
+
+    public BooleanBuilder nullSafer(BooleanBuilder builder) {
+        if (builder.hasValue()) {
+            return builder;
+        } else {
+            return null;
+        }
     }
 }
