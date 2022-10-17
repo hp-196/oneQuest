@@ -10,47 +10,52 @@
 <div th:replace="fragments.html :: sidebar"></div>
 
 <main class="main" id="main">
-    <div class="page-title">
-        <div class="col text-center">
-            <h1>나의 퀘스트 인증</h1>
-            <br>
+    <div class="row">
+        <br style="border: 3px">
+        <div style="text-align: left; width: 100px">
+            <a th:href="@{'/activity/posts'}">
+                <h5 style="display: inline"
+                    onmouseover="this.style.textDecoration='underline'"
+                    onmouseout="this.style.textDecoration=''">게시글</h5>
+            </a>
+        </div>
+        <div style="float: left; width: 80px">
+            <a th:href="@{'/activity/comments'}">
+                <h5 style="display: inline"
+                    onmouseover="this.style.textDecoration='underline'"
+                    onmouseout="this.style.textDecoration=''">댓글</h5>
+            </a>
+        </div>
+        <div style="float: left; width: 80px">
+            <a th:href="@{'/activity/quest/auths'}">
+                <h5 style="color: #4553e8; font-weight: bold"
+                    onmouseover="this.style.textDecoration='underline'"
+                    onmouseout="this.style.textDecoration=''">인증</h5>
+            </a>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-<!--                <button th:onclick="'location.href=\''+ @{'/activity/quests'} + '\''" type="button"-->
-<!--                        class="btn btn-outline-primary">퀘스트-->
-<!--                </button>-->
-                <button th:onclick="'location.href=\''+ @{'/activity/posts'} + '\''" type="button"
-                        class="btn btn-outline-primary">게시물
-                </button>
-                <button th:onclick="'location.href=\''+ @{'/activity/comments'} + '\''" type="button"
-                        class="btn btn-outline-primary">댓글
-                </button>
-                <button th:onclick="'location.href=\''+ @{'/activity/quest/auths'} + '\''" type="button"
-                        class="btn btn-outline-primary">인증
-                </button>
-            </div>
-        </div>
-    </div>
-    <hr>
+    <p th:if="${authPostList.size() != 0}" th:text="|${authPostList.size()}개의 인증이 있습니다.|">인증 개수</p>
+    <p th:unless="${authPostList.size() != 0}" th:text="'작성하신 글이 없습니다'">인증 개수</p>
+    <hr style="border: 2px">
 
-    <div class="timeline">
-        <p th:if="${authPostList.size() != 0}" th:text="|${authPostList.size()}개의 퀘스트 인증 활동이 있습니다.|">인증 개수</p>
-        <p th:unless="${authPostList.size() != 0}" th:text="'작성하신 퀘스트 인증이 없습니다'">인증 개수</p>
+    <div>
         <ul th:if="${authPostList.size() > 0}">
-            <li th:each="authPost : ${authPostList}">
-                <span th:text="${#temporals.format(authPost.getTime(), 'yyyy-MM-dd HH:mm')}">퀘스트 인증 작성 날짜</span>
-                <a href="#about" th:href="@{'/quest/' + ${authPost.questUrl} + '/auth/post/' + ${authPost.getAuthId()}}">
-                    <div class="content">
-                        <br>
-                        <h3 th:text="${authPost.getContent()}">댓글</h3>
-                        <small th:text="|${authPost.questTitle}|">퀘스트</small>
-                        <hr>
-                    </div>
-                </a>
+            <li style="list-style: none" th:each="post : ${authPostList}">
+                <div class="card" style="padding: 15px; border-radius: 10px">
+                    <a th:href="@{'/quest/' + ${post.questUrl} + '/post/' + ${post.getAuthId()}}">
+                        <p th:text="${post.getAuthTitle()}" onmouseover="this.style.textDecoration='underline'"
+                           onmouseout="this.style.textDecoration=''">인증 제목</p>
+                    </a>
+                    <a th:href="@{'/quest/' + ${post.questUrl}}">
+                        <p style="display: inline; font-size: small; color: gray"
+                           th:text="${post.questTitle}"
+                           onmouseover="this.style.textDecoration='underline'"
+                           onmouseout="this.style.textDecoration=''">퀘스트 제목</p>
+                    </a>
+                    <p style="font-size: small; color: gray"
+                       th:text="${#temporals.format(post.getTime(), 'yyyy-MM-dd')}">인증 작성 날짜</p>
+                </div>
             </li>
         </ul>
     </div>
