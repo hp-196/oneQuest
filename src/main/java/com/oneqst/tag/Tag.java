@@ -18,5 +18,8 @@ public class Tag {
     private Long id;
 
     private String title;
-    
+
+    public String renameTitle() {
+        return this.title.replace("#", "");
+    }
 }
