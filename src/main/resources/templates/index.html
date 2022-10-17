@@ -87,7 +87,11 @@
                                             <span class="form-control" id="recipient-name">OneQuestUrl
                                                 <span id="quest_url" th:text="${quest.questUrl}"></span></span>
                                             <div class="modal-footer">
-                                                <button type="button" id="copy_button" class="btn btn-outline-info"
+                                                <span id="copy_info" style="color:#008a00"></span>
+                                                <button type="button" id="copy_button" class="btn btn-outline-success"
+                                                        value="주소 복사">주소 복사
+                                                </button>
+                                                <button type="button" id="copied_button" class="btn btn-success"
                                                         value="주소 복사">주소 복사
                                                 </button>
                                             </div>
@@ -120,13 +124,16 @@
                 let url = window.location.href + 'quest/' + document.getElementById('quest_url').innerText;
                 let modal = document.getElementById('modal_button');
                 let copy = document.getElementById('copy_button');
+                let copied = document.getElementById('copied_button');
                 modal.addEventListener('click', function () {
-                    document.getElementById('recipient-name').innerHTML=url;
+                    document.getElementById('recipient-name').innerHTML = url;
+
                 })
                 copy.addEventListener('click', function () {
                     // https://joshua-dev-story.blogspot.com/2020/10/javascript-copy-to-clipboard.html - 클립보드로 복사
                     // document.execCommand(url);
                     navigator.clipboard.writeText(url);
+                    document.getElementById('copy_info').innerHTML = "주소 복사 완료";
                 })
             </script>
 
