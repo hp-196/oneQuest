@@ -10,10 +10,10 @@
 <main id="main" class="main">
 
 
-<!--        <div th:if="${member.emailAuth == false}" class="alert alert-danger">-->
-<!--            <p>이메일 인증을 완료해주세요.</p>-->
-<!--            <a th:href="@{'/email/resend'}">인증메일 재전송</a>-->
-<!--        </div>-->
+    <!--        <div th:if="${member.emailAuth == false}" class="alert alert-danger">-->
+    <!--            <p>이메일 인증을 완료해주세요.</p>-->
+    <!--            <a th:href="@{'/email/resend'}">인증메일 재전송</a>-->
+    <!--        </div>-->
 
 
     <!-- 퀘스트 리스트 -->
@@ -42,34 +42,44 @@
                      class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile" class="mainPage-card-img">
+                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile"
+                                 class="mainPage-card-img">
                             <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
                                  alt="Profile" class="mainPage-card-img">
                             <div th:if="${!quest.compareDate()}" th:classappend="${!quest.compareDate()} ? 'quest-end'">
                                 <p></p>
                                 <p>기한 마감</p>
                             </div>
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox"
+                               data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i class="bx bx-plus"></i></a>
-                            <a class="link-details" title="회원 초대" data-bs-toggle="modal" th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
+                            <a class="link-details" title="회원 초대" data-bs-toggle="modal"
+                               th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
-                            <p th:text="${quest.returnTags()}"></p>
+                            <!--                            <p th:text="${quest.returnTags()}"></p>-->
+                            <div th:each="tag : ${quest.tags()}">
+                                <small th:text="${tag.getTitle()}">questTag</small>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 퀘스트 멤버 초대 모달창 -->
-                    <div class="modal fade" th:if="${quest.questRecruitEnd == true}" th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:if="${quest.questRecruitEnd == true}"
+                         th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">멤버 초대</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
-                                <form th:action="@{'/quest/' + ${quest.questUrl} + '/invite'}" th:object="${inviteDto}" method="post"
+                                <form th:action="@{'/quest/' + ${quest.questUrl} + '/invite'}" th:object="${inviteDto}"
+                                      method="post"
                                       novalidate>
                                     <div class="modal-body">
                                         <div class="mb-3">
@@ -81,12 +91,14 @@
                                             <label for="message-text" class="col-form-label">닉네임 혹은 이메일</label>
                                             <input class="form-control" id="message-text" th:field="*{nickNameOrEmail}">
                                             <div class="invalid-feedback">닉네임혹은 이메일을 입력하시오</div>
-                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('nickNameOrEmail')}"
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('nickNameOrEmail')}"
                                                    th:errors="*{nickNameOrEmail}">input Error</small>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기
+                                        </button>
                                         <button type="submit" class="btn btn-primary">초대 발송</button>
                                     </div>
                                 </form>
@@ -107,53 +119,61 @@
                      class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile" class="mainPage-card-img">
+                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile"
+                                 class="mainPage-card-img">
                             <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
                                  alt="Profile" class="mainPage-card-img">
                             <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
                                class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i
                                     class="bx bx-plus"></i></a>
-                            <a class="link-details" title="상세 정보" data-bs-toggle="modal" th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
+                            <a class="link-details" title="상세 정보" data-bs-toggle="modal"
+                               th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
                                     class="bx bx-link"></i></a>
                         </figure>
 
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
-                            <p th:text="${quest.returnTags()}"></p>
+                            <!--                            <p th:text="${quest.returnTags()}"></p>-->
+                            <div th:each="tag : ${quest.tags()}">
+                                <small th:text="${tag.getTitle()}">questTag</small>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 퀘스트 상세 정보 모달창 -->
-                    <div class="modal fade" th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:id="'questInfo' + ${quest.getId()}" tabindex="-1"
+                         aria-labelledby="ModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="ModalLabel">퀘스트 정보</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="recipient-name" class="col-form-label">제목</label>
-                                            <span class="form-control" th:text="${quest.getQuestTitle()}">제목</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="message-text" class="col-form-label">소개</label>
-                                            <span class="form-control" th:text="${quest.getQuestExplain()}">퀘스트 소개</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="message-text" class="col-form-label">기한</label>
-                                            <span class="form-control" th:text="|${quest.getQuestStartTime()} 부터 ${quest.getQuestEndTime()}|">기한</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="message-text" class="col-form-label">해시태그</label>
-                                            <span class="form-control" th:text="${quest.returnTags()}">퀘스트 태그</span>
-                                        </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="recipient-name" class="col-form-label">제목</label>
+                                        <span class="form-control" th:text="${quest.getQuestTitle()}">제목</span>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
-                                        <a th:href="@{'/quest/' + ${quest.questUrl}}" class="btn btn-primary">들어가기</a>
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">소개</label>
+                                        <span class="form-control" th:text="${quest.getQuestExplain()}">퀘스트 소개</span>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">기한</label>
+                                        <span class="form-control"
+                                              th:text="|${quest.getQuestStartTime()} 부터 ${quest.getQuestEndTime()}|">기한</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">해시태그</label>
+                                        <span class="form-control" th:text="${quest.returnTags()}">퀘스트 태그</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                                    <a th:href="@{'/quest/' + ${quest.questUrl}}" class="btn btn-primary">들어가기</a>
+                                </div>
                             </div>
                         </div>
                     </div>

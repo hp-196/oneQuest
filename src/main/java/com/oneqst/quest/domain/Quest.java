@@ -2,7 +2,6 @@ package com.oneqst.quest.domain;
 
 import com.oneqst.Member.controller.MemberInfo;
 import com.oneqst.Member.domain.Member;
-import com.oneqst.notice.NoticeType;
 import com.oneqst.tag.Tag;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -147,6 +146,7 @@ public class Quest {
     public void deleteTagAll() {
         tags.removeAll(this.tags);
     }
+
     /**
      * 태그 출력
      */
@@ -157,5 +157,9 @@ public class Quest {
             sb.append(" ");
         }
         return sb.toString();
+    }
+
+    public List<Tag> tags() {
+        return new ArrayList<>(tags);
     }
 }
