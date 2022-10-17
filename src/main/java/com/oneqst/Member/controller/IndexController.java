@@ -33,7 +33,7 @@ public class IndexController {
         model.addAttribute("member", member);
         log.info(String.valueOf(member.getNickname())+"이 메인화면 접근");
         model.addAttribute("questList", questRepository.myQuests(member.getId()));
-        model.addAttribute("notQuestList", questRepository.findRandom9(member));
+        model.addAttribute("notQuestList", questRepository.findRandom9(member.getId()));
         model.addAttribute(new InviteDto());
         return "index";
     }

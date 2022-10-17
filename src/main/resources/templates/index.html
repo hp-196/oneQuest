@@ -97,14 +97,11 @@
                 </div>
             </div>
 
-
-
             <!-- 퀘스트 추천 -->
             <div th:if="${notQuestList.size() > 0}" class="section-title mt-5 mb-5">
                 <h2>이런 퀘스트는 어떠세요?</h2>
                 <p>아래의 카드를 눌러 이동해보세요</p>
             </div>
-
             <div th:if="${notQuestList.size() > 0}" class="row portfolio-container">
                 <div sec:authorize="isAuthenticated()" th:each="quest: ${notQuestList}"
                      class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
@@ -160,10 +157,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 
