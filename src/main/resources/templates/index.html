@@ -54,15 +54,16 @@
                                data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i class="bx bx-plus"></i></a>
                             <a class="link-details" title="회원 초대" data-bs-toggle="modal" id="modal_button"
-                               th:attr="data-bs-target='#questInfo'+${quest.getId()}">
+                               th:attr="data-bs-target='#questInfo' + ${quest.getId()}">
                                 <i class="bx bx-link"></i></a>
                         </figure>
 
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
-                            <!--                            <p th:text="${quest.returnTags()}"></p>-->
                             <div style="display: inline" th:each="tag : ${quest.tags()}">
-                                <small th:text="${tag.getTitle()}">questTag</small>
+                                <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
+                                    <small style="color: gray" th:text="${tag.getTitle()}">questTag</small>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -104,7 +105,8 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기
                                             </button>
-                                            <button id="invite_button" type="submit" class="btn btn-primary">초대 발송</button>
+                                            <button id="invite_button" type="submit" class="btn btn-primary">초대 발송
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
@@ -131,7 +133,7 @@
                     navigator.clipboard.writeText(url);
                     document.getElementById('copy_info').innerHTML = "주소 복사 완료";
                 })
-                invite.addEventListener('click',function (){
+                invite.addEventListener('click', function () {
                     alert("초대가 정상적으로 되었습니다.");
                 })
             </script>
@@ -161,9 +163,10 @@
 
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
-                            <!--                            <p th:text="${quest.returnTags()}"></p>-->
-                            <div th:each="tag : ${quest.tags()}">
-                                <small th:text="${tag.getTitle()}">questTag</small>
+                            <div style="display: inline" th:each="tag : ${quest.tags()}">
+                                <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
+                                    <small style="color: gray" th:text="${tag.getTitle()}">questTag</small>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -208,8 +211,6 @@
             </div>
         </div>
     </section>
-
-
 </main>
 
 <div th:replace="fragments.html :: footer"></div>
