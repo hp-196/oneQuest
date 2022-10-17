@@ -53,9 +53,9 @@
                             <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox"
                                data-gallery="portfolioGallery"
                                title="퀘스트 입장"><i class="bx bx-plus"></i></a>
-                            <a class="link-details" title="회원 초대" data-bs-toggle="modal"
-                               th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
-                                    class="bx bx-link"></i></a>
+                            <a class="link-details" title="회원 초대" data-bs-toggle="modal" id="modal_button"
+                               th:attr="data-bs-target='#questInfo'+${quest.getId()}">
+                                <i class="bx bx-link"></i></a>
                         </figure>
 
                         <div class="portfolio-info">
@@ -66,6 +66,15 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 퀘스트 모달창 스크립트 -->
+                    <script type="text/javascript">
+                        let url = window.location.href + 'quest/' + document.getElementById('quest_url').innerText;
+                        let modal_button = document.getElementById('modal_button');
+                        modal_button.addEventListener('click', function () {
+                            document.getElementById('recipient-name').innerHTML=url;
+                        })
+                    </script>
 
                     <!-- 퀘스트 멤버 초대 모달창 -->
                     <div class="modal fade" th:if="${quest.questRecruitEnd == true}"
@@ -84,8 +93,13 @@
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="recipient-name" class="col-form-label">주소를 복사해 초대해보세요</label>
-                                            <span class="form-control" id="recipient-name">localhost:8080/quest/<span
-                                                    th:text="${quest.questUrl}"></span></span>
+                                            <span class="form-control" id="recipient-name">OneQuestUrl
+                                                <span id="quest_url" th:text="${quest.questUrl}"></span></span>
+                                            <div class="modal-footer">
+                                                <button type="button" id="copy_button" class="btn btn-outline-info"
+                                                        value="주소 복사">주소 복사
+                                                </button>
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="message-text" class="col-form-label">닉네임 혹은 이메일</label>
@@ -105,7 +119,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
