@@ -67,15 +67,6 @@
                         </div>
                     </div>
 
-                    <!-- 퀘스트 모달창 스크립트 -->
-                    <script type="text/javascript">
-                        let url = window.location.href + 'quest/' + document.getElementById('quest_url').innerText;
-                        let modal_button = document.getElementById('modal_button');
-                        modal_button.addEventListener('click', function () {
-                            document.getElementById('recipient-name').innerHTML=url;
-                        })
-                    </script>
-
                     <!-- 퀘스트 멤버 초대 모달창 -->
                     <div class="modal fade" th:if="${quest.questRecruitEnd == true}"
                          th:id="'questInfo' + ${quest.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -109,11 +100,11 @@
                                                    th:if="${#fields.hasErrors('nickNameOrEmail')}"
                                                    th:errors="*{nickNameOrEmail}">input Error</small>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">초대 발송</button>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">초대 발송</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -121,6 +112,23 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 퀘스트 모달창 스크립트 -->
+            <script type="text/javascript">
+                // https://opentutorials.org/course/1375/6620 - 이벤트 리스너
+                // https://hianna.tistory.com/m/479 - div 데이터 가져오기
+                let url = window.location.href + 'quest/' + document.getElementById('quest_url').innerText;
+                let modal = document.getElementById('modal_button');
+                let copy = document.getElementById('copy_button');
+                modal.addEventListener('click', function () {
+                    document.getElementById('recipient-name').innerHTML=url;
+                })
+                copy.addEventListener('click', function () {
+                    // https://joshua-dev-story.blogspot.com/2020/10/javascript-copy-to-clipboard.html - 클립보드로 복사
+                    // document.execCommand(url);
+                    navigator.clipboard.writeText(url);
+                })
+            </script>
 
             <!-- 퀘스트 추천 -->
             <div th:if="${notQuestList.size() > 0}" class="section-title mt-5 mb-5">
