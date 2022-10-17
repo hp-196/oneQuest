@@ -102,7 +102,7 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
         List<Quest> content = queryFactory
                 .selectFrom(quest)
                 .where(quest.questTitle.contains(title)
-                        .or(quest.tags.any().title.contains(title))
+                        .or(quest.tags.any().title.eq(title))
                         .and(quest.questMember.contains(member).not()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -112,7 +112,7 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .select(quest.count())
                 .from(quest)
                 .where(quest.questTitle.contains(title)
-                        .or(quest.tags.any().title.contains(title))
+                        .or(quest.tags.any().title.eq(title))
                         .and(quest.questMember.contains(member).not()));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
