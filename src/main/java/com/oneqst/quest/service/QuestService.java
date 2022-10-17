@@ -19,7 +19,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,7 +45,6 @@ public class QuestService {
     public Quest newQuest(QuestDto questDto, Member member) {
         Quest quest = Quest.builder()
                 .questTitle(questDto.getQuestTitle())
-                .questIntroduce(questDto.getQuestIntroduce())
                 .questExplain(questDto.getQuestExplain())
                 .questStartTime(questDto.getQuestStartTime())
                 .questEndTime(questDto.getQuestEndTime())
@@ -91,7 +89,6 @@ public class QuestService {
      */
     public void questUpdate(Quest quest, QuestUpdateDto questUpdateDto) {
         quest.setQuestTitle(questUpdateDto.getQuestTitle());
-        quest.setQuestIntroduce(questUpdateDto.getQuestIntroduce());
         quest.setQuestExplain(questUpdateDto.getQuestExplain());
         quest.setQuestStartTime(questUpdateDto.getQuestStartTime());
         quest.setQuestEndTime(questUpdateDto.getQuestEndTime());

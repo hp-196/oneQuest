@@ -160,7 +160,6 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                 .select(new QMyQuestDto(
                         quest.questUrl,
                         quest.questTitle,
-                        quest.questIntroduce,
                         quest.questStartTime,
                         quest.questEndTime
                 ))

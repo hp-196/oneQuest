@@ -12,7 +12,6 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
                         <div class="d-flex justify-content-center py-4">
                             <a href="index.html" class="logo d-flex align-items-center w-auto">
                                 <img src="assets/img/logo.png" alt="">
@@ -45,22 +44,12 @@
                                       th:action="@{'/quest/' + ${quest.questUrl} + '/update'}"
                                       th:object="${questUpdateDto}" method="post" novalidate>
                                     <div class="col-12">
-                                        <label for="questTitle" class="form-label">퀘스트 제목</label>
+                                        <label for="questTitle" class="form-label">제목</label>
                                         <input type="text" name="questTitle" class="form-control" id="questTitle"
                                                th:field="*{questTitle}" required>
                                         <div class="invalid-feedback">퀘스트 제목을 입력하시오</div>
                                         <small class="form-text text-danger" th:if="${#fields.hasErrors('questTitle')}"
                                                th:errors="*{questTitle}">questTitle Error</small>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="questShortExplain" class="form-label">짧은 소개</label>
-                                        <input type="text" name="questShortExplain" class="form-control"
-                                               id="questShortExplain" th:field="*{questIntroduce}" required>
-                                        <div class="invalid-feedback">퀘스트 소개를 입력하시오</div>
-                                        <small class="form-text text-danger"
-                                               th:if="${#fields.hasErrors('questIntroduce')}"
-                                               th:errors="*{questIntroduce}">questIntroduce Error</small>
                                     </div>
 
                                     <div class="col-12">
@@ -121,18 +110,13 @@
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">수정하기</button>
                                     </div>
-
                                 </form>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </section>
-
     </div>
 </main>
 
