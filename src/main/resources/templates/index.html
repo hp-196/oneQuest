@@ -61,7 +61,7 @@
                         <div class="portfolio-info">
                             <h4 th:text="${quest.questTitle}"></h4>
                             <!--                            <p th:text="${quest.returnTags()}"></p>-->
-                            <div th:each="tag : ${quest.tags()}">
+                            <div style="display: inline" th:each="tag : ${quest.tags()}">
                                 <small th:text="${tag.getTitle()}">questTag</small>
                             </div>
                         </div>
@@ -91,9 +91,6 @@
                                                 <button type="button" id="copy_button" class="btn btn-outline-success"
                                                         value="주소 복사">주소 복사
                                                 </button>
-                                                <button type="button" id="copied_button" class="btn btn-success"
-                                                        value="주소 복사">주소 복사
-                                                </button>
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -107,7 +104,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기
                                             </button>
-                                            <button type="submit" class="btn btn-primary">초대 발송</button>
+                                            <button id="invite_button" type="submit" class="btn btn-primary">초대 발송</button>
                                         </div>
                                     </div>
                                 </form>
@@ -124,16 +121,18 @@
                 let url = window.location.href + 'quest/' + document.getElementById('quest_url').innerText;
                 let modal = document.getElementById('modal_button');
                 let copy = document.getElementById('copy_button');
-                let copied = document.getElementById('copied_button');
+                let invite = document.getElementById('invite_button');
                 modal.addEventListener('click', function () {
                     document.getElementById('recipient-name').innerHTML = url;
 
                 })
                 copy.addEventListener('click', function () {
                     // https://joshua-dev-story.blogspot.com/2020/10/javascript-copy-to-clipboard.html - 클립보드로 복사
-                    // document.execCommand(url);
                     navigator.clipboard.writeText(url);
                     document.getElementById('copy_info').innerHTML = "주소 복사 완료";
+                })
+                invite.addEventListener('click',function (){
+                    alert("초대가 정상적으로 되었습니다.");
                 })
             </script>
 
