@@ -45,8 +45,6 @@ public class Quest {
     @Column(unique = true)
     private String questUrl; //퀘스트 주소
 
-    private String questIntroduce; //퀘스트 짧은 설명
-
     private String questExplain; //퀘스트 긴 설명
 
     @Lob

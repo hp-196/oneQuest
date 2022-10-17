@@ -62,7 +62,9 @@
                             <h4 th:text="${quest.questTitle}"></h4>
                             <div style="display: inline" th:each="tag : ${quest.tags()}">
                                 <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
-                                    <small style="color: gray" th:text="${tag.getTitle()}">questTag</small>
+                                    <small style="color: gray" th:text="${tag.getTitle()}"
+                                           onmouseover="this.style.textDecoration='underline'"
+                                           onmouseout="this.style.textDecoration=''">questTag</small>
                                 </a>
                             </div>
                         </div>
@@ -165,7 +167,9 @@
                             <h4 th:text="${quest.questTitle}"></h4>
                             <div style="display: inline" th:each="tag : ${quest.tags()}">
                                 <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
-                                    <small style="color: gray" th:text="${tag.getTitle()}">questTag</small>
+                                    <small style="color: gray" th:text="${tag.getTitle()}"
+                                           onmouseover="this.style.textDecoration='underline'"
+                                           onmouseout="this.style.textDecoration=''">questTag</small>
                                 </a>
                             </div>
                         </div>

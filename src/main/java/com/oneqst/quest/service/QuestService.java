@@ -19,11 +19,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +46,6 @@ public class QuestService {
     public Quest newQuest(QuestDto questDto, Member member) {
         Quest quest = Quest.builder()
                 .questTitle(questDto.getQuestTitle())
-                .questIntroduce(questDto.getQuestIntroduce())
                 .questExplain(questDto.getQuestExplain())
                 .questStartTime(questDto.getQuestStartTime())
                 .questEndTime(questDto.getQuestEndTime())
@@ -65,23 +64,25 @@ public class QuestService {
         return newQuest;
     }
 
+    //공부 토익#기능 #우와 진짜 #이게될까
+
     /**
      * 태그 파싱
      */
     public void tagParsing(String tags, Quest quest) {
-        Pattern pattern = Pattern.compile("(#[\\d|A-Z|a-z|가-힣|가-힣]*)");
-        Matcher mat = pattern.matcher(tags);
-        while (mat.find()) {
-            String title = mat.group(0);
-            if (!title.equals("#")) {
-                Tag tag = tagRepository.findByTitle(title);
+        Pattern pattern = Pattern.compile("([\\dA-Za-z가-힣]*)");
+        StringTokenizer st = new StringTokenizer(tags, "# ");
+        while (st.hasMoreTokens()) {
+            String str = st.nextToken();
+            Matcher mat = pattern.matcher(str);
+            if (mat.find()) {
+                Tag tag = tagRepository.findByTitle(str);
                 if (tag == null) {
                     tag = new Tag();
-                    tag.setTitle(title);
+                    tag.setTitle("#" + str);
                     tagRepository.save(tag);
                 }
                 quest.addTag(tag);
-                System.out.println(title);
             }
         }
     }
@@ -91,7 +92,6 @@ public class QuestService {
      */
     public void questUpdate(Quest quest, QuestUpdateDto questUpdateDto) {
         quest.setQuestTitle(questUpdateDto.getQuestTitle());
-        quest.setQuestIntroduce(questUpdateDto.getQuestIntroduce());
         quest.setQuestExplain(questUpdateDto.getQuestExplain());
         quest.setQuestStartTime(questUpdateDto.getQuestStartTime());
         quest.setQuestEndTime(questUpdateDto.getQuestEndTime());
@@ -132,7 +132,7 @@ public class QuestService {
         questPost.setPostTime(LocalDateTime.now());
         questPost.setNotice(true);
         QuestPost newQuestPost = questPostRepository.save(questPost);
-        noticeEvent(newQuestPost,quest,member);
+        noticeEvent(newQuestPost, quest, member);
         return newQuestPost;
 
     }
@@ -226,8 +226,9 @@ public class QuestService {
 
     /**
      * 해당 유저가 관리자인 퀘스트를 조회
-     * @param memberId  유저의 id
-     * @return  해당 유저가 관리자인 퀘스트 목록
+     *
+     * @param memberId 유저의 id
+     * @return 해당 유저가 관리자인 퀘스트 목록
      */
     public List<Quest> masterQuestLookup(Long memberId) {
         return questRepository.questMaster(memberId);
@@ -235,8 +236,9 @@ public class QuestService {
 
     /**
      * 해당 유저가 참여한 퀘스트를 조회
-     * @param memberId  유저의 id
-     * @return  해당 유저가 참여한 퀘스트 목록
+     *
+     * @param memberId 유저의 id
+     * @return 해당 유저가 참여한 퀘스트 목록
      */
     public List<Quest> memberQuestLookup(Long memberId) {
         return questRepository.questMember(memberId);

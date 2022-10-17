@@ -53,16 +53,6 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="questShortExplain" class="form-label">짧은 소개</label>
-                                        <input type="text" name="questShortExplain" class="form-control"
-                                               id="questShortExplain" th:field="*{questIntroduce}" required>
-                                        <div class="invalid-feedback">퀘스트 소개를 입력하시오</div>
-                                        <small class="form-text text-danger"
-                                               th:if="${#fields.hasErrors('questIntroduce')}"
-                                               th:errors="*{questIntroduce}">questIntroduce Error</small>
-                                    </div>
-
-                                    <div class="col-12">
                                         <label for="questExplain" class="form-label">퀘스트 설명</label>
                                         <input type="text" name="questExplain" class="form-control" id="questExplain"
                                                th:field="*{questExplain}" style="height: 200px" required>
@@ -104,7 +94,7 @@
                                     <div class="col-12">
                                         <label for="questUrl" class="form-label">해시태그</label>
                                         <input type="text" name="questExplain" class="form-control" id="questTag"
-                                               th:field="*{tag}" required placeholder="예) #공부 #운동 #토익">
+                                               th:field="*{tag}" placeholder="예) #공부 #운동 #토익">
                                         <div class="invalid-feedback">올바른 형식의 해시태그를 입력하시오</div>
                                         <small class="form-text text-danger" th:if="${#fields.hasErrors('tag')}"
                                                th:errors="*{tag}">questUrl Error</small>
