@@ -307,7 +307,7 @@
                                                     <h3 class="text-center">🥈</h3>
                                                 </div>
                                                 <div class="leaderboard-card__body">
-                                                    <div class="text-center" th:if="${scoreMap.size() > 1}">
+                                                    <div class="text-center" th:if="${scoreMap.size() > 1 && scoreMap[1].value > 0}">
                                                         <a th:href="@{'/profile/' + ${scoreMap[1].key.getNickname()}}">
                                                             <img th:if="${#strings.isEmpty(scoreMap[1].key.profileImage)}"
                                                                  src="/assets/img/logo.png" alt="Profile"
@@ -321,7 +321,7 @@
                                                             점수</p>
                                                         <hr>
                                                     </div>
-                                                    <div class="text-center" th:unless="${scoreMap.size() > 1}">
+                                                    <div class="text-center" th:unless="${scoreMap.size() > 1 && scoreMap[1].value > 0}">
                                                         <img src="/assets/img/logo.png" alt="Profile"
                                                              class="circle-img mb-2">
                                                         <h5 class="mb-0">공석</h5></a>
@@ -337,7 +337,7 @@
                                                     <h3 class="text-center">🥇</h3>
                                                 </div>
                                                 <div class="leaderboard-card__body">
-                                                    <div class="text-center" th:if="${scoreMap.size() > 0}">
+                                                    <div class="text-center" th:if="${scoreMap.size() > 0 && scoreMap[0].value > 0}">
                                                         <a th:href="@{'/profile/' + ${scoreMap[0].key.getNickname()}}">
                                                             <img th:if="${#strings.isEmpty(scoreMap[0].key.profileImage)}"
                                                                  src="/assets/img/logo.png" alt="Profile"
@@ -351,7 +351,7 @@
                                                             점수</p>
                                                         <hr>
                                                     </div>
-                                                    <div class="text-center" th:unless="${scoreMap.size() > 0}">
+                                                    <div class="text-center" th:unless="${scoreMap.size() > 0 && scoreMap[0].value > 0}">
                                                         <img src="/assets/img/logo.png" alt="Profile"
                                                              class="circle-img mb-2">
                                                         <h5 class="mb-0">공석</h5></a>
@@ -367,7 +367,7 @@
                                                     <h3 class="text-center">🥉</h3>
                                                 </div>
                                                 <div class="leaderboard-card__body">
-                                                    <div class="text-center" th:if="${scoreMap.size() > 2}">
+                                                    <div class="text-center" th:if="${scoreMap.size() > 2 && scoreMap[2].value > 0}">
                                                         <a th:href="@{'/profile/' + ${scoreMap[2].key.getNickname()}}">
                                                             <img th:if="${#strings.isEmpty(scoreMap[2].key.profileImage)}"
                                                                  src="/assets/img/logo.png" alt="Profile"
@@ -381,7 +381,7 @@
                                                             점수</p>
                                                         <hr>
                                                     </div>
-                                                    <div class="text-center" th:unless="${scoreMap.size() > 2}">
+                                                    <div class="text-center" th:unless="${scoreMap.size() > 2 && scoreMap[2].value > 0}">
                                                         <img src="/assets/img/logo.png" alt="Profile"
                                                              class="circle-img mb-2">
                                                         <h5 class="mb-0">공석</h5></a>
@@ -403,7 +403,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="num : ${#numbers.sequence(3,scoreMap.size()-1)}">
+                                        <tr th:each="num : ${#numbers.sequence(3,scoreMap.size()-1)}" th:if="${scoreMap[num].value > 0}">
                                             <th scope="row" th:text="${num+1}">순위</th>
                                             <td>
                                                 <a href="#about"
