@@ -81,10 +81,25 @@
 
 <main id="main" class="main">
     <div>
-        <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
-            <!-- 회원 목록 -->
+
+        <!-- 퀘스트 설명 -->
+        <div class="card" style="margin-top: -50px">
             <div class="card-body">
-                <h5 class="card-title">회원목록</h5>
+                <h5 class="card-title" style="margin-bottom: -10px">우리 퀘스트는</h5>
+                <p th:text="${quest.questExplain}"></p>
+                <div style="display: inline" th:each="tag : ${quest.tags()}">
+                    <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
+                        <small style="color: gray" th:text="${tag.getTitle()}"
+                               onmouseover="this.style.textDecoration='underline'"
+                               onmouseout="this.style.textDecoration=''">questTag</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 회원 목록 -->
+        <div sec:authorize="isAuthenticated()" class="card">
+            <div class="card-body" style="margin-top: 20px">
                 <span>호스트 : </span>
                 <a href="#about" th:href="@{'/profile/' + ${quest.getQuestHost().getNickname()}}">
               <span>
@@ -124,24 +139,7 @@
             </div>
         </div>
 
-        <br style="border: 5px">
-
-        <div class="card" style="margin-top: -30px">
-            <div class="card-body">
-                <h5 class="card-title">퀘스트 설명</h5>
-                <p th:text="${quest.questExplain}"></p>
-                <h5 class="card-title">태그</h5>
-                <div style="display: inline" th:each="tag : ${quest.tags()}">
-                    <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
-                        <small style="color: gray" th:text="${tag.getTitle()}"
-                               onmouseover="this.style.textDecoration='underline'"
-                               onmouseout="this.style.textDecoration=''">questTag</small>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
+        <div class="row mt-4" th:if="${quest.isMember(#authentication.principal)}">
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
