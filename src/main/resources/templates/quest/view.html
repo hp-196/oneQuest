@@ -59,6 +59,26 @@
     </div>
 </div>
 
+<!-- 퀘스트 탈퇴 모달창 -->
+<div class="modal fade" id="questWithdraw" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">퀘스트 삭제</h5>
+            </div>
+            <div class="modal-body">
+                정말로 탈퇴하시겠습니까?
+            <br>
+                이 퀘스트에서 한 활동과 인증 점수가 소멸됩니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn btn-primary">예</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <main id="main" class="main">
     <div>
         <div sec:authorize="isAuthenticated()" class="card" style="margin-top: -30px">
@@ -120,19 +140,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 퀘스트 수정 버튼 -->
-        <button sec:authorize="isAuthenticated()" th:if="${quest.getQuestHost().equals(member)}"
-                class="btn btn-primary">
-            <a th:href="@{'/quest/' + ${quest.questUrl} + '/update'}" class="btn-quest-view-a">퀘스트 수정</a>
-        </button>
-
-        <!-- 퀘스트 탈퇴 버튼 -->
-        <button sec:authorize="isAuthenticated()"
-                th:if="${quest.isMember(#authentication.principal)} and ${!member.equals(quest.questHost)}"
-                class="btn btn-danger">
-            <a th:href="@{'/quest/' + ${quest.questUrl} + '/withdraw'}" class="btn-quest-view-a">퀘스트 탈퇴</a>
-        </button>
 
         <div class="row mt-4">
             <div class="col-xl-12">
