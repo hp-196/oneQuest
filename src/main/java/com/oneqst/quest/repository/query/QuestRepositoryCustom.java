@@ -38,5 +38,5 @@ public interface QuestRepositoryCustom {
 
     List<MyQuestDto> myActivityQuestLookup(Long memberId);
 
-    List<Quest> findRandom9(Long memberId);
+    List<Quest> findRandom9(Member member);
 }

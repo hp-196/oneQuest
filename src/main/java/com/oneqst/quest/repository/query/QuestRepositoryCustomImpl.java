@@ -24,15 +24,11 @@ import static com.oneqst.quest.domain.QQuest.quest;
 
 public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-//    private final EntityManager entityManager;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
+    private final EntityManager entityManager;
 
     public QuestRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
-//        this.entityManager = em;
+        this.entityManager = em;
     }
 
     public static BooleanExpression titleContains(String title) {
@@ -124,28 +120,27 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
      * https://stackoverflow.com/questions/15869279/does-querydsl-not-support-rand
      */
     @Override
-    public List<Quest> findRandom9(Long memberId) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(IllegalAccessError::new);
-        return queryFactory
-                .selectFrom(quest)
-                .where(quest.questMember.contains(findMember).not()
+    public List<Quest> findRandom9(Member member) {
+//        Member findMember = memberRepository.findById(memberId).orElseThrow(IllegalAccessError::new);
+//        return queryFactory
+//                .selectFrom(quest)
+//                .where(quest.questMember.contains(findMember).not()
+//                        .and(quest.questRecruitEnd.eq(true))
+//                        .and(quest.questStartTime.before(LocalDate.now()))
+//                        .and(quest.questEndTime.after(LocalDate.now())))
+//                .orderBy(NumberExpression.random().asc())
+//                .limit(9)
+//                .fetch();
+        JPAQuery<Quest> query = new JPAQuery<>(entityManager, MySqlJpaTemplates.DEFAULT);
+        return query.
+                from(quest)
+                .where(quest.questMember.contains(member).not()
                         .and(quest.questRecruitEnd.eq(true))
                         .and(quest.questStartTime.before(LocalDate.now()))
                         .and(quest.questEndTime.after(LocalDate.now())))
                 .orderBy(NumberExpression.random().asc())
                 .limit(9)
                 .fetch();
-//        JPAQuery<Quest> query = new JPAQuery<>(entityManager, MySqlJpaTemplates.DEFAULT);
-//        QQuest qQuest = new QQuest("quest");
-//        return query.
-//                from(qQuest)
-//                .where(qQuest.questMember.contains(member).not()
-//                        .and(qQuest.questRecruitEnd.eq(true))
-//                        .and(qQuest.questStartTime.before(LocalDate.now()))
-//                        .and(qQuest.questEndTime.after(LocalDate.now())))
-//                .orderBy(NumberExpression.random().asc())
-//                .limit(9)
-//                .fetch();
     }
 
     /**
