@@ -76,7 +76,7 @@ public class QuestService {
             String str = st.nextToken();
             Matcher mat = pattern.matcher(str);
             if (mat.find()) {
-                Tag tag = tagRepository.findByTitle(str);
+                Tag tag = tagRepository.findByTitle("#"+str);
                 if (tag == null) {
                     tag = new Tag();
                     tag.setTitle("#" + str);

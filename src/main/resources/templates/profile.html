@@ -108,6 +108,12 @@
                                     <div th:text="${#temporals.format(profileMember.signUpTime, 'yyyy-MM-dd')}" class="col-lg-9 col-md-8">가입날짜
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">관심 태그</div>
+                                    <div th:text="${profileMember.getTags()}" class="col-lg-9 col-md-8">관심 태그
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- 프로필 수정 폼 -->

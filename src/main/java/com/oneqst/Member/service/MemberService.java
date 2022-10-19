@@ -172,8 +172,8 @@ public class MemberService implements UserDetailsService {
         Matcher mat = pattern.matcher(tags);
         while (mat.find()) {
             String title = mat.group(0);
-            if (!title.equals("#")) {
-                str+=title;
+            if (!title.equals("#") && !str.contains(title)) {
+                str+=title+" ";
             }
         }
         member.setTags(str);
