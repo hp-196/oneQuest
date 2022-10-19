@@ -5,7 +5,9 @@ import com.oneqst.Member.domain.Member;
 import com.oneqst.Member.domain.Password;
 import com.oneqst.Member.domain.Profile;
 import com.oneqst.Member.dto.MemberDto;
+import com.oneqst.Member.dto.TagDto;
 import com.oneqst.Member.repository.MemberRepository;
+import com.oneqst.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +34,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -108,11 +113,11 @@ public class MemberService implements UserDetailsService {
     }
 
     /**
-     * @Transactional 이슈발생으로 인하여 생성 (@Transactional범위 안에 없으면 DB에 반영이 안됨)
+     * 이메일 인증 상태 변경
      */
-    public void setEmailAuthAndTime(Member member) {
+    public void setEmailAuth(Member member) {
         member.setEmailAuth(true);
-        member.setSignUpTime(LocalDateTime.now());
+        login(member);
     }
 
     /**
@@ -155,6 +160,23 @@ public class MemberService implements UserDetailsService {
     public void updateProfileImage(Profile profile) {
         Member member = memberRepository.findByNickname(profile.getNickname());
         member.setProfileImage(profile.getProfileImage());
+        memberRepository.save(member);
+    }
+
+    /**
+     * 관심있는 태그 업데이트
+     */
+    public void updateTags(Member member, String tags) {
+        String str = "";
+        Pattern pattern = Pattern.compile("(#[\\d|A-Z|a-z|가-힣]*)");
+        Matcher mat = pattern.matcher(tags);
+        while (mat.find()) {
+            String title = mat.group(0);
+            if (!title.equals("#")) {
+                str+=title;
+            }
+        }
+        member.setTags(str);
         memberRepository.save(member);
     }
 }

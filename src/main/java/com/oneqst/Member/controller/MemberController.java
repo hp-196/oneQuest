@@ -6,6 +6,7 @@ import com.oneqst.Member.domain.Member;
 import com.oneqst.Member.domain.Password;
 import com.oneqst.Member.domain.Profile;
 import com.oneqst.Member.dto.MemberDto;
+import com.oneqst.Member.dto.TagDto;
 import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.Member.service.MemberService;
 import com.oneqst.config.AlertMessage;
@@ -82,11 +83,11 @@ public class MemberController {
     @GetMapping("/email-auth")
     public String emailAuth(@CurrentUser Member loginMember, String email, String token, Model model) {
         Member member = memberRepository.findByEmail(email);
-        if (!loginMember.equals(member) || member == null || !member.getEmailToken().equals(token)) {
+        if (!loginMember.equals(member) || !member.getEmailToken().equals(token)) {
             model.addAttribute("error", "wrong.email");
             return "email-auth";
         }
-        memberService.setEmailAuthAndTime(member);
+        memberService.setEmailAuth(member);
         model.addAttribute("nickname", member.getNickname());
         return "email-auth";
     }
@@ -103,6 +104,7 @@ public class MemberController {
         if (profileMember.equals(member)) {
             model.addAttribute(new Profile(profileMember));
             model.addAttribute(new Password());
+            model.addAttribute(new TagDto(profileMember));
             model.addAttribute("isOwner", profileMember);
         }
         model.addAttribute("member", member);
@@ -146,6 +148,15 @@ public class MemberController {
         }
         mav.setViewName("alertMessage");
         return mav;
+    }
+
+    /**
+     * 관심있는 태그 업데이트
+     */
+    @PostMapping("/profile/update/tags")
+    public String updateTag(@CurrentUser Member member, TagDto tagDto) {
+        memberService.updateTags(member, tagDto.getTitle());
+        return "redirect:/profile/"+member.getNickname();
     }
 
 

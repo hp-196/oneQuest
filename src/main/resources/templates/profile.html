@@ -61,6 +61,12 @@
                                 </button>
                             </li>
 
+                            <li class="nav-item">
+                                <button th:if="${isOwner}" class="nav-link" data-bs-toggle="tab"
+                                        data-bs-target="#tag-recommend">태그 등록
+                                </button>
+                            </li>
+
 
                         </ul>
 
@@ -226,6 +232,27 @@
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">비밀번호 변경</button>
                                     </div>
+                                </form>
+
+                            </div>
+
+                            <!-- 태그 등록 수정 폼 -->
+                            <div th:if="${isOwner}" class="tab-pane fade profile-edit pt-3" id="tag-recommend">
+
+                                <form th:action="@{/profile/update/tags}" th:object="${tagDto}" method="post" novalidate>
+
+                                    <div class="row mb-3">
+                                        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">관심있는 태그</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input th:field="*{title}" name="tag" type="text" class="form-control" id="tag">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">프로필 수정</button>
+                                    </div>
+
                                 </form>
 
                             </div>

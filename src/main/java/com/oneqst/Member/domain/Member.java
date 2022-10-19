@@ -52,6 +52,8 @@ public class Member {
 
     private String address; //집 주소
 
+    private String tags;
+
     private boolean emailAlarm; //이메일 알람 여부
 
     private boolean webAlarm; //웹 알람 여부
