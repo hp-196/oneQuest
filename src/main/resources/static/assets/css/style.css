@@ -1245,7 +1245,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .portfolio .portfolio-item figure:hover .link-details {
   opacity: 1;
-  right: calc(50% - 44px);
+  right: calc(45%);
 }
 .portfolio .portfolio-item .portfolio-info {
   background: #fff;

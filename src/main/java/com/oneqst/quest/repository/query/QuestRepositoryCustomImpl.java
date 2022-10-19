@@ -132,13 +132,15 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
 //                .orderBy(NumberExpression.random().asc())
 //                .limit(9)
 //                .fetch();
+        Set<Tag> tags = member.getTags();
         JPAQuery<Quest> query = new JPAQuery<>(entityManager, MySqlJpaTemplates.DEFAULT);
         return query.
                 from(quest)
                 .where(quest.questMember.contains(member).not()
                         .and(quest.questRecruitEnd.eq(true))
                         .and(quest.questStartTime.before(LocalDate.now()))
-                        .and(quest.questEndTime.after(LocalDate.now())))
+                        .and(quest.questEndTime.after(LocalDate.now()))
+                        .and(quest.tags.any().in(tags).not()))
                 .orderBy(NumberExpression.random().asc())
                 .limit(9)
                 .fetch();
