@@ -13,6 +13,6 @@ public class TagDto {
     private String title;
 
     public TagDto(Member profileMember) {
-        this.title = profileMember.getTags();
+        this.title = profileMember.returnTags();
     }
 }

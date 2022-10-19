@@ -5,6 +5,7 @@ import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.domain.Score;
+import com.oneqst.tag.Tag;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,7 +51,8 @@ public class Member {
 
     private String address; //집 주소
 
-    private String tags;
+    @ManyToMany
+    private Set<Tag> tags;
 
     private boolean emailAlarm; //이메일 알람 여부
 
@@ -81,5 +83,23 @@ public class Member {
         return memberInfo.getMember().isEmailAuth();
     }
 
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
 
+    /**
+     * 태그 출력
+     */
+    public String returnTags() {
+        StringBuilder sb = new StringBuilder();
+        for (Tag tag : tags) {
+            sb.append(tag.getTitle());
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+    public void deleteTagAll() {
+        tags.removeAll(this.tags);
+    }
 }

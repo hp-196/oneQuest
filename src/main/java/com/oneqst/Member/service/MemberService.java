@@ -7,6 +7,7 @@ import com.oneqst.Member.domain.Profile;
 import com.oneqst.Member.dto.MemberDto;
 import com.oneqst.Member.dto.TagDto;
 import com.oneqst.Member.repository.MemberRepository;
+import com.oneqst.quest.repository.TagRepository;
 import com.oneqst.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +34,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,6 +50,7 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final TagRepository tagRepository;
 
     /**
      * 이메일 전송
@@ -54,10 +58,6 @@ public class MemberService implements UserDetailsService {
      */
     @Async
     public void sendMail(Member newMember) throws MessagingException {
-        if (newMember.getEmailToken() == null) {
-            newMember.EmailTokenCreate();
-            memberRepository.save(newMember);
-        }
         MimeMessage mail = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
         helper.setTo(newMember.getEmail());
@@ -79,6 +79,8 @@ public class MemberService implements UserDetailsService {
                 .webAlarm(true)
                 .emailAuth(false)
                 .signUpTime(LocalDateTime.now())
+                .emailToken(UUID.randomUUID().toString())
+                .tags(new HashSet<>())
                 .build();
 
         Member newMember = memberRepository.save(member);
@@ -157,26 +159,25 @@ public class MemberService implements UserDetailsService {
     }
 
 
-    public void updateProfileImage(Profile profile) {
-        Member member = memberRepository.findByNickname(profile.getNickname());
-        member.setProfileImage(profile.getProfileImage());
-        memberRepository.save(member);
-    }
-
     /**
      * 관심있는 태그 업데이트
      */
     public void updateTags(Member member, String tags) {
-        String str = "";
+        member.deleteTagAll();
         Pattern pattern = Pattern.compile("(#[\\d|A-Z|a-z|가-힣]*)");
         Matcher mat = pattern.matcher(tags);
         while (mat.find()) {
             String title = mat.group(0);
-            if (!title.equals("#") && !str.contains(title)) {
-                str+=title+" ";
+            if (!title.equals("#")) {
+                Tag tag = tagRepository.findByTitle(title);
+                if (tag == null) {
+                    tag = new Tag();
+                    tag.setTitle(title);
+                    tagRepository.save(tag);
+                }
+                member.addTag(tag);
             }
         }
-        member.setTags(str);
         memberRepository.save(member);
     }
 }

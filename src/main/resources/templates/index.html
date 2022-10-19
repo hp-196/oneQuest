@@ -213,6 +213,13 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 관심사 태그 퀘스트 추천 -->
+            <div th:if="${tagQuestList.size() > 0}" class="section-title mt-5 mb-5">
+                <h2 th:text="|${member.returnTags()} 태그의 퀘스트|"></h2>
+                <p>아래의 카드를 눌러 이동해보세요</p>
+            </div>
+
         </div>
     </section>
 </main>
