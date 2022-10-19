@@ -42,20 +42,18 @@
                      class="col-lg-4 col-md-6 portfolio-item wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile"
-                                 class="mainPage-card-img">
-                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
-                                 alt="Profile" class="mainPage-card-img">
-                            <div th:if="${!quest.compareDate()}" th:classappend="${!quest.compareDate()} ? 'quest-end'">
-                                <p></p>
-                                <p>기한 마감</p>
-                            </div>
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" class="link-preview portfolio-lightbox"
-                               data-gallery="portfolioGallery"
-                               title="퀘스트 입장"><i class="bx bx-plus"></i></a>
-                            <a class="link-details" title="회원 초대" data-bs-toggle="modal" id="modal_button"
-                               th:attr="data-bs-target='#questInfo' + ${quest.getId()}">
-                                <i class="bx bx-link"></i></a>
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}">
+                                <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png"
+                                     alt="Profile"
+                                     class="mainPage-card-img">
+                                <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
+                                     alt="Profile" class="mainPage-card-img">
+                                <div th:if="${!quest.compareDate()}"
+                                     th:classappend="${!quest.compareDate()} ? 'quest-end'">
+                                    <p></p>
+                                    <p>기한 마감</p>
+                                </div>
+                            </a>
                         </figure>
 
                         <div class="portfolio-info">
@@ -64,7 +62,8 @@
                                 <a th:href="@{'/search/list?title=%23' + ${tag.renameTitle()}}">
                                     <small style="color: gray" th:text="${tag.getTitle()}"
                                            onmouseover="this.style.textDecoration='underline'"
-                                           onmouseout="this.style.textDecoration=''">questTag</small>
+                                           onmouseout="this.style.textDecoration=''">questTag
+                                    </small>
                                 </a>
                             </div>
                         </div>
@@ -150,17 +149,17 @@
                      class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile"
-                                 class="mainPage-card-img">
-                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
-                                 alt="Profile" class="mainPage-card-img">
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
-                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="퀘스트 입장"><i
-                                    class="bx bx-plus"></i></a>
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}">
+                                <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png"
+                                     alt="Profile"
+                                     class="mainPage-card-img">
+                                <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
+                                     alt="Profile" class="mainPage-card-img">
+                            </a>
                             <a class="link-details" title="상세 정보" data-bs-toggle="modal"
-                               th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
-                                    class="bx bx-link"></i></a>
+                               th:attr="data-bs-target='#questInfo'+${quest.getId()}">
+                                <i class="bx bx-link"></i>
+                            </a>
                         </figure>
 
                         <div class="portfolio-info">
@@ -224,17 +223,16 @@
                      class="col-lg-4 col-md-6 portfolio-item filter-web wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-wrap">
                         <figure>
-                            <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile"
-                                 class="mainPage-card-img">
-                            <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
-                                 alt="Profile" class="mainPage-card-img">
-                            <a th:href="@{'/quest/' + ${quest.questUrl}}" href="assets/img/portfolio/portfolio-2.jpg"
-                               class="link-preview portfolio-lightbox" data-gallery="portfolioGallery"
-                               title="퀘스트 입장"><i
-                                    class="bx bx-plus"></i></a>
-                            <a class="link-details" title="상세 정보" data-bs-toggle="modal"
-                               th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
-                                    class="bx bx-link"></i></a>
+                            <a th:href="@{'/quest/' + ${quest.questUrl}}">
+                                <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png"
+                                     alt="Profile"
+                                     class="mainPage-card-img">
+                                <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.getQuestImage()}"
+                                     alt="Profile" class="mainPage-card-img">
+                                <a class="link-details" title="상세 정보" data-bs-toggle="modal"
+                                   th:attr="data-bs-target='#questInfo'+${quest.getId()}"><i
+                                        class="bx bx-link"></i></a>
+                            </a>
                         </figure>
 
                         <div class="portfolio-info">
