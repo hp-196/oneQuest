@@ -5,6 +5,7 @@ import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.QuestPost;
 import com.oneqst.quest.dto.CommentDto;
+import com.oneqst.quest.event.AuthCommentNotice;
 import com.oneqst.quest.event.CommentNotice;
 import com.oneqst.quest.repository.CommentRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
@@ -69,6 +70,9 @@ public class CommentService {
                 .postTime(LocalDateTime.now())
                 .build();
         commentRepository.save(comment);
+        if (!member.equals(authPost.getWriter())) {
+            eventPublisher.publishEvent(new AuthCommentNotice(comment, authPost));
+        }
     }
 
     /**

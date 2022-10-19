@@ -5,9 +5,11 @@ import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.notice.Notice;
 import com.oneqst.notice.NoticeRepository;
 import com.oneqst.notice.NoticeType;
+import com.oneqst.quest.domain.AuthPost;
 import com.oneqst.quest.domain.Comment;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.domain.QuestPost;
+import com.oneqst.quest.repository.AuthPostRepository;
 import com.oneqst.quest.repository.QuestPostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ public class QuestNoticeListener {
 
     private final NoticeRepository noticeRepository;
     private final QuestPostRepository questPostRepository;
+    private final AuthPostRepository authPostRepository;
     private final MemberRepository memberRepository;
 
 
@@ -47,6 +50,25 @@ public class QuestNoticeListener {
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
         notice.setUrl("/quest/" + questPost.getQuest().getQuestUrl() + "/post/" + questPost.getId());
+        notice.setNoticeType(NoticeType.POST_COMMENT);
+        noticeRepository.save(notice);
+    }
+
+    /**
+     * 댓글 알림
+     */
+    @EventListener
+    public void authCommentEvent(AuthCommentNotice commentNotice) {
+        Comment comment = commentNotice.getComment();
+        AuthPost authPost = authPostRepository.findById(commentNotice.getAuthPost().getId()).get();
+        Notice notice = new Notice();
+        notice.setTitle(authPost.getTitle()); //퀘스트 포스팅 제목
+        notice.setMember(authPost.getWriter()); //알림받을 멤버
+        notice.setContent(comment.getContent()); //댓글 내용
+        notice.setByMember(comment.getWriter().getNickname()); //알림당사자 닉네임
+        notice.setNoticeTime(LocalDateTime.now());
+        notice.setChecked(false);
+        notice.setUrl("/quest/" + authPost.getQuest().getQuestUrl() + "/auth/post/" + authPost.getId());
         notice.setNoticeType(NoticeType.POST_COMMENT);
         noticeRepository.save(notice);
     }
