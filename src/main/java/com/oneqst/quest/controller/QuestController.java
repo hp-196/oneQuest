@@ -150,7 +150,7 @@ public class QuestController {
      * 퀘스트 참여
      */
     @GetMapping("/quest/{url}/join")
-    public String joinQuest(@CurrentUser Member member, @PathVariable String url, Model model) {
+    public String joinQuest(@CurrentUser Member member, @PathVariable String url, Model model) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (quest.isQuestRecruitEnd() == false) {
             throw new IllegalArgumentException(member.getNickname()+"가 불건전한 참여 시도. 퀘스트 모집중이 아님");
@@ -158,7 +158,7 @@ public class QuestController {
         model.addAttribute(member);
         model.addAttribute(quest);
         questService.addQuestMember(quest, member);
-        return "redirect:/quest/" + quest.getQuestUrl();
+        return "redirect:/quest/" + quest.encodedUrl();
     }
 
     /**
@@ -166,23 +166,23 @@ public class QuestController {
      */
     @PostMapping("/quest/{url}/invite")
     public String inviteMember(@CurrentUser Member member, @Valid InviteDto inviteDto,
-                               @PathVariable String url, Errors errors) {
+                               @PathVariable String url, Errors errors) throws UnsupportedEncodingException {
         if (errors.hasErrors()) {
             return "redirect:/quest/" + url;
         }
         Quest quest = questRepository.findByQuestUrl(url);
         questService.inviteMember(inviteDto, member, quest);
-        return "redirect:/quest/" + quest.getQuestUrl();
+        return "redirect:/quest/" + quest.encodedUrl();
     }
 
     /**
      * 퀘스트 탈퇴
      */
     @GetMapping("/quest/{url}/withdraw")
-    public String questWithdraw(@CurrentUser Member member, @PathVariable String url) {
+    public String questWithdraw(@CurrentUser Member member, @PathVariable String url) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         questService.questWithdraw(quest, member);
-        return "redirect:/quest/" + quest.getQuestUrl();
+        return "redirect:/quest/" + quest.encodedUrl();
     }
 
     /**
@@ -204,14 +204,14 @@ public class QuestController {
      */
     @PostMapping("/quest/{url}/post")
     public String questPostingPost(@CurrentUser Member member, @PathVariable String url,
-                                   @Valid QuestPostDto questPostDto, Errors errors) {
+                                   @Valid QuestPostDto questPostDto, Errors errors) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (errors.hasErrors()) {
             log.info(String.valueOf(errors));
             return "quest/quest-posting";
         }
         QuestPost questPost = questService.questPost(questPostDto, quest, member);
-        return "redirect:/quest/" + quest.getQuestUrl() + "/post/" + questPost.getId();
+        return "redirect:/quest/" + quest.encodedUrl() + "/post/" + questPost.getId();
     }
 
     /**
@@ -254,29 +254,31 @@ public class QuestController {
      */
     @PostMapping("/quest/{url}/post/{id}/update")
     public String updateQuestPosting(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id,
-                                     @Valid QuestPostUpdateDto questPostUpdateDto, Errors errors) {
+                                     @Valid QuestPostUpdateDto questPostUpdateDto, Errors errors) throws UnsupportedEncodingException {
+        Quest quest = questRepository.findByQuestUrl(url);
         QuestPost questPost = questPostRepository.getById(id);
         if (errors.hasErrors()) {
-            return "redirect:/quest/" + url + "/post/" + id;
+            return "redirect:/quest/" + quest.encodedUrl() + "/post/" + id;
         }
         if (questPost.getWriter().equals(member)) {
             questService.updateQuestPost(questPost, questPostUpdateDto);
-            return "redirect:/quest/" + url + "/post/" + id;
+            return "redirect:/quest/" + quest.encodedUrl() + "/post/" + id;
         }
-        return "redirect:/quest/" + url + "/post/" + id;
+        return "redirect:/quest/" + quest.encodedUrl() + "/post/" + id;
     }
 
     /**
      * 퀘스트 포스팅 삭제
      */
     @GetMapping("/quest/{url}/post/{id}/delete")
-    public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
+    public String deleteQuestPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) throws UnsupportedEncodingException {
         QuestPost questPost = questPostRepository.getById(id);
         if (!questPost.getWriter().equals(member)) {
             throw new IllegalArgumentException(member.getNickname()+"가 "+questPost+"로 불건전한 삭제 접근 시행");
         }
         questService.deleteQuestPost(questPost);
-        return "redirect:/quest/" + url;
+        String encodedUrl = URLEncoder.encode(url, "UTF-8");
+        return "redirect:/quest/" + encodedUrl;
     }
 
     /**
@@ -297,14 +299,14 @@ public class QuestController {
      */
     @PostMapping("/quest/{url}/post/notice")
     public String questNoticePost(@CurrentUser Member member, @PathVariable String url,
-                                  @Valid QuestPostDto questPostDto, Errors errors) {
+                                  @Valid QuestPostDto questPostDto, Errors errors) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (errors.hasErrors()) {
             log.info("퀘스트 포스팅 실패");
             return "quest/quest-posting";
         }
         QuestPost questPost = questService.questNoticePost(questPostDto, quest, member);
-        return "redirect:/quest/" + quest.getQuestUrl() + "/post/" + questPost.getId();
+        return "redirect:/quest/" + quest.encodedUrl() + "/post/" + questPost.getId();
     }
 
     /**

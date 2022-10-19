@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class QuestNoticeListener {
      * 댓글 알림
      */
     @EventListener
-    public void commentPostEvent(CommentNotice commentNotice) {
+    public void commentPostEvent(CommentNotice commentNotice) throws UnsupportedEncodingException {
         Comment comment = commentNotice.getComment();
         QuestPost questPost = questPostRepository.findById(commentNotice.getQuestPost().getId()).get();
         Notice notice = new Notice();
@@ -49,7 +50,7 @@ public class QuestNoticeListener {
         notice.setByMember(comment.getWriter().getNickname()); //알림당사자 닉네임
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
-        notice.setUrl("/quest/" + questPost.getQuest().getQuestUrl() + "/post/" + questPost.getId());
+        notice.setUrl("/quest/" + questPost.getQuest().encodedUrl() + "/post/" + questPost.getId());
         notice.setNoticeType(NoticeType.POST_COMMENT);
         noticeRepository.save(notice);
     }
@@ -58,7 +59,7 @@ public class QuestNoticeListener {
      * 댓글 알림
      */
     @EventListener
-    public void authCommentEvent(AuthCommentNotice commentNotice) {
+    public void authCommentEvent(AuthCommentNotice commentNotice) throws UnsupportedEncodingException {
         Comment comment = commentNotice.getComment();
         AuthPost authPost = authPostRepository.findById(commentNotice.getAuthPost().getId()).get();
         Notice notice = new Notice();
@@ -68,7 +69,7 @@ public class QuestNoticeListener {
         notice.setByMember(comment.getWriter().getNickname()); //알림당사자 닉네임
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
-        notice.setUrl("/quest/" + authPost.getQuest().getQuestUrl() + "/auth/post/" + authPost.getId());
+        notice.setUrl("/quest/" + authPost.getQuest().encodedUrl() + "/auth/post/" + authPost.getId());
         notice.setNoticeType(NoticeType.POST_COMMENT);
         noticeRepository.save(notice);
     }
@@ -77,7 +78,7 @@ public class QuestNoticeListener {
      * 멤버 초대 알림
      */
     @EventListener
-    public void inviteMemberEvent(InviteNotice inviteNotice) {
+    public void inviteMemberEvent(InviteNotice inviteNotice) throws UnsupportedEncodingException {
         String nameOrEmail = inviteNotice.getNickNameOrEmail();
         Member member = memberRepository.findByNicknameOrEmail(nameOrEmail, nameOrEmail);
         Notice notice = new Notice();
@@ -85,7 +86,7 @@ public class QuestNoticeListener {
         notice.setByMember(inviteNotice.getMember().getNickname()); //초대한 멤버
         notice.setTitle(inviteNotice.getQuest().getQuestTitle()); //퀘스트 제목
         notice.setContent("링크를 클릭하면 가입이 완료됩니다.");
-        notice.setUrl("/quest/"+inviteNotice.getQuest().getQuestUrl()+"/join");
+        notice.setUrl("/quest/"+inviteNotice.getQuest().encodedUrl()+"/join");
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
         notice.setNoticeType(NoticeType.QUEST_INVITE);
@@ -96,7 +97,7 @@ public class QuestNoticeListener {
      * 인증 포스팅 알림
      */
     @EventListener
-    public void scoreEvent(ScoreNotice scoreNotice) {
+    public void scoreEvent(ScoreNotice scoreNotice) throws UnsupportedEncodingException {
         Member member = memberRepository.findById(scoreNotice.getMember().getId()).get();
         Notice notice = new Notice();
         notice.setNoticeTime(LocalDateTime.now());
@@ -105,7 +106,7 @@ public class QuestNoticeListener {
         notice.setTitle(scoreNotice.getAuthPost().getTitle());
         notice.setContent("링크를 클릭하면 해당 게시글로 이동합니다.");
         notice.setByMember(member.getNickname());
-        notice.setUrl("/quest/"+scoreNotice.getQuest().getQuestUrl()+"/auth/post/"+scoreNotice.getAuthPost().getId());
+        notice.setUrl("/quest/"+scoreNotice.getQuest().encodedUrl()+"/auth/post/"+scoreNotice.getAuthPost().getId());
         notice.setNoticeType(NoticeType.QUEST_AUTH);
         noticeRepository.save(notice);
     }
@@ -114,7 +115,7 @@ public class QuestNoticeListener {
      * 퀘스트 가입 신청 후 승인 알림
      */
     @EventListener
-    public void acceptEvent(JoinAcceptNotice acceptNotice) {
+    public void acceptEvent(JoinAcceptNotice acceptNotice) throws UnsupportedEncodingException {
         Quest quest = acceptNotice.getQuest();
         Member member = acceptNotice.getMember();
         Notice notice = new Notice();
@@ -124,7 +125,7 @@ public class QuestNoticeListener {
         notice.setNoticeType(NoticeType.JOIN_WAITING);
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
-        notice.setUrl("/quest/" + quest.getQuestUrl());
+        notice.setUrl("/quest/" + quest.encodedUrl());
         noticeRepository.save(notice);
     }
 
@@ -132,7 +133,7 @@ public class QuestNoticeListener {
      * 퀘스트 가입 취소 후 승인 알림
      */
     @EventListener
-    public void cancelEvent(CancelAcceptNotice acceptNotice) {
+    public void cancelEvent(CancelAcceptNotice acceptNotice) throws UnsupportedEncodingException {
         Quest quest = acceptNotice.getQuest();
         Member member = acceptNotice.getMember();
         Notice notice = new Notice();
@@ -142,7 +143,7 @@ public class QuestNoticeListener {
         notice.setNoticeType(NoticeType.JOIN_CANCEL);
         notice.setNoticeTime(LocalDateTime.now());
         notice.setChecked(false);
-        notice.setUrl("/quest/" + quest.getQuestUrl());
+        notice.setUrl("/quest/" + quest.encodedUrl());
         noticeRepository.save(notice);
     }
 

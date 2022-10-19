@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -159,5 +161,9 @@ public class Quest {
 
     public List<Tag> tags() {
         return new ArrayList<>(tags);
+    }
+
+    public String encodedUrl() throws UnsupportedEncodingException {
+        return URLEncoder.encode(this.getQuestUrl(), "UTF-8");
     }
 }

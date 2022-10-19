@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Slf4j
@@ -59,10 +61,10 @@ public class AuthController {
      */
     @PostMapping("/quest/{url}/auth/post")
     public String questAuthPost(@CurrentUser Member member, @PathVariable String url,
-                                @Valid AuthPostDto authPostDto) {
+                                @Valid AuthPostDto authPostDto) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         AuthPost authPost = authService.AuthPost(authPostDto, quest, member);
-        return "redirect:/quest/" + url + "/auth/post/" + authPost.getId();
+        return "redirect:/quest/" + quest.encodedUrl() + "/auth/post/" + authPost.getId();
     }
 
     /**
@@ -103,24 +105,26 @@ public class AuthController {
      */
     @PostMapping("/quest/{url}/auth/post/{id}/update")
     public String updateAuthPosting(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id,
-                                    @Valid AuthPostUpdateDto authPostUpdateDto) {
+                                    @Valid AuthPostUpdateDto authPostUpdateDto) throws UnsupportedEncodingException {
         AuthPost authPost = authPostRepository.getById(id);
         if (member.equals(authPost.getWriter())) {
             authService.updateAuthPost(authPost, authPostUpdateDto);
         }
-        return "redirect:/quest/" + url + "/auth/post/" + id;
+        String encodedUrl = URLEncoder.encode(url, "UTF-8");
+        return "redirect:/quest/" + encodedUrl + "/auth/post/" + id;
     }
 
     /**
      * 퀘스트 인증 페이지 삭제
      */
     @GetMapping("/quest/{url}/auth/post/{id}/delete")
-    public String deleteAuthPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) {
+    public String deleteAuthPost(@CurrentUser Member member, @PathVariable String url, @PathVariable Long id) throws UnsupportedEncodingException {
         AuthPost authPost = authPostRepository.getById(id);
         if (member.equals(authPost.getWriter())) {
             authService.deletePost(authPost);
         }
-        return "redirect:/quest/" + url;
+        String encodedUrl = URLEncoder.encode(url, "UTF-8");
+        return "redirect:/quest/" + encodedUrl;
     }
 
 

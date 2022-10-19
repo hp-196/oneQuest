@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Slf4j
@@ -65,13 +66,13 @@ public class QuestSettingController {
      * 모집 여부 처리 url
      */
     @GetMapping("/quest/{url}/recruitment")
-    public String recruitmentOn(@CurrentUser Member member, @PathVariable String url) {
+    public String recruitmentOn(@CurrentUser Member member, @PathVariable String url) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (!quest.isHostOrMaster(member)) {
-            return "redirect:/quest/" + url + "/setting/recruitment";
+            return "redirect:/quest/" + quest.encodedUrl() + "/setting/recruitment";
         }
         settingService.recruitment(quest);
-        return "redirect:/quest/" + url + "/setting/recruitment";
+        return "redirect:/quest/" + quest.encodedUrl() + "/setting/recruitment";
 
     }
 
@@ -79,69 +80,69 @@ public class QuestSettingController {
      * 멤버 -> 매니저 승격
      */
     @GetMapping("/quest/{url}/add/manager/{nickname}")
-    public String addManager(@CurrentUser Member member, @PathVariable String url, @PathVariable String nickname) {
+    public String addManager(@CurrentUser Member member, @PathVariable String url, @PathVariable String nickname) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (!quest.isHostOrMaster(member)) {
             log.info("승격 실패");
-            return "redirect:/quest/"+ url + "/setting/auth";
+            return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
         }
         Member questMember = memberRepository.findByNickname(nickname);
         settingService.addManager(quest,questMember);
-        return "redirect:/quest/"+ url + "/setting/auth";
+        return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
     }
 
     /**
      * 매니저 -> 멤버 강등
      */
     @GetMapping("/quest/{url}/relegation/member/{nickname}")
-    public String relegation(@CurrentUser Member member, @PathVariable String url, @PathVariable String nickname) {
+    public String relegation(@CurrentUser Member member, @PathVariable String url, @PathVariable String nickname) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (!quest.getQuestHost().equals(member)) {
             log.info("강등 실패");
-            return "redirect:/quest/"+ url + "/setting/auth";
+            return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
         }
         Member manager = memberRepository.findByNickname(nickname);
         settingService.relegation(quest, manager);
-        return "redirect:/quest/"+ url + "/setting/auth";
+        return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
     }
 
     /**
      * 호스트 임명
      */
     @GetMapping("/quest/{url}/assign/{nickname}")
-    public String assignHost(@CurrentUser Member host, @PathVariable String url, @PathVariable String nickname) {
+    public String assignHost(@CurrentUser Member host, @PathVariable String url, @PathVariable String nickname) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (!quest.getQuestHost().equals(host)) {
-            return "redirect:/quest/"+ url;
+            return "redirect:/quest/"+ quest.encodedUrl();
         }
         Member manager = memberRepository.findByNickname(nickname);
         settingService.assignHost(quest,host,manager);
-        return "redirect:/quest/"+ url + "/setting/auth";
+        return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
     }
 
     /**
      * 회원 추방
      */
     @GetMapping("/quest/{url}/exile/{nickname}")
-    public String exileMember(@CurrentUser Member member, @PathVariable String url, @PathVariable String nickname) {
+    public String exileMember(@CurrentUser Member member, @PathVariable String url, @PathVariable String nickname) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (!quest.isHostOrMaster(member)) {
             log.info("추방 실패");
-            return "redirect:/quest/"+ url + "/setting/auth";
+            return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
         }
         Member questMember = memberRepository.findByNickname(nickname);
         questService.questWithdraw(quest,questMember);
-        return "redirect:/quest/"+ url + "/setting/auth";
+        return "redirect:/quest/"+ quest.encodedUrl() + "/setting/auth";
     }
 
     /**
      * 호스트 전용 퀘스트 삭제
      */
     @GetMapping("/quest/{url}/delete")
-    public String deleteQuest(@CurrentUser Member member, @PathVariable String url) {
+    public String deleteQuest(@CurrentUser Member member, @PathVariable String url) throws UnsupportedEncodingException {
         Quest quest = questRepository.findByQuestUrl(url);
         if (!quest.getQuestHost().equals(member)) {
-            return "redirect:/quest/"+ url;
+            return "redirect:/quest/"+ quest.encodedUrl();
         }
         settingService.deleteQuest(quest);
         return "redirect:/";
