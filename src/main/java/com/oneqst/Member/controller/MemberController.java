@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 @Controller
 @Slf4j
@@ -154,22 +156,13 @@ public class MemberController {
      * 관심있는 태그 업데이트
      */
     @PostMapping("/profile/update/tags")
-    public String updateTag(@CurrentUser Member member, TagDto tagDto) {
-        memberService.updateTags(member, tagDto.getTitle());
-        return "redirect:/profile/"+member.getNickname();
+    public String updateTag(@CurrentUser Member member, TagDto tagDto) throws UnsupportedEncodingException {
+        Member findMember = memberRepository.findById(member.getId()).get();
+        memberService.updateTags(findMember, tagDto.getTitle());
+        String encodedUrl = URLEncoder.encode(member.getNickname(), "UTF-8");
+        return "redirect:/profile/"+encodedUrl;
     }
 
-
-    @PostMapping("/profile/update/profileImage")
-    public String updateProfileImage(@CurrentUser Member member, @Valid Profile profile, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            model.addAttribute(member);
-            log.info(String.valueOf(errors));
-            return "redirect:/profile/" + member.getNickname();
-        }
-        memberService.updateProfileImage(profile);
-        return "redirect:/profile/" + member.getNickname();
-    }
 
     /**
      * 이메일 재전송

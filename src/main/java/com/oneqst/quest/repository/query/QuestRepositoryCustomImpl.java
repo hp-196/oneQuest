@@ -1,15 +1,15 @@
 package com.oneqst.quest.repository.query;
 
 import com.oneqst.Member.domain.Member;
-import com.oneqst.Member.repository.MemberRepository;
 import com.oneqst.quest.domain.Quest;
 import com.oneqst.quest.dto.MyQuestDto;
 import com.oneqst.quest.dto.QMyQuestDto;
+import com.oneqst.tag.QTag;
+import com.oneqst.tag.Tag;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static com.oneqst.Member.domain.QMember.member;
 import static com.oneqst.quest.domain.QQuest.quest;
@@ -139,6 +140,23 @@ public class QuestRepositoryCustomImpl implements QuestRepositoryCustom {
                         .and(quest.questStartTime.before(LocalDate.now()))
                         .and(quest.questEndTime.after(LocalDate.now())))
                 .orderBy(NumberExpression.random().asc())
+                .limit(9)
+                .fetch();
+    }
+
+    /**
+     * 나의 관심 태그 퀘스트 추출
+     */
+    @Override
+    public List<Quest> myTagsQuest(Member member) {
+        Set<Tag> tags = member.getTags();
+        return queryFactory
+                .selectFrom(quest)
+                .where(quest.questRecruitEnd.isTrue()
+                        .and(quest.questMember.contains(member).not())
+                        .and(quest.questStartTime.before(LocalDate.now()))
+                        .and(quest.questEndTime.after(LocalDate.now()))
+                        .and(quest.tags.any().in(tags)))
                 .limit(9)
                 .fetch();
     }
