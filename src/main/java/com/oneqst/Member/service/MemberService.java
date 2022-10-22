@@ -62,7 +62,7 @@ public class MemberService implements UserDetailsService {
         MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
         helper.setTo(newMember.getEmail());
         helper.setSubject("[원퀘스트] 회원가입 이메일 인증");
-        helper.setText("<html> <body><h1><a href=\"http://43.201.83.81:8080/email-auth?token=" + newMember.getEmailToken() + "&email=" + newMember.getEmail()+"\">메일인증</a></h1> </body></html>", true);
+        helper.setText("<html> <body><h1><a href=\"http://43.200.19.110:8080/email-auth?token=" + newMember.getEmailToken() + "&email=" + newMember.getEmail()+"\">메일인증</a></h1> </body></html>", true);
         javaMailSender.send(mail);
     }
 
