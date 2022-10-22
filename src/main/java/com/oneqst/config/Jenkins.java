@@ -5,4 +5,6 @@ public class Jenkins {
     private Long id;
 
     private int num;
+
+    private String name;
 }
