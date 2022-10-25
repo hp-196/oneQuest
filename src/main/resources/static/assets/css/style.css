@@ -1103,6 +1103,9 @@ h1, h2, h3, h4, h5, h6 {
   transform: translate(-50%, -50%);
   font-size: 48px;
   font-weight: 700;
+  white-space: nowrap;
+  background-color: whitesmoke;
+  border-radius: 10px;
 }
 
 .text2 {
@@ -1111,6 +1114,9 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 30px;
+  white-space: nowrap;
+  background-color: whitesmoke;
+  border-radius: 10px;
 }
 
 .hero .btn-get-started {
@@ -1138,11 +1144,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 768px) {
   .hero h3 {
-    font-size: 30px;
-    line-height: 36px;
-  }
-  .hero h3 {
-    font-size: 18px;
+    font-size: 23px;
     line-height: 24px;
     margin-bottom: 30px;
   }
