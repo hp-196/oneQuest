@@ -10,7 +10,8 @@
 <div class="hero">
     <img th:if="${#strings.isEmpty(quest.questImage)}" src="/assets/img/logo.png" alt="Profile">
     <img th:if="${!#strings.isEmpty(quest.questImage)}" th:src="${quest.questImage}" alt="Profile">
-    <h3 class="text1" th:text="${quest.questTitle}"></h3>
+
+    <h3 style="background-color: #DCDCDC; border-radius: 10px" class="text1" th:text="${quest.questTitle}"></h3>
     <h3 class="text2"><span th:text="${quest.questStartTime}"></span> ~ <span th:text="${quest.questEndTime}"></span>
     </h3>
     <button id="modal_button" th:if="${quest.isMember(#authentication.principal) and quest.questRecruitEnd == true}" class="btn-get-started"
@@ -18,7 +19,7 @@
     <a th:if="${quest.isMember(#authentication.principal) and quest.questRecruitEnd == false}" class="btn-get-started">모집
         마감</a>
     <a th:if="${!quest.isMember(#authentication.principal) && quest.questRecruitEnd == true && quest.joinType == T(com.oneqst.quest.domain.JoinType).NORMAL}"
-       th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scrollto">퀘스트 가입</a>
+       th:href="@{'/quest/' + ${quest.questUrl} + '/join'}" class="btn-get-started scroll">퀘스트 가입</a>
     <a th:if="${!quest.isMember(#authentication.principal) && quest.questRecruitEnd == true && quest.joinType == T(com.oneqst.quest.domain.JoinType).WAITING}"
        th:href="@{'/quest/' + ${quest.questUrl} + '/join/application/' + ${member.getNickname()}}"
        class="btn-get-started scrollto">퀘스트 가입</a>
