@@ -58,6 +58,11 @@ MySQL
 
 Thymeleaf
 
+### 배포/테스트
+
+- AWS EC2
+- Jenkins
+
 # 결과물
 
 *작성*
