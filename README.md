@@ -64,14 +64,18 @@ Thymeleaf
 - Jenkins
 
 # 결과물
-
-*작성*
+아래 사진을 클릭시 유튜브에서 확인이 가능합니다.
+[![2022-11-13_16-18-58](https://user-images.githubusercontent.com/74192619/201510583-6b3f30d6-d69c-4e8c-97db-f621b4a2b9cc.png)](https://youtu.be/yZrmbURlbk4?t=149)
 
 # 향후 과제
 
-*작성*
+- UI를 직관적이게 수정
+- 검색 로직 수정
+- 태그 관련 추천 알고리즘 추가
+- OAuth2 추가
 
 # 라이센스
 
 MIT License
+
 
